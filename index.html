@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nana — Product Design (UX/UI) Selected Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=The+Impressionist&family=Roboto:wght@100;300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face{
+    font-family:'TheSeasonsAccent';
+    src:url('assets/fonts/Fontspring-DEMO-theseasons-it.otf') format('opentype');
+    font-weight:400; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:'TheSeasonsAccent';
+    src:url('assets/fonts/Fontspring-DEMO-theseasons-bdit.otf') format('opentype');
+    font-weight:700; font-style:italic; font-display:swap;
+  }
+  :root{
+    --bg:#070707;
+    --white:#f3f2ee;
+    --gray:#8e8c86;
+    --gray-dim:#5c5a55;
+    --line:rgba(255,255,255,0.14);
+    --accent:#FF2E3F;
+    --serif:'Forum', serif;
+    --swash:'The Impressionist', cursive;
+    --accent-font:'TheSeasonsAccent', serif;
+    --sans:'Helvetica Neue', 'Roboto', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+    /* shared side inset: 56px on normal screens, grows to track the centered
+       1280px content column once the viewport is wider than that, so every
+       section (including fixed/full-width ones like the header) lines up */
+    --edge-pad: max(56px, calc((100vw - 1280px)/2 + 56px));
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--white); font-family:var(--sans); font-weight:300;
+    overflow-x:hidden; cursor:none;
+  }
+  ::selection{ background:var(--accent); color:#0a0a0a; }
+
+  #grain{
+    position:fixed; inset:0; z-index:85; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  #starfield{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+  /* ---------- reticle cursor: full viewfinder crosshair ---------- */
+  #reticleH, #reticleV{
+    position:fixed; z-index:9998; pointer-events:none;
+    background:rgba(255,90,46,0.3); opacity:0; transition:opacity .2s;
+  }
+  #reticleH{ left:0; width:100vw; height:1px; }
+  #reticleV{ top:0; height:100vh; width:1px; }
+  body.link-hover #reticleH, body.link-hover #reticleV{ opacity:1; }
+  #reticle{
+    position:fixed; top:0; left:0; width:34px; height:34px; z-index:9999;
+    pointer-events:none; transform:translate(-50%,-50%);
+    border:.5px solid rgba(243,242,238,0.55); border-radius:50%;
+    transition:width .2s,height .2s,border-color .2s,border-width .2s;
+  }
+  #reticle::before,#reticle::after{ content:''; position:absolute; background:rgba(243,242,238,0.75); }
+  #reticle::before{ left:50%; top:50%; width:9px; height:.5px; transform:translate(-50%,-50%); }
+  #reticle::after{ left:50%; top:50%; width:.5px; height:9px; transform:translate(-50%,-50%); }
+  body.link-hover #reticle{ width:52px; height:52px; border-width:1px; border-color:var(--accent); }
+  body.link-hover #reticle::before,body.link-hover #reticle::after{ background:var(--accent); height:1px; width:1px; }
+  body.link-hover #reticle::before{ width:9px; height:1px; }
+  body.link-hover #reticle::after{ width:1px; height:9px; }
+  @media (hover:none), (pointer:coarse){ body{ cursor:auto; } #reticle,#reticleH,#reticleV{ display:none; } }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------- viewfinder HUD chrome ---------- */
+  .corner{ position:fixed; z-index:70; width:34px; height:34px; pointer-events:none; opacity:.55; transition:opacity .6s ease; }
+  body.footer-arrived .corner{ opacity:0; }
+  .corner svg{ width:100%; height:100%; }
+  .corner.tl{ top:18px; left:18px; }
+  .corner.tr{ top:18px; right:18px; }
+  .corner.bl{ bottom:18px; left:18px; }
+  .corner.br{ bottom:18px; right:18px; }
+  @media (max-width:760px){
+    .corner.tl{ top:12px; left:12px; }
+    .corner.tr{ top:12px; right:12px; }
+    .corner.bl{ bottom:12px; left:12px; }
+    .corner.br{ bottom:12px; right:12px; }
+  }
+
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    display:flex; align-items:center; justify-content:space-between; gap:18px;
+    padding:32px var(--edge-pad) 22px calc(var(--edge-pad) + 149px);
+    transition:opacity .6s ease;
+  }
+  body.footer-arrived header{ opacity:0; pointer-events:none; }
+  .scrub-group{ flex:1; min-width:0; display:flex; align-items:center; justify-content:center; gap:18px; }
+  .scrubber{
+    flex:1; max-width:520px; height:1px; background:var(--line); position:relative;
+  }
+  .scrubber .fill{
+    position:absolute; left:0; top:0; height:100%; width:0%;
+    background:var(--accent); transition:width .05s linear;
+    box-shadow:
+      0 0 2px rgba(255,46,63,.95),
+      0 0 6px rgba(255,46,63,.85),
+      0 0 14px rgba(255,46,63,.6),
+      0 0 26px rgba(255,46,63,.35);
+  }
+  .scrubber .dot{
+    position:absolute; top:50%; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); transform:translate(-50%,-50%); left:0%;
+    box-shadow:
+      0 0 3px rgba(255,46,63,.9),
+      0 0 8px rgba(255,46,63,1),
+      0 0 16px rgba(255,46,63,.85),
+      0 0 28px rgba(255,46,63,.55),
+      0 0 44px rgba(255,46,63,.3);
+    animation:laserPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes laserPulse{ 0%,100%{ opacity:1; } 50%{ opacity:.72; } }
+  @media (prefers-reduced-motion: reduce){ .scrubber .dot{ animation:none; } }
+  header .playicon{ font-family:var(--mono); font-size:10px; color:var(--gray); letter-spacing:.05em; }
+  header .menu{
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray);
+    border:1px solid var(--line); border-radius:999px; padding:8px 18px; transition:border-color .3s,color .3s;
+  }
+  header .menu:hover{ border-color:var(--accent); color:var(--accent); }
+  @media (max-width:760px){ header{ padding:28px 32px 19px 173px; } .scrubber{ max-width:none; } }
+
+  .brand-fixed{
+    position:fixed; top:32px; left:var(--edge-pad); z-index:60; color:var(--white);
+    transition:opacity .6s ease;
+  }
+  body.footer-arrived .brand-fixed{ opacity:0; pointer-events:none; }
+  .brand-fixed .brand-name{ font-family:var(--sans); font-weight:300; font-size:13px; letter-spacing:.1em; text-transform:uppercase; display:block; line-height:1; }
+  .brand-fixed .brand-sub{ display:block; font-family:var(--sans); font-weight:300; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); margin-top:3px; }
+  @media (max-width:760px){ .brand-fixed{ top:31px; left:32px; } }
+
+  /* ---------- moon scene (scroll-scrubbed) ---------- */
+  .moonScene{ position:relative; height:340vh; }
+  .moonScene .pin{
+    position:sticky; top:0; height:100vh; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255,255,255,0.06), transparent 60%);
+  }
+  canvas#moonCanvas{ position:absolute; inset:0; width:100%; height:100%; z-index:1; }
+
+  .stage{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
+    text-align:left; z-index:3; opacity:0; pointer-events:none; padding:0 var(--edge-pad);
+  }
+  .stageA h1{ font-family:var(--serif); font-weight:400; line-height:1.1; font-size:clamp(2.2rem,6vw,5rem); }
+  .stageA .swash{ font-family:var(--swash); font-weight:400; font-size:1.35em; vertical-align:-.08em; line-height:0; display:inline-block; margin-right:-.12em; }
+  .stageA .title-accent{ font-family:var(--accent-font); font-weight:400; font-style:italic; }
+  .stageA .title-accent.bold{ font-weight:700; }
+  .stageA .line{ display:block; }
+  .stageA .hero-sub{ font-family:var(--sans); font-weight:300; font-size:clamp(.95rem,1.6vw,1.15rem); line-height:1.6; color:var(--gray); max-width:58ch; margin-top:28px; }
+  .stageA .hero-sub .role-highlight{ color:var(--white); font-weight:300; position:relative; white-space:nowrap; }
+  .stageA .hero-sub .role-highlight::after{
+    content:''; position:absolute; left:0; right:0; bottom:-.1em; height:1px;
+    background:linear-gradient(90deg, var(--accent), transparent);
+  }
+  .hero-inner{ width:100%; }
+
+  .stageC{ align-items:center; justify-content:center; text-align:center; padding:0 56px; }
+  .stageC .big{ font-family:var(--serif); font-weight:400; line-height:1.1; font-size:clamp(2.2rem,6vw,5rem); }
+  .stageC .big .line{ display:block; }
+  .stageC .big .swash{ font-family:var(--swash); font-weight:400; font-size:1.35em; vertical-align:-.08em; line-height:0; display:inline-block; }
+  @media (max-width:760px){ .stage{ padding:0 32px; } }
+
+  .scrollcue{
+    position:absolute; left:50%; bottom:26px; transform:translateX(-50%); z-index:5;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--gray-dim);
+  }
+  .scrollcue .line{ width:1px; height:34px; background:linear-gradient(var(--gray-dim), transparent); animation:pulseLine 2.6s ease-in-out infinite; }
+  @keyframes pulseLine{ 0%,100%{opacity:.25;} 50%{opacity:.9;} }
+
+  /* persistent small moon badge that follows the page after the hero.
+     left/bottom/width/height are all driven continuously by JS (see the
+     "moon growth" script) so it can smoothly slide from the corner to
+     center-bottom and sink below the fold near the footer. */
+  #moonBadge{
+    position:fixed; width:46px; height:46px; z-index:55;
+    opacity:0; pointer-events:none;
+    transition:opacity .6s ease;
+  }
+  #moonBadge canvas{ width:100%; height:100%; }
+  body.footer-arrived #moonBadge{ z-index:1; }
+
+  section{ position:relative; z-index:2; }
+
+  /* ---------- trusted by ---------- */
+  .trusted{ padding:70px 0 90px; text-align:center; border-top:1px solid var(--line); }
+  .trusted .label{ padding:0 56px; font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:28px; }
+
+  .marquee{
+    position:relative; overflow:hidden; width:100%;
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+  .marquee-track{ display:flex; align-items:center; width:max-content; animation:marqueeScroll 28s linear infinite; }
+  .marquee:hover .marquee-track{ animation-play-state:paused; }
+  .marquee-group{ display:flex; align-items:center; }
+  .marquee-group span{
+    margin-right:64px; white-space:nowrap;
+    font-family:var(--sans); font-weight:300; font-size:15px; color:var(--gray-dim);
+    transition:color .3s, opacity .3s; cursor:default; opacity:.65;
+  }
+  .marquee-group span:hover{ color:var(--white); opacity:1; }
+  .marquee-group img{
+    height:28px; width:auto; margin-right:64px; flex:0 0 auto;
+    transition:opacity .3s; cursor:default; opacity:.55;
+  }
+  .marquee-group img:hover{ opacity:1; }
+  .marquee-group img[src*="sansiri"],
+  .marquee-group img[src*="zaapi"],
+  .marquee-group img[src*="sevenpeaks"]{ height:32px; }
+  .marquee-group img[src*="carenation"]{ height:36px; }
+  @keyframes marqueeScroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce){ .marquee-track{ animation:none; } }
+
+  /* ---------- section head ---------- */
+  .section-head{ text-align:center; padding:0 var(--edge-pad); margin-bottom:50px; }
+  .section-head .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .section-head h2{ font-family:var(--serif); font-weight:400; font-size:clamp(1.7rem,4vw,2.7rem); }
+
+  /* ---------- about panel (dragonfly-style reveal) ---------- */
+  .about{ padding:60px 0 40px; border-top:1px solid var(--line); }
+  .about-grid{
+    max-width:1280px; margin:0 auto; padding:0 56px;
+    display:grid; grid-template-columns:120px 1fr; gap:40px; align-items:start;
+  }
+  .about-grid .num{ font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.08em; }
+  .about-grid .num .lbl{ display:block; margin-top:8px; color:var(--gray-dim); font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
+  .about-grid p{ font-family:var(--sans); font-weight:300; font-size:clamp(1.05rem,2.2vw,1.5rem); line-height:1.6; color:var(--gray); max-width:52ch; }
+  .about-grid p strong{ color:var(--white); font-weight:400; }
+  @media (max-width:700px){ .about-grid{ grid-template-columns:1fr; gap:18px; } }
+
+  /* ---------- work list — full-row highlight like the reference ---------- */
+  .work{ padding:90px 0 150px; }
+  .work-list{ padding:0 var(--edge-pad); }
+  .work-row{
+    position:relative; cursor:none;
+    display:grid; grid-template-columns:70px 1fr auto; align-items:center; gap:24px;
+    padding:40px 6px; border-bottom:1px solid var(--line);
+  }
+  .work-list .work-row:first-child{ border-top:1px solid var(--line); }
+  .work-row .idx{ font-family:var(--mono); font-size:11px; color:var(--gray-dim); }
+  .work-row .titles h3{
+    font-family:var(--serif); font-weight:400;
+    font-size:clamp(1.4rem,3.2vw,2.3rem); transition:color .3s, transform .35s;
+  }
+  .work-row .titles p{ margin-top:10px; font-size:13px; color:var(--gray); max-width:54ch; font-weight:300; }
+  .work-row .titles .tags{
+    margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--gray-dim);
+  }
+  .work-row .titles .tags span{ border:1px solid var(--line); border-radius:4px; padding:3px 8px; }
+  .work-row .arrow{
+    width:44px; height:44px; border-radius:50%; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; transition:transform .4s, border-color .4s, background .4s;
+  }
+  .work-row .arrow svg{ width:15px; height:15px; }
+  .work-row:hover .titles h3{ color:var(--accent); transform:translateX(6px); }
+  .work-row:hover .arrow{ transform:rotate(45deg); border-color:var(--accent); background:rgba(255,90,46,0.08); }
+
+  /* window-chrome floating preview */
+  .winPreview{
+    position:fixed; width:320px; z-index:60; pointer-events:none;
+    opacity:0;
+    transition:opacity .3s ease;
+    border:1px solid rgba(255,255,255,0.18); border-radius:6px; overflow:hidden;
+    background:#0c0c0c; box-shadow:0 30px 70px rgba(0,0,0,0.6);
+  }
+  .winPreview.active{ opacity:1; }
+  .winPreview .titlebar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.14);
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.04em; color:var(--gray);
+  }
+  .winPreview .titlebar .dots{ display:flex; gap:5px; }
+  .winPreview .titlebar .dots span{ width:7px; height:7px; border-radius:50%; border:1px solid var(--gray-dim); }
+  .winPreview .stage{ position:relative; height:200px; background:#0f0f0f; overflow:hidden; opacity:1; }
+  .winPreview .stage svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .winPreview .mesh{ position:absolute; inset:0; opacity:.55; }
+  .winPreview .proj-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; transform:translateZ(0); -webkit-transform:translateZ(0); will-change:transform; backface-visibility:hidden; }
+  .winPreview .proj-image{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; }
+  .winPreview .footer{
+    padding:9px 10px; font-family:var(--mono); font-size:9px; letter-spacing:.03em; color:var(--gray-dim);
+    border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between;
+  }
+  .winPreview .footer .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); display:inline-block; margin-right:6px; }
+
+  @media (max-width:760px){ .section-head{ padding:0 32px; } .work-list{ padding:0 32px; } }
+
+  @media (max-width:640px){
+    .work-row{ grid-template-columns:1fr auto; row-gap:10px; }
+    .work-row .idx{ grid-column:1; grid-row:1; }
+    .work-row .titles{ grid-column:1/-1; grid-row:2; }
+    .work-row .arrow{ grid-column:2; grid-row:1; width:36px; height:36px; }
+    .winPreview{ display:none; }
+  }
+
+  /* ---------- about + CV timeline (scroll-jacked horizontal section) ---------- */
+  .about-cv{ position:relative; border-top:1px solid var(--line); }
+  .at-pin{
+    position:sticky; top:0; height:100vh; overflow:hidden;
+    display:flex; align-items:center;
+  }
+  .at-grid{
+    display:flex; align-items:center; gap:24px;
+    width:100%; padding:0 var(--edge-pad);
+  }
+  .at-sidebar{ flex:0 0 320px; padding:40px 0; }
+  .at-sidebar .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .at-sidebar h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem,3.4vw,2.7rem); line-height:1.05; }
+  .at-sidebar h2 .name{ display:block; font-family:var(--swash); font-weight:400; font-size:2.1em; line-height:1.4; margin-top:.1em; padding-bottom:.15em; }
+  .at-sidebar p{ margin-top:26px; font-size:14px; line-height:1.7; color:var(--gray); font-weight:300; max-width:32ch; }
+  .at-sidebar .btn{ margin-top:34px; display:inline-block; }
+  .at-sidebar .hint{
+    margin-top:56px; display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray-dim);
+  }
+  .at-sidebar .hint svg{ width:26px; height:10px; }
+  .timeline-skip{
+    display:inline-flex; align-items:center; margin-left:6px;
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray-dim);
+    border:1px solid var(--line); border-radius:999px; padding:6px 14px; background:transparent;
+    transition:border-color .3s, color .3s;
+  }
+  .timeline-skip:hover, .timeline-skip:active{ border-color:var(--accent); color:var(--accent); }
+
+  .timeline-pin-wrap{ position:relative; flex:1; height:100%; min-width:0; }
+  .timeline-viewport{
+    position:relative; width:100%; height:100%; overflow:hidden; display:flex; align-items:center;
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+  .timeline-track{
+    position:relative; display:flex; align-items:stretch;
+    height:420px; padding:0 60px; width:max-content; will-change:transform;
+  }
+  .timeline-axis{ position:absolute; left:0; right:0; top:50%; height:1px; background:var(--line); }
+  .timeline-item{ position:relative; width:270px; flex:0 0 270px; margin-right:50px; }
+  .timeline-item .logo{ position:absolute; left:0; width:100%; display:flex; align-items:center; gap:8px; font-family:var(--sans); font-weight:500; font-size:14px; color:var(--white); }
+  .timeline-item .logo .mark{ width:20px; height:20px; border-radius:5px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:9px; color:var(--gray); flex:0 0 20px; }
+  .timeline-item .logo img{ height:22px; width:auto; }
+  .timeline-item .role{ position:absolute; left:0; width:100%; font-family:var(--serif); font-weight:400; font-size:19px; line-height:1.25; color:var(--white); }
+  .timeline-item .role span{ display:block; font-family:var(--sans); font-weight:300; font-size:13px; color:var(--gray); margin-top:4px; }
+  .timeline-item .desc{ position:absolute; left:0; width:100%; font-size:12.5px; line-height:1.55; color:var(--gray-dim); font-weight:300; max-width:30ch; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+  .timeline-item .years{ position:absolute; left:0; width:100%; font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; color:var(--gray-dim); }
+  .timeline-item .stem{ position:absolute; left:0; width:1px; background:var(--line); }
+  .timeline-item .dot{ position:absolute; left:-3.5px; top:calc(50% - 3.5px); width:7px; height:7px; border-radius:50%; background:var(--bg); border:1px solid var(--accent); }
+
+  .timeline-item.pos-top .logo{ top:0; }
+  .timeline-item.pos-top .role{ top:46px; }
+  .timeline-item.pos-top .desc{ top: 132px; }
+  .timeline-item.pos-top .years{ top:calc(50% - 34px); }
+  .timeline-item.pos-top .stem{ top:calc(50% - 20px); height:20px; }
+
+  .timeline-item.pos-bottom .logo{ top:calc(50% + 20px); }
+  .timeline-item.pos-bottom .role{ top:calc(50% + 66px); }
+  .timeline-item.pos-bottom .desc{ top:calc(50% + 152px); }
+  .timeline-item.pos-bottom .years{ top:calc(50% + 196px); }
+  .timeline-item.pos-bottom .stem{ top:50%; height:20px; }
+
+  @media (max-width:900px){
+    .at-pin{ position:static; height:auto; overflow:visible; display:block; padding:60px 0; }
+    .at-grid{ flex-direction:column; align-items:flex-start; gap:80px; height:auto; padding:0 32px; }
+    .at-sidebar{ flex:none; padding:0; }
+    .timeline-pin-wrap{ position:relative; flex:none; width:calc(100% + 48px); height:auto; margin:0 -24px; }
+    .timeline-viewport{
+      width:100%; flex:none; height:auto; overflow:hidden;
+      position:sticky; top:0;
+    }
+    .timeline-track{ padding:0 16px; }
+    .timeline-item{ width:230px; flex:0 0 230px; margin-right:20px; }
+  }
+
+
+
+  /* ---------- cta ---------- */
+  .cta{ min-height:82vh; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; text-align:left; padding:160px 0 220px; border-top:1px solid var(--line); }
+  .cta-inner{ width:100%; padding:0 var(--edge-pad); display:flex; flex-direction:column; align-items:flex-start; }
+  .cta .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .cta .tagline{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:20px; }
+  .cta h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,5.8vw,4.4rem); line-height:1.2; }
+  .cta h2 .line{ display:block; }
+  .cta h2 .line + .line{ margin-top:.22em; }
+  .cta h2 .swash{ font-family:var(--swash); font-weight:400; font-size:0.9em; vertical-align:-.08em; line-height:0; display:inline-block; margin-left:.32em; }
+  .cta .buttons{ margin-top:48px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; justify-content:flex-start; }
+  .btn{ padding:15px 30px; border-radius:999px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; transition:all .3s; font-family:var(--sans); font-weight:300; }
+  .btn-primary{ background:var(--white); color:#0a0a0a; }
+  .btn-primary:hover{ background:var(--accent); color:#0a0a0a; }
+  .btn-ghost{ border:1px solid var(--line); color:var(--white); }
+  .btn-ghost:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn-text{ font-family:var(--sans); font-weight:300; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--white); transition:color .3s; }
+  .btn-text:hover{ color:var(--accent); }
+
+  footer{
+    position:relative; padding:30px var(--edge-pad) 40px; display:flex; justify-content:space-between; align-items:flex-end;
+    font-family:var(--mono); font-size:10.5px; color:var(--gray-dim);
+  }
+  footer > *{ position:relative; z-index:2; }
+  footer a:hover{ color:var(--accent); }
+  .up-link{ display:flex; flex-direction:column; align-items:center; gap:8px; font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray-dim); transition:color .3s; }
+  .up-link svg{ width:12px; height:22px; }
+  .up-link:hover{ color:var(--accent); }
+  @media (max-width:600px){ footer{ flex-direction:column; gap:20px; text-align:center; align-items:center; } }
+  @media (max-width:760px){ .cta-inner{ padding:0 32px; } footer{ padding:30px 32px 40px; } }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div id="grain"></div>
+<div id="reticleH"></div>
+<div id="reticleV"></div>
+<div id="reticle"></div>
+
+<div class="corner tl"><svg viewBox="0 0 34 34"><path d="M2 14V2H14" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
+<div class="corner tr"><svg viewBox="0 0 34 34"><path d="M32 14V2H20" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
+<div class="corner bl"><svg viewBox="0 0 34 34"><path d="M2 20V32H14" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
+<div class="corner br"><svg viewBox="0 0 34 34"><path d="M32 20V32H20" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
+
+<div class="brand-fixed"><span class="brand-name">NANA</span><span class="brand-sub">Product Design (UX)</span></div>
+
+<header>
+  <div class="scrub-group">
+    <span class="playicon" id="scrubPercent">0%</span>
+    <div class="scrubber"><div class="fill" id="scrubFill"></div><div class="dot" id="scrubDot"></div></div>
+  </div>
+  <a class="menu" href="#work" data-hover>Work</a>
+</header>
+
+<div id="moonBadge"><canvas id="moonBadgeCanvas"></canvas></div>
+
+<section class="moonScene" id="top">
+  <div class="pin">
+    <canvas id="moonCanvas"></canvas>
+
+    <div class="stage stageA">
+      <div class="hero-inner">
+        <h1>
+          <span class="line"><span style="white-space:nowrap"><span class="swash">Y</span>our</span> <span style="white-space:nowrap"><span class="title-accent">m</span>oonshot,</span></span>
+          <span class="line">made <span style="white-space:nowrap"><span class="title-accent">r</span>eal</span></span>
+        </h1>
+        <p class="hero-sub">I'm a <span class="role-highlight">Product Design Lead</span> with a decade of experience across UX, AI, and SaaS — turning ideas into intuitive products people love and that drive business growth.</p>
+      </div>
+    </div>
+
+    <div class="stage stageC">
+      <div class="big">
+        <span class="line"><span style="white-space:nowrap"><span class="swash">D</span>elivering</span></span>
+        <span class="line">your dreams</span>
+        <span class="line">with real teams</span>
+      </div>
+    </div>
+
+    <div class="scrollcue"><span>Scroll to explore</span><div class="line"></div></div>
+  </div>
+</section>
+
+<section class="trusted">
+  <div class="label reveal">Trusted by</div>
+  <div class="marquee reveal">
+    <div class="marquee-track">
+      <div class="marquee-group">
+        <img src="assets/logos/zaapi.svg" alt="Zaapi" loading="lazy"><img src="assets/logos/carenation.svg" alt="Carenation" loading="lazy"><img src="assets/logos/sevenpeaks.svg" alt="Seven Peaks" loading="lazy"><img src="assets/logos/scg.svg" alt="SCG" loading="lazy"><img src="assets/logos/cardx.png" alt="CardX" loading="lazy"><img src="assets/logos/scbx.png" alt="SCB X" loading="lazy"><img src="assets/logos/bluebik.svg" alt="Bluebik" loading="lazy"><img src="assets/logos/ais.svg" alt="AIS" loading="lazy"><img src="assets/logos/ttb.svg" alt="ttb" loading="lazy"><img src="assets/logos/sansiri.svg" alt="Sansiri" loading="lazy">
+      </div>
+      <div class="marquee-group" aria-hidden="true">
+        <img src="assets/logos/zaapi.svg" alt="" loading="lazy"><img src="assets/logos/carenation.svg" alt="" loading="lazy"><img src="assets/logos/sevenpeaks.svg" alt="" loading="lazy"><img src="assets/logos/scg.svg" alt="" loading="lazy"><img src="assets/logos/cardx.png" alt="" loading="lazy"><img src="assets/logos/scbx.png" alt="" loading="lazy"><img src="assets/logos/bluebik.svg" alt="" loading="lazy"><img src="assets/logos/ais.svg" alt="" loading="lazy"><img src="assets/logos/ttb.svg" alt="" loading="lazy"><img src="assets/logos/sansiri.svg" alt="" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="work" id="work">
+  <div class="section-head reveal">
+    <div class="kicker">01 — Selected Work</div>
+    <h2>Three ideas, made real</h2>
+  </div>
+
+  <div class="work-list">
+    <div class="work-row reveal" data-project="1">
+      <div class="idx">01</div>
+      <div class="titles">
+        <h3>Scaling a SaaS from scratch</h3>
+        <p>From Thai-only product to an international market, rebuilt around the messages people actually needed to send.</p>
+        <div class="tags"><span>+220% ARR</span><span>+650% MESSAGES SENT</span><span>+40% NEW SUBS</span></div>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+    </div>
+
+    <div class="work-row reveal" data-project="2">
+      <div class="idx">02</div>
+      <div class="titles">
+        <h3>Conversational UX &amp; AI agent</h3>
+        <p>Designed a no-code AI chat agent and conversational UX that uses customer context before answering, cites sources, follows policy, stays human-controlled, and speaks in the brand voice — delivering faster resolutions, higher first-contact resolution, and scaled support without new hires.</p>
+        <div class="tags"><span>+750% AI FEATURE USAGE</span><span>2× MESSAGES SENT</span></div>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+    </div>
+
+    <div class="work-row reveal" data-project="3">
+      <div class="idx">03</div>
+      <div class="titles">
+        <h3>Fintech UX, reimagined</h3>
+        <p>Digitizing loan registration and management for a market used to paper trails and long waits.</p>
+        <div class="tags"><span>+117% ONLINE APPLICATIONS</span></div>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="about-cv" id="aboutCv">
+ <div class="at-pin">
+  <div class="at-grid">
+    <div class="at-sidebar reveal">
+      <div class="kicker">02 — About</div>
+      <h2>about<span class="name">Nana</span></h2>
+      <p>I turn user insight and data into products that don't just work — but perform, scale, and deliver real business results.</p>
+      <div class="hint">
+        <svg viewBox="0 0 26 10" fill="none"><path d="M0 5h24M18 1l6 4-6 4" stroke="currentColor" stroke-width="1"/></svg>
+        Keep scrolling
+        <button type="button" class="timeline-skip" id="timelineSkip">Skip</button>
+      </div>
+    </div>
+
+    <div class="timeline-pin-wrap" id="timelinePinWrap">
+    <div class="timeline-viewport">
+      <div class="timeline-track" id="timelineTrack">
+        <div class="timeline-axis"></div>
+
+        <div class="timeline-item pos-top">
+          <div class="stem"></div><div class="dot"></div>
+          <div class="logo"><img src="assets/logos/zaapi.svg" alt="Zaapi"></div>
+          <div class="role">Product Design Lead<span>@ Zaapi</span></div>
+          <div class="desc">Scaling Zaapi from Thai-only SaaS to competing in the international market with 3× revenue in ARR.</div>
+          <div class="years">2023 – present</div>
+        </div>
+
+        <div class="timeline-item pos-bottom">
+          <div class="stem"></div><div class="dot"></div>
+          <div class="logo"><img src="assets/logos/effortless-design.png" alt="Effortless Design"></div>
+          <div class="years">2023 – 2026</div>
+          <div class="role">Founder &amp; Principal Design Consultant<span>@ Effortless Design</span></div>
+          <div class="desc">Product design and UX practitioner.</div>
+        </div>
+
+        <div class="timeline-item pos-top">
+          <div class="stem"></div><div class="dot"></div>
+          <div class="logo"><img src="assets/logos/bluebik.svg" alt="Bluebik"></div>
+          <div class="role">Lead Experience Designer<span>@ Bluebik</span></div>
+          <div class="desc">Product design and UX practitioner.</div>
+          <div class="years">2023 – present</div>
+        </div>
+
+        <div class="timeline-item pos-bottom">
+          <div class="stem"></div><div class="dot"></div>
+          <div class="years">2023 – present</div>
+          <div class="role">UX/UI Designer<span>@ Morphosis (part of Seven Peaks)</span></div>
+          <div class="desc">Product design and UX practitioner.</div>
+          <div class="logo"><img src="assets/logos/sevenpeaks.svg" alt="Seven Peaks"></div>
+        </div>
+
+        <div class="timeline-item pos-top">
+          <div class="stem"></div><div class="dot"></div>
+          <div class="logo"><img src="assets/logos/ais.svg" alt="AIS"></div>
+          <div class="role">UX/UI Designer<span>@ AIS</span></div>
+          <div class="desc">Product design and UX practitioner.</div>
+          <div class="years">2023 – present</div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="cta-inner">
+    <div class="kicker reveal">03 — Contact</div>
+    <div class="tagline reveal">Open to full-time opportunities and side projects</div>
+    <h2 class="reveal">
+      <span class="line">You made it this <span style="white-space:nowrap"><span class="swash">f</span>ar</span></span>
+      <span class="line"><span style="white-space:nowrap"><span class="swash">W</span>e</span> should probably talk</span>
+    </h2>
+    <div class="buttons reveal">
+      <a href="https://www.linkedin.com/in/nanapas/" target="_blank" rel="noopener" class="btn btn-ghost" data-hover>Connect on LinkedIn</a>
+      <a href="https://www.behance.net/nanapas" target="_blank" rel="noopener" class="btn-text" data-hover>Behance</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>©2025 NANAUX.SPACE — Product Design (UX/UI) Practitioner. All rights reserved.</span>
+  <a href="#top" class="up-link" data-hover>
+    <svg viewBox="0 0 12 22" fill="none"><path d="M6 21V1M1 6l5-5 5 5" stroke="currentColor" stroke-width="1"/></svg>
+    Up
+  </a>
+</footer>
+
+<script>
+/* ---------------- starfield background (fixed, spans the whole site, same everywhere) ---------------- */
+(function(){
+  const canvas = document.getElementById('starfield');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let stars = [];
+  let w=0, h=0, dpr=1;
+
+  function seed(){
+    const count = Math.round((w*h)/9000);
+    stars = Array.from({ length: count }, ()=>({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*0.55+0.2,
+      baseOpacity: Math.random()*0.25+0.12,
+      phase: Math.random()*Math.PI*2,
+      speed: Math.random()*0.4+0.15,
+      bonus: false
+    }));
+    // extra stars that only fade in during the About -> Contact finale boost, so the
+    // sky gets visibly denser as well as brighter heading into the ending
+    const bonusCount = Math.round((w*h)/7000);
+    for(let i=0;i<bonusCount;i++){
+      stars.push({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        r: Math.random()*0.55+0.2,
+        baseOpacity: Math.random()*0.3+0.15,
+        phase: Math.random()*Math.PI*2,
+        speed: Math.random()*0.4+0.15,
+        bonus: true,
+        threshold: Math.random()
+      });
+    }
+  }
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio||1, 2);
+    w = window.innerWidth; h = window.innerHeight;
+    canvas.width = w*dpr; canvas.height = h*dpr;
+    canvas.style.width = w+'px'; canvas.style.height = h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    seed();
+  }
+
+  // ramps 0 -> 1 as the viewer finishes About/CV and approaches Contact
+  const contactSection = document.getElementById('contact');
+  let finaleBoost = 0;
+  function updateFinaleBoost(){
+    if(!contactSection) return;
+    const rect = contactSection.getBoundingClientRect();
+    const startAt = window.innerHeight*1.3;
+    const endAt = window.innerHeight*0.3;
+    const p = (startAt - rect.top) / (startAt - endAt);
+    finaleBoost = Math.max(0, Math.min(1, p));
+  }
+  // extra boost that only applies right at the footer itself — ramps up fast (short
+  // scroll distance) and stacks on top of the finale boost above, which is untouched
+  const footerEl = document.querySelector('footer');
+  let footerBoost = 0;
+  function updateFooterBoost(){
+    if(!footerEl) return;
+    const rect = footerEl.getBoundingClientRect();
+    const startAt = window.innerHeight*0.55;
+    const endAt = window.innerHeight*0.05;
+    const p = (startAt - rect.top) / (startAt - endAt);
+    footerBoost = Math.max(0, Math.min(1, p));
+  }
+
+  let boostTicking = false;
+  addEventListener('scroll', ()=>{
+    if(boostTicking) return;
+    boostTicking = true;
+    requestAnimationFrame(()=>{ boostTicking = false; updateFinaleBoost(); updateFooterBoost(); });
+  }, { passive:true });
+  updateFinaleBoost();
+  updateFooterBoost();
+
+  let t = 0;
+  function draw(){
+    t += 0.016;
+    ctx.clearRect(0,0,w,h);
+    const brightBoost = 1 + finaleBoost*0.35 + footerBoost*0.55;
+    const revealBoost = finaleBoost + footerBoost; // can exceed 1 right at the footer, revealing every bonus star
+    for(const s of stars){
+      const reveal = s.bonus ? Math.max(0, Math.min(1, (revealBoost - s.threshold)/0.3)) : 1;
+      if(reveal <= 0) continue;
+      const twinkle = 0.6+0.4*Math.sin(t*s.speed*2 + s.phase);
+      const o = s.baseOpacity * twinkle * brightBoost * reveal;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(243,242,238,${o.toFixed(3)})`;
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+    }
+    if(!reduceMotion) requestAnimationFrame(draw);
+  }
+
+  addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
+/* ---------------- reticle cursor ---------------- */
+const reticle = document.getElementById('reticle');
+const reticleH = document.getElementById('reticleH');
+const reticleV = document.getElementById('reticleV');
+addEventListener('mousemove', e=>{
+  reticle.style.left=e.clientX+'px'; reticle.style.top=e.clientY+'px';
+  reticleH.style.top=e.clientY+'px';
+  reticleV.style.left=e.clientX+'px';
+});
+document.querySelectorAll('[data-hover], a, .work-row').forEach(el=>{
+  el.addEventListener('mouseenter', ()=>document.body.classList.add('link-hover'));
+  el.addEventListener('mouseleave', ()=>document.body.classList.remove('link-hover'));
+});
+
+/* ---------------- back to top ---------------- */
+document.querySelector('.up-link').addEventListener('click', e=>{
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ---------------- scroll reveal ---------------- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in'); });
+},{ threshold:0.15 });
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* main scroll-scrubbed moon (position/size/scrub state only — actual 3D rendering
+   is handled by the Three.js module script near the end of the document, which
+   reads this shared state every frame via window.moonState) */
+const scene = document.querySelector('.moonScene');
+const pin = document.querySelector('.pin');
+const moonCanvasEl = document.getElementById('moonCanvas');
+const stageA = document.querySelector('.stageA');
+const stageC = document.querySelector('.stageC');
+const scrubFill = document.getElementById('scrubFill');
+const scrubDot = document.getElementById('scrubDot');
+const scrubPercent = document.getElementById('scrubPercent');
+const moonBadge = document.getElementById('moonBadge');
+
+window.moonState = {
+  W:0, H:0, heroCx:0, heroCy:0, heroR:0, badgeVisible:false,
+  phaseAngle: 2.4, rotationOffset: 0 // phaseAngle starts on a waxing crescent rather than pitch-dark new moon
+};
+
+function resizeMoon(){
+  window.moonState.W = pin.offsetWidth;
+  window.moonState.H = pin.offsetHeight;
+}
+resizeMoon();
+addEventListener('resize', resizeMoon);
+
+function ease(t){ return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+
+let ticking=false;
+function onScroll(){
+  if(!ticking){
+    requestAnimationFrame(updateScrollState);
+    ticking=true;
+  }
+}
+
+// the hero moon's rotation only advances in response to actual scrolling — not on
+// a timer — so it sits still whenever the page isn't moving
+let lastScrollY = window.scrollY;
+const ROTATE_PER_PX = 0.0009;
+function updateMoonMotionFromScroll(){
+  const y = window.scrollY;
+  const dy = Math.abs(y - lastScrollY);
+  lastScrollY = y;
+  window.moonState.rotationOffset += dy * ROTATE_PER_PX;
+  // phase (crescent/new/full) is handled separately below, keyed to the hero's own
+  // scroll progress rather than raw scroll distance — see updateScrollState
+}
+
+function updateScrollState(){
+  ticking=false;
+  updateMoonMotionFromScroll();
+  const rect = scene.getBoundingClientRect();
+  const total = rect.height - window.innerHeight;
+  let progress = total>0 ? (-rect.top)/total : 0;
+  progress = Math.max(0, Math.min(1, progress));
+
+  // page-wide scrub bar reflects total document progress
+  const doc = document.documentElement;
+  const pageProg = (doc.scrollTop || window.scrollY) / (doc.scrollHeight - window.innerHeight);
+  scrubFill.style.width = (pageProg*100)+'%';
+  scrubDot.style.left = (pageProg*100)+'%';
+  scrubPercent.textContent = Math.round(Math.max(0, Math.min(1, pageProg))*100)+'%';
+
+  // moon path: huge top-right (overlapping the headline) -> zooms to center as the
+  // "delivering your dreams" line appears -> HOLDS still at center for the rest of
+  // the hero, staying fully visible while the page keeps scrolling normally
+  // underneath it (it leaves naturally once the pinned section itself scrolls away,
+  // rather than fading out)
+  const st = window.moonState;
+  const dim = Math.min(st.W, st.H);
+  const KF = [
+    { at:0,    cx: st.W*0.82, cy: st.H*0.30,  r: dim*0.42 }, // top-right, very big
+    { at:0.45, cx: st.W*0.5,  cy: st.H*0.5,   r: dim*0.68 }  // arrives centered, zoomed in for "delivering your dreams", then holds here for good
+  ];
+  const posProgress = Math.min(progress, KF[1].at);
+  let seg = KF[0], next = KF[1];
+  const segT = (next.at - seg.at) > 0 ? (posProgress - seg.at)/(next.at - seg.at) : 0;
+  const p = ease(Math.max(0, Math.min(1, segT)));
+  st.heroCx = seg.cx + (next.cx-seg.cx)*p;
+  st.heroCy = seg.cy + (next.cy-seg.cy)*p;
+  st.heroR  = seg.r  + (next.r -seg.r )*p;
+
+  // moon phase: opens as a crescent, becomes a full moon exactly as it arrives at
+  // center (same progress curve as the position above), then holds at full moon
+  const CRESCENT_PHASE = 1.5, FULL_PHASE = Math.PI;
+  st.phaseAngle = CRESCENT_PHASE + (FULL_PHASE - CRESCENT_PHASE)*p;
+
+  // stage opacity: "delivering your dreams" fades in as the moon arrives at center,
+  // then both simply stay put and fully visible for the rest of the hero
+  const a = fadeOut(progress, 0.06, 0.30);
+  const c = fadeIn(progress, 0.32, 0.45);
+  stageA.style.opacity = a;
+  stageC.style.opacity = c;
+  moonCanvasEl.style.opacity = 1;
+  // note: the small corner/footer badge's visibility is owned entirely by the
+  // "moon growth" script below — it stays hidden through Trusted/About/Work/CV/CTA
+  // and only appears as the footer starts approaching, rather than reappearing
+  // right after the hero.
+}
+function fadeOut(v, start, end){
+  if(v<=start) return 1;
+  if(v>=end) return 0;
+  return 1-ease((v-start)/(end-start));
+}
+function fadeIn(v, start, end){
+  if(v<=start) return 0;
+  if(v>=end) return 1;
+  return ease((v-start)/(end-start));
+}
+addEventListener('scroll', onScroll, { passive:true });
+updateScrollState();
+
+/* ---------------- window-chrome project preview ---------------- */
+const win = document.createElement('div');
+win.className = 'winPreview';
+win.innerHTML = `
+  <div class="titlebar">
+    <span class="fname">PROJECT_01.EXE</span>
+    <span class="dots"><span></span><span></span><span></span></span>
+  </div>
+  <div class="stage">
+    <svg class="mesh" viewBox="0 0 320 200"></svg>
+    <canvas class="proj-video"></canvas>
+    <img class="proj-image" alt="">
+    <video class="proj-video-src" muted loop playsinline preload="none" style="display:none">
+      <source src="assets/videos/scale-saas-preview-v2.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="footer"><span><span class="dot"></span><span class="ftext">RENDER COMPLETE</span></span><span class="fcoord">00:00:12</span></div>
+`;
+document.body.appendChild(win);
+
+const meshSVG = win.querySelector('.mesh');
+const projVideo = win.querySelector('.proj-video');
+const projImage = win.querySelector('.proj-image');
+const projVideoSrc = win.querySelector('.proj-video-src');
+const projVideoCtx = projVideo.getContext('2d');
+projVideo.width = 320;
+projVideo.height = 200;
+
+let videoDrawRAF = null;
+function drawVideoFrame(){
+  const vw = projVideoSrc.videoWidth, vh = projVideoSrc.videoHeight;
+  if(vw && vh){
+    const cw = projVideo.width, ch = projVideo.height;
+    const scale = Math.max(cw/vw, ch/vh);
+    const sw = cw/scale, sh = ch/scale;
+    const sx = (vw-sw)/2, sy = (vh-sh)/2;
+    projVideoCtx.drawImage(projVideoSrc, sx, sy, sw, sh, 0, 0, cw, ch);
+  }
+  videoDrawRAF = requestAnimationFrame(drawVideoFrame);
+}
+
+function buildMesh(){
+  let s='';
+  for(let x=0;x<=320;x+=20){ s+=`<line x1="${x}" y1="0" x2="${x}" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="0.6"/>`; }
+  for(let y=0;y<=200;y+=20){ s+=`<line x1="0" y1="${y}" x2="320" y2="${y}" stroke="rgba(255,255,255,0.18)" stroke-width="0.6"/>`; }
+  meshSVG.innerHTML = s;
+}
+buildMesh();
+
+const projectMeta = {
+  1: { name:'PROJECT_01.EXE', stat:'SCALE_SAAS.DAT', preview:'assets/videos/scale-saas-preview-v2.mp4', url:'https://uxbynana.com/impact/zaapi-growth' },
+  2: { name:'PROJECT_02.EXE', stat:'AI_AGENT_UX.DAT', preview:'assets/videos/ai-responding-preview.mp4', url:'https://uxbynana.com/impact/zaapi-conversational-ux-ai' },
+  3: { name:'PROJECT_03.EXE', stat:'FINTECH_UX.DAT', image:'assets/images/fintech-ux-ttb.jpg', url:'https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design' }
+};
+
+document.querySelectorAll('.work-row').forEach(row=>{
+  const id = row.getAttribute('data-project');
+  row.addEventListener('mouseenter', ()=>{
+    const meta = projectMeta[id];
+    win.querySelector('.fname').textContent = meta.name;
+    win.querySelector('.fcoord').textContent = meta.stat;
+    win.classList.add('active');
+
+    if(meta.preview){
+      projVideo.style.display = 'block';
+      if(projVideoSrc.getAttribute('data-current') !== meta.preview){
+        projVideoSrc.src = meta.preview;
+        projVideoSrc.setAttribute('data-current', meta.preview);
+        projVideoSrc.load();
+      }
+      projVideoSrc.currentTime = 0;
+      projVideoSrc.play().catch(()=>{});
+      if(!videoDrawRAF) drawVideoFrame();
+    } else {
+      projVideoSrc.pause();
+      if(videoDrawRAF){ cancelAnimationFrame(videoDrawRAF); videoDrawRAF = null; }
+      projVideo.style.display = 'none';
+    }
+
+    if(meta.image){
+      if(projImage.getAttribute('src') !== meta.image) projImage.src = meta.image;
+      projImage.style.display = 'block';
+    } else {
+      projImage.style.display = 'none';
+    }
+
+    meshSVG.style.display = (meta.preview || meta.image) ? 'none' : '';
+  });
+  row.addEventListener('mousemove', e=>{
+    const w = win.offsetWidth || 320;
+    const h = win.offsetHeight || 260;
+    win.style.left = (e.clientX - w/2)+'px';
+    win.style.top = (e.clientY - 60 - h*0.55)+'px';
+  });
+  row.addEventListener('mouseleave', ()=>{
+    win.classList.remove('active');
+    projVideoSrc.pause();
+    if(videoDrawRAF){ cancelAnimationFrame(videoDrawRAF); videoDrawRAF = null; }
+  });
+  const meta = projectMeta[id];
+  if(meta.url){
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', ()=>{ window.open(meta.url, '_blank', 'noopener'); });
+  }
+});
+
+/* ---------------- moon growth: the badge reappears slowly and subtly, only once
+   the viewer is genuinely near the bottom of the page — not tied to any specific
+   section, so it stays fully gone through the hero/Trusted/About/Work/CV/CTA ---------------- */
+(function(){
+  const restSize = 46;
+  let maxSize = 0;
+  // 100% of screen width, capped at 1920px
+  function computeMaxSize(){ maxSize = Math.min(window.innerWidth, 1920); }
+  computeMaxSize();
+  addEventListener('resize', computeMaxSize);
+
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+
+  function update(){
+    ticking = false;
+    const doc = document.documentElement;
+    // distance from the true bottom of the whole document, not any one section —
+    // stays at 0 all the way until you're almost exactly at the end, only climbing
+    // within the very last sliver of scroll
+    const distanceFromBottom = doc.scrollHeight - (doc.scrollTop + window.innerHeight);
+    const startAt = window.innerHeight*0.9;
+    let progress = (startAt - distanceFromBottom) / startAt;
+    progress = Math.max(0, Math.min(1, progress));
+    const eased = ease(progress);
+
+    // stays completely invisible (opacity exactly 0, not just faint) for most of the
+    // approach — only fades in during the final stretch, by which point it's already
+    // grown large, so there's never a small semi-transparent "mini moon" lingering
+    // in the corner while scrolling past this range in either direction
+    const opacity = progress < 0.7 ? 0 : ease((progress-0.7)/0.3);
+    moonBadge.style.opacity = opacity;
+    window.moonState.badgeVisible = opacity > 0.02;
+
+    const size = restSize + (maxSize-restSize)*eased;
+    moonBadge.style.width = size+'px';
+    moonBadge.style.height = size+'px';
+
+    // slides from the small right-anchored badge to horizontally centered
+    const restCenterX = window.innerWidth - 26 - restSize/2;
+    const bigCenterX = window.innerWidth/2;
+    const centerX = restCenterX + (bigCenterX-restCenterX)*eased;
+    moonBadge.style.left = (centerX - size/2)+'px';
+
+    // sinks from fully visible down to 35% peeking above the bottom edge (65% hidden),
+    // like a big moon rising over the horizon
+    const restBottom = 26;
+    const bigBottom = -(size*0.65);
+    moonBadge.style.bottom = (restBottom + (bigBottom-restBottom)*eased)+'px';
+
+    document.body.classList.toggle('footer-arrived', progress > 0.05);
+  }
+
+  addEventListener('scroll', onScroll, { passive:true });
+  update();
+})();
+
+/* ---------------- CV timeline: whole-section scroll-jacked horizontal pin ---------------- */
+(function(){
+  const section = document.getElementById('aboutCv');
+  const track = document.getElementById('timelineTrack');
+  const viewport = document.querySelector('.timeline-viewport');
+  const pinWrap = document.getElementById('timelinePinWrap');
+  if(!section || !track || !viewport || !pinWrap) return;
+
+  const mq = matchMedia('(max-width:900px)');
+
+  let distance = 0;
+  let mobileTop = 0;
+  function recalc(){
+    distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
+    if(mq.matches){
+      section.style.height = '';
+      mobileTop = Math.max(0, (window.innerHeight - viewport.offsetHeight) / 2);
+      viewport.style.top = mobileTop + 'px';
+      pinWrap.style.height = `calc(${viewport.offsetHeight}px + ${distance}px)`;
+    } else {
+      pinWrap.style.height = '';
+      viewport.style.top = '';
+      section.style.height = `calc(100vh + ${distance}px)`;
+    }
+  }
+  recalc();
+  addEventListener('resize', recalc);
+
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      ticking = false;
+      const isMobile = mq.matches;
+      const target = isMobile ? pinWrap : section;
+      const top = isMobile ? mobileTop : 0;
+      const rect = target.getBoundingClientRect();
+      let progress = distance>0 ? (top - rect.top)/distance : 0;
+      progress = Math.max(0, Math.min(1, progress));
+      track.style.transform = `translateX(${-progress*distance}px)`;
+    });
+  }
+  addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  const skipBtn = document.getElementById('timelineSkip');
+  const contactSection = document.getElementById('contact');
+  if(skipBtn && contactSection){
+    skipBtn.addEventListener('click', ()=>{
+      const target = contactSection.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: target, behavior:'smooth' });
+    });
+  }
+})();
+</script>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+/* ---------------- real textured 3D moon (Three.js + real photographed color/normal/roughness maps) ----------------
+   Note: the source moon.fbx ships its own UV atlas that packs multiple bakes onto one
+   sheet, leaving large black padding regions — mapping that atlas onto a rotating
+   sphere put those black regions in view. Rather than reverse-engineer that atlas's
+   layout, the textures below are a cropped, verified-clean band of the real photographed
+   maps (see assets/moon/*-clean.*), applied to a plain sphere with standard UVs. */
+import * as THREE from 'three';
+
+const moonCanvasEl = document.getElementById('moonCanvas');
+const badgeCanvasEl = document.getElementById('moonBadgeCanvas');
+const moonBadgeEl = document.getElementById('moonBadge');
+const pinEl = document.querySelector('.pin');
+
+const textureLoader = new THREE.TextureLoader();
+const colorMap = textureLoader.load('assets/moon/moon-color-clean.jpg');
+colorMap.colorSpace = THREE.SRGBColorSpace;
+colorMap.wrapS = THREE.RepeatWrapping;
+const normalMap = textureLoader.load('assets/moon/moon-normal-clean.png');
+normalMap.wrapS = THREE.RepeatWrapping;
+const roughMap = textureLoader.load('assets/moon/moon-rough-clean.jpg');
+roughMap.wrapS = THREE.RepeatWrapping;
+
+function makeRig(canvasEl){
+  const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, alpha:true, antialias:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(0,1,0,1,1,2000);
+  camera.position.z = 500;
+
+  const light = new THREE.DirectionalLight(0xfff4e6, 2.4);
+  scene.add(light);
+  scene.add(light.target);
+  scene.add(new THREE.AmbientLight(0x445566, 0.4));
+
+  const group = new THREE.Group(); // holds the normalized mesh once loaded
+  scene.add(group);
+
+  return { renderer, scene, camera, light, group, mesh:null };
+}
+
+const heroRig = makeRig(moonCanvasEl);
+const badgeRig = makeRig(badgeCanvasEl);
+
+const moonMaterial = new THREE.MeshStandardMaterial({
+  map: colorMap, normalMap, roughnessMap: roughMap, metalness:0, roughness:1
+});
+const moonGeometry = new THREE.SphereGeometry(1, 64, 64);
+
+[heroRig, badgeRig].forEach(rig=>{
+  const mesh = new THREE.Mesh(moonGeometry, moonMaterial);
+  rig.group.add(mesh);
+  rig.mesh = mesh;
+});
+
+function sizeRig(rig, w, h){
+  if(w<=0 || h<=0) return;
+  rig.renderer.setSize(w, h, false);
+  rig.camera.left = 0; rig.camera.right = w;
+  rig.camera.top = 0; rig.camera.bottom = h;
+  rig.camera.updateProjectionMatrix();
+}
+
+function positionMoon(rig, cx, cy, r, phase){
+  if(!rig.mesh) return;
+  rig.group.position.set(cx, cy, 0);
+  rig.group.scale.setScalar(r);
+  // light direction sweeps a full lunar cycle: phase 0 = new moon, PI = full moon
+  const lx = Math.sin(phase), ly = 0.3, lz = -Math.cos(phase);
+  rig.light.position.set(cx + lx*1000, cy + ly*1000, lz*1000);
+  rig.light.target.position.set(cx, cy, 0);
+}
+
+// hero canvas tracks the pinned hero section's actual size
+function resizeHero(){
+  sizeRig(heroRig, pinEl.offsetWidth, pinEl.offsetHeight);
+}
+addEventListener('resize', resizeHero);
+resizeHero();
+
+// badge canvas tracks its own element's live size (it grows toward the footer)
+new ResizeObserver(entries=>{
+  const { width, height } = entries[0].contentRect;
+  sizeRig(badgeRig, width, height);
+}).observe(moonBadgeEl);
+sizeRig(badgeRig, moonBadgeEl.clientWidth, moonBadgeEl.clientHeight);
+
+// the footer/badge moon keeps its own always-on continuous rotation (the original
+// rhythm), independent of scroll — only the hero moon is scroll-driven now
+const BADGE_ROTATE_SPEED = 0.0016;
+const BADGE_PHASE_SPEED = 0.0026;
+let badgeRotation = 0;
+let badgePhase = 2.4;
+
+function renderLoop(){
+  const st = window.moonState;
+  // hero's rotationOffset/phaseAngle are advanced only by actual scroll input (see
+  // updateMoonMotionFromScroll in the classic script) — sits still when idle
+  positionMoon(heroRig, st.heroCx, st.heroCy, st.heroR, st.phaseAngle);
+  if(heroRig.mesh) heroRig.mesh.rotation.y = st.rotationOffset;
+  heroRig.renderer.render(heroRig.scene, heroRig.camera);
+
+  badgeRotation += BADGE_ROTATE_SPEED;
+  badgePhase = (badgePhase + BADGE_PHASE_SPEED) % (Math.PI*2);
+
+  // always rendered regardless of st.badgeVisible — visibility is controlled purely by
+  // the badge element's own CSS opacity, so a stale/unset flag here can never leave the
+  // canvas permanently blank
+  {
+    const bw = badgeCanvasEl.clientWidth || moonBadgeEl.clientWidth;
+    positionMoon(badgeRig, bw/2, bw/2, bw*0.3667, badgePhase);
+    if(badgeRig.mesh) badgeRig.mesh.rotation.y = badgeRotation;
+    badgeRig.renderer.render(badgeRig.scene, badgeRig.camera);
+  }
+  requestAnimationFrame(renderLoop);
+}
+requestAnimationFrame(renderLoop);
+</script>
+</body>
+</html>
