@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversational UX &amp; AI Agent — Nana, Product Design (UX/UI)</title>
+<meta name="description" content="Designing a no-code AI chat agent that uses customer context, cites sources, follows policy, and stays human-controlled — +750% AI feature usage. A product design case study by Nana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=The+Impressionist&family=Roboto:wght@100;300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070707;
+    --white:#f3f2ee;
+    --gray:#8e8c86;
+    --gray-dim:#5c5a55;
+    --line:rgba(255,255,255,0.14);
+    --accent:#FF2E3F;
+    --serif:'Forum', serif;
+    --swash:'The Impressionist', cursive;
+    --sans:'Helvetica Neue', 'Roboto', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+    --edge-pad: max(56px, calc((100vw - 1280px)/2 + 56px));
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--white); font-family:var(--sans); font-weight:300;
+    overflow-x:hidden; cursor:none;
+  }
+  ::selection{ background:var(--accent); color:#0a0a0a; }
+  a{ color:inherit; text-decoration:none; }
+  section{ position:relative; z-index:2; }
+
+  #grain{
+    position:fixed; inset:0; z-index:85; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  #starfield{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+  /* ---------- reticle cursor ---------- */
+  #reticleH, #reticleV{
+    position:fixed; z-index:9998; pointer-events:none;
+    background:rgba(255,90,46,0.3); opacity:0; transition:opacity .2s;
+  }
+  #reticleH{ left:0; width:100vw; height:1px; }
+  #reticleV{ top:0; height:100vh; width:1px; }
+  body.link-hover #reticleH, body.link-hover #reticleV{ opacity:1; }
+  #reticle{
+    position:fixed; top:0; left:0; width:34px; height:34px; z-index:9999;
+    pointer-events:none; transform:translate(-50%,-50%);
+    border:.5px solid rgba(243,242,238,0.55); border-radius:50%;
+    transition:width .2s,height .2s,border-color .2s,border-width .2s;
+  }
+  #reticle::before,#reticle::after{ content:''; position:absolute; background:rgba(243,242,238,0.75); }
+  #reticle::before{ left:50%; top:50%; width:9px; height:.5px; transform:translate(-50%,-50%); }
+  #reticle::after{ left:50%; top:50%; width:.5px; height:9px; transform:translate(-50%,-50%); }
+  body.link-hover #reticle{ width:52px; height:52px; border-width:1px; border-color:var(--accent); }
+  body.link-hover #reticle::before,body.link-hover #reticle::after{ background:var(--accent); height:1px; width:1px; }
+  body.link-hover #reticle::before{ width:9px; height:1px; }
+  body.link-hover #reticle::after{ width:1px; height:9px; }
+  @media (hover:none), (pointer:coarse){ body{ cursor:auto; } #reticle,#reticleH,#reticleV{ display:none; } }
+
+  /* ---------- HUD chrome ---------- */
+  .corner{ position:fixed; z-index:70; width:34px; height:34px; pointer-events:none; opacity:.55; }
+  .corner svg{ width:100%; height:100%; }
+  .corner.tl{ top:18px; left:18px; }
+  .corner.tr{ top:18px; right:18px; }
+  .corner.bl{ bottom:18px; left:18px; }
+  .corner.br{ bottom:18px; right:18px; }
+  @media (max-width:760px){
+    .corner.tl{ top:12px; left:12px; } .corner.tr{ top:12px; right:12px; }
+    .corner.bl{ bottom:12px; left:12px; } .corner.br{ bottom:12px; right:12px; }
+  }
+
+  .brand-fixed{
+    position:fixed; top:32px; left:var(--edge-pad); z-index:61; color:var(--white);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .brand-fixed .brand-name{ font-family:var(--sans); font-weight:300; font-size:13px; letter-spacing:.1em; text-transform:uppercase; display:block; line-height:1; }
+  .brand-fixed .brand-sub{ display:block; font-family:var(--sans); font-weight:300; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); margin-top:3px; }
+  @media (max-width:760px){ .brand-fixed{ top:31px; left:32px; } }
+
+  body.nav-hidden .brand-fixed{ opacity:0; transform:translateY(-16px); pointer-events:none; }
+
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    display:flex; align-items:center; justify-content:flex-end; gap:18px;
+    padding:32px var(--edge-pad) 22px calc(var(--edge-pad) + 149px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  body.nav-hidden header{ opacity:0; transform:translateY(-16px); pointer-events:none; }
+  header .menu{
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray);
+    border:1px solid var(--line); border-radius:999px; padding:8px 18px; transition:border-color .3s,color .3s;
+    display:flex; align-items:center; gap:8px;
+  }
+  header .menu svg{ width:11px; height:11px; }
+  header .menu:hover{ border-color:var(--accent); color:var(--accent); }
+  @media (max-width:760px){ header{ padding:28px 32px 19px 173px; } }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- hero ---------- */
+  .cs-hero{ padding:180px var(--edge-pad) 70px; border-bottom:1px solid var(--line); }
+  .cs-hero .logo-badge{ height:34px; width:auto; margin-bottom:24px; }
+  .cs-hero .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
+  .cs-hero h1{ font-family:var(--serif); font-weight:400; line-height:1.08; font-size:clamp(2.4rem,7vw,5.2rem); max-width:16ch; }
+  .cs-hero .lead{ margin-top:28px; font-size:clamp(1rem,1.8vw,1.25rem); line-height:1.65; color:var(--gray); max-width:62ch; font-weight:300; }
+  .cs-hero .lead strong{ color:var(--white); font-weight:400; }
+
+  .cs-meta{
+    padding:44px var(--edge-pad); border-bottom:1px solid var(--line);
+    display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+  }
+  .cs-meta .item .lbl{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:10px; }
+  .cs-meta .item .val{ font-family:var(--sans); font-weight:400; font-size:15px; color:var(--white); line-height:1.4; }
+  .cs-meta .item .val.accent{ color:var(--accent); }
+
+  /* ---------- stats row ---------- */
+  .cs-stats{
+    padding:56px var(--edge-pad); border-bottom:1px solid var(--line);
+    display:grid; grid-template-columns:repeat(4,1fr); gap:32px;
+  }
+  .cs-stats .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,4.4vw,3.2rem); color:var(--white); line-height:1; }
+  .cs-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); max-width:26ch; font-weight:300; }
+  @media (max-width:760px){ .cs-stats{ grid-template-columns:1fr 1fr; row-gap:40px; } }
+  @media (max-width:760px){ .cs-meta{ grid-template-columns:1fr 1fr; row-gap:32px; } }
+
+  /* ---------- content blocks ---------- */
+  .cs-block{ padding:90px var(--edge-pad); border-bottom:1px solid var(--line); }
+  .cs-block .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+  .cs-block h2{ font-family:var(--serif); font-weight:400; font-size:clamp(1.6rem,3.6vw,2.5rem); max-width:18ch; }
+  .cs-block .body-text{ margin-top:22px; font-size:clamp(.98rem,1.5vw,1.1rem); line-height:1.75; color:var(--gray); max-width:66ch; font-weight:300; }
+  .cs-block .body-text strong{ color:var(--white); font-weight:400; }
+  .cs-block .body-text + .body-text{ margin-top:16px; }
+  .cs-block .body-list{ margin-top:22px; max-width:66ch; list-style:none; }
+  .cs-block .body-list li{ font-size:clamp(.95rem,1.4vw,1.05rem); line-height:1.7; color:var(--gray); font-weight:300; padding-left:22px; position:relative; margin-top:10px; }
+  .cs-block .body-list li::before{ content:''; position:absolute; left:0; top:.6em; width:6px; height:1px; background:var(--accent); }
+  .cs-block .body-list li strong{ color:var(--white); font-weight:400; }
+
+  .role-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); max-width:980px; }
+  .role-grid .card{ background:var(--bg); padding:26px 24px; }
+  .role-grid .card h4{ font-family:var(--sans); font-weight:400; font-size:14px; color:var(--white); margin-bottom:14px; }
+  .role-grid .card .kpi-lbl{ font-family:var(--mono); font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:8px; }
+  .role-grid .card ul{ list-style:none; }
+  .role-grid .card li{ font-size:12.5px; line-height:1.7; color:var(--gray); font-weight:300; }
+  @media (max-width:760px){ .role-grid{ grid-template-columns:1fr; } }
+
+  .gallery{ margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .gallery.single{ grid-template-columns:1fr; }
+  .gallery figure{ margin:0; }
+  .gallery img{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; }
+  .gallery figcaption{ margin-top:12px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); }
+  @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } }
+
+  /* ---------- outcome ---------- */
+  .cs-outcome{ padding:110px var(--edge-pad); text-align:center; border-bottom:1px solid var(--line); }
+  .cs-outcome .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; }
+  .cs-outcome .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(3rem,10vw,7rem); line-height:1; color:var(--white); }
+  .cs-outcome .stat-label{ margin-top:18px; font-size:15px; color:var(--gray); max-width:44ch; margin-left:auto; margin-right:auto; font-weight:300; }
+
+  /* ---------- nav to next / back ---------- */
+  .cs-nav{ padding:60px var(--edge-pad) 100px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; }
+  .cs-nav a{
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray);
+    border:1px solid var(--line); border-radius:18px; padding:14px 20px; transition:border-color .3s,color .3s;
+    display:inline-flex; align-items:center; gap:12px; max-width:280px; line-height:1.6;
+  }
+  .cs-nav a svg{ width:14px; height:14px; flex:0 0 auto; }
+  .cs-nav a:hover{ border-color:var(--accent); color:var(--accent); }
+
+  /* ---------- section progress nav ---------- */
+  .cs-toc{
+    position:fixed; right:28px; top:50%; transform:translateY(-50%); z-index:55;
+    display:flex; flex-direction:column; align-items:flex-end; padding:4px 0;
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  body.nav-hidden .cs-toc{ opacity:0; transform:translateY(-50%) translateX(12px); pointer-events:none; }
+  .cs-toc .track{ position:absolute; right:3px; top:0; bottom:0; width:1px; background:var(--line); }
+  .cs-toc .fill{ position:absolute; right:3px; top:0; width:1px; background:var(--accent); height:0; transition:height .4s cubic-bezier(.2,.7,.3,1); }
+  .cs-toc .step{
+    position:relative; display:flex; align-items:center; gap:10px; padding:11px 0; cursor:none;
+  }
+  .cs-toc .step .label{
+    font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-dim);
+    white-space:nowrap; opacity:0; transform:translateX(6px);
+    transition:opacity .25s ease, transform .25s ease, color .3s ease;
+  }
+  .cs-toc .step:hover .label{ opacity:1; transform:translateX(0); color:var(--white); }
+  .cs-toc .step.active .label{ opacity:1; transform:translateX(0); color:var(--accent); }
+  .cs-toc .step .dot{
+    width:7px; height:7px; border-radius:50%; background:var(--bg); border:1px solid var(--line); flex:0 0 auto;
+    transition:border-color .3s ease, background .3s ease, transform .3s ease;
+  }
+  .cs-toc .step:hover .dot{ border-color:var(--accent); }
+  .cs-toc .step.active .dot{ border-color:var(--accent); background:var(--accent); transform:scale(1.3); }
+  @media (max-width:1180px){ .cs-toc{ display:none; } }
+
+  footer{
+    position:relative; z-index:2; padding:32px var(--edge-pad); display:flex; align-items:center; justify-content:space-between; gap:18px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.04em; color:var(--gray-dim); border-top:1px solid var(--line);
+  }
+  footer .up-link{ display:flex; align-items:center; gap:8px; color:var(--gray); transition:color .3s; }
+  footer .up-link:hover{ color:var(--accent); }
+  footer svg{ width:12px; height:12px; }
+  @media (max-width:760px){ footer{ flex-direction:column; align-items:flex-start; gap:14px; padding:28px 32px; } }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div id="grain"></div>
+<div id="reticleH"></div>
+<div id="reticleV"></div>
+<div id="reticle"></div>
+
+<div class="corner tl"><svg viewBox="0 0 34 34"><path d="M2 14V2H14" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
+<div class="corner tr"><svg viewBox="0 0 34 34"><path d="M32 14V2H20" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
+<div class="corner bl"><svg viewBox="0 0 34 34"><path d="M2 20V32H14" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
+<div class="corner br"><svg viewBox="0 0 34 34"><path d="M32 20V32H20" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
+
+<a href="../index.html" class="brand-fixed" data-hover><span class="brand-name">NANA</span><span class="brand-sub">Product Design (UX)</span></a>
+
+<header>
+  <a class="menu" href="../index.html#work" data-hover>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    All Work
+  </a>
+</header>
+
+<nav class="cs-toc" id="csToc">
+  <div class="track"></div>
+  <div class="fill" id="csTocFill"></div>
+  <a class="step" href="#context" data-hover><span class="label">Context</span><span class="dot"></span></a>
+  <a class="step" href="#research" data-hover><span class="label">Research</span><span class="dot"></span></a>
+  <a class="step" href="#design-principle" data-hover><span class="label">Design Principle</span><span class="dot"></span></a>
+  <a class="step" href="#how-it-works" data-hover><span class="label">How It Works</span><span class="dot"></span></a>
+  <a class="step" href="#validation" data-hover><span class="label">Validation</span><span class="dot"></span></a>
+  <a class="step" href="#final-interfaces" data-hover><span class="label">Final Interfaces</span><span class="dot"></span></a>
+  <a class="step" href="#handover" data-hover><span class="label">Handover</span><span class="dot"></span></a>
+  <a class="step" href="#outcome" data-hover><span class="label">Outcome</span><span class="dot"></span></a>
+</nav>
+
+<section class="cs-hero">
+  <img class="logo-badge reveal" src="../assets/logos/zaapi.svg" alt="Zaapi">
+  <div class="kicker reveal">Conversational UX &amp; AI</div>
+  <h1 class="reveal">Conversational UX &amp; AI Agent</h1>
+  <p class="lead reveal">Designed a no-code AI chat agent and conversational UX that uses <strong>customer context</strong> before answering, cites sources, follows policy, stays <strong>human-controlled</strong>, and speaks in the brand voice — delivering faster resolutions and scaled support without new hires.</p>
+</section>
+
+<section class="cs-stats">
+  <div class="reveal"><div class="stat">+750%</div><div class="stat-desc">More AI feature usage (click) after introducing the new AI branding and relocating the button</div></div>
+  <div class="reveal"><div class="stat">+100%</div><div class="stat-desc">Increase in messages sent by Zaapi AI from start of Q1 to end of Q2 2025 after launching AI thinking and performance dashboard</div></div>
+</section>
+
+<section class="cs-meta">
+  <div class="item reveal"><div class="lbl">Role</div><div class="val">Product Design Lead</div></div>
+  <div class="item reveal"><div class="lbl">Company</div><div class="val">Zaapi</div></div>
+  <div class="item reveal"><div class="lbl">Timeline</div><div class="val">Q3 '23 – Q2 '25</div></div>
+  <div class="item reveal"><div class="lbl">Feature</div><div class="val accent">AI Agent &amp; Automations</div></div>
+</section>
+
+<section class="cs-block" id="context">
+  <div class="kicker reveal">Context</div>
+  <h2 class="reveal">Support volume was growing faster than support teams could hire</h2>
+  <p class="body-text reveal">Zaapi's customers run customer service across Shopee, Lazada, LINE, and other channels at once. As chat volume grew, teams couldn't scale headcount to match — but an AI agent that just auto-replied wasn't trustworthy enough to hand real customers to. It needed to know when it actually had enough context to answer, and when to step back.</p>
+  <p class="body-text reveal">My job was to design an AI agent experience that customer service teams would actually trust enough to turn on — no-code to set up, transparent in how it reasons, and easy to pull back into human hands.</p>
+</section>
+
+<section class="cs-block" id="research">
+  <div class="kicker reveal">Research</div>
+  <h2 class="reveal">Who and why</h2>
+  <p class="body-text reveal">Interviews with customer service managers and frontline agents surfaced three distinct relationships to automation — from "just turn it on for me" to "let me see exactly how it decides."</p>
+  <div class="role-grid">
+    <div class="card reveal">
+      <h4>Khun Nookie — Simplified Process Manager</h4>
+      <div class="kpi-lbl">Needs</div>
+      <ul><li>Automation without technical setup</li><li>Pre-built templates over custom logic</li></ul>
+    </div>
+    <div class="card reveal">
+      <h4>Khun Tung — Tech-Savvy Manager</h4>
+      <div class="kpi-lbl">Needs</div>
+      <ul><li>Comfortable configuring advanced flows</li><li>Visibility into how the AI decides</li></ul>
+    </div>
+    <div class="card reveal">
+      <h4>Nong Fern — Frontline Agent</h4>
+      <div class="kpi-lbl">Needs</div>
+      <ul><li>Worried about chats the AI mishandles</li><li>A clear handover point back to a human</li></ul>
+    </div>
+  </div>
+  <div class="gallery single">
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/personas-findings.jpg" alt="User research findings — who and why" loading="lazy"><figcaption>User research — who and why</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-block" id="design-principle">
+  <div class="kicker reveal">Design Principle</div>
+  <h2 class="reveal">Simple automations first, not complex flowcharts</h2>
+  <p class="body-text reveal">The comparable tools on the market required building logic trees to get an automation running. Given Khun Nookie's need to set things up without technical help, the design bet was pre-defined templates with instant preview — anyone could turn one on, not just the tech-savvy manager.</p>
+  <div class="gallery">
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/automation-principle.jpg" alt="Design principle — pre-defined templates over complex flowcharts" loading="lazy"><figcaption>Templates with instant preview vs. flowcharts</figcaption></figure>
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/design-approach.jpg" alt="Design process — where this sits in the double-diamond" loading="lazy"><figcaption>Discovery — mapping where this sits in the process</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-block" id="how-it-works">
+  <div class="kicker reveal">How It Works</div>
+  <h2 class="reveal">A visible reasoning loop, not a black box</h2>
+  <p class="body-text reveal">For the AI agent to be trustworthy, its reasoning couldn't be invisible. The agent works through a repeatable loop against the conversation's message history:</p>
+  <ul class="body-list reveal">
+    <li><strong>Think</strong> — decide what it needs to do next</li>
+    <li><strong>Act</strong> — retrieve knowledge, select a scenario, or select a quick reply to get more context</li>
+    <li><strong>Observe</strong> — check the result, and repeat until it has enough to answer</li>
+    <li><strong>Respond</strong> — generate the reply, then send it</li>
+  </ul>
+  <div class="gallery single">
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/ai-agent-diagram.jpg" alt="AI agent reasoning loop diagram" loading="lazy"><figcaption>Agent reasoning loop — think, act, observe, respond</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-block" id="validation">
+  <div class="kicker reveal">Validation</div>
+  <h2 class="reveal">Where should AI activation actually live?</h2>
+  <p class="body-text reveal">Two placements were prototyped and tested: activating AI directly inside the AI Agent module, versus as a block inside the existing Flow Builder. Testing with both simplified-process and tech-savvy managers confirmed the AI module as the primary path — with the Flow Builder route kept for teams who wanted AI as one step inside a larger automation.</p>
+  <div class="gallery single">
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/validation-exploration.jpg" alt="Validation — two options for where AI activation lives" loading="lazy"><figcaption>Option A — AI module vs. Option B — Flow Builder</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-block" id="final-interfaces">
+  <div class="kicker reveal">Final Interfaces</div>
+  <h2 class="reveal">What shipped</h2>
+  <p class="body-text reveal">A conversational AI agent that cites its sources, follows policy, and stays inside the same chat workspace agents already use — plus the template-driven automation builder that made setup accessible to every persona, not just the technical ones.</p>
+  <div class="gallery">
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/chat-ai-1.jpg" alt="AI agent activation inside the chat workspace" loading="lazy"><figcaption>AI agent activation</figcaption></figure>
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/chat-ai-2.jpg" alt="AI agent set up via Flow Builder" loading="lazy"><figcaption>AI agent via Flow Builder</figcaption></figure>
+  </div>
+  <div class="gallery single" style="margin-top:32px">
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/ai-generated-responses.jpg" alt="AI-generated responses inside a live conversation" loading="lazy"><figcaption>AI-generated responses, in conversation</figcaption></figure>
+  </div>
+  <div class="gallery single" style="margin-top:32px">
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/automation-templates.jpg" alt="Automation creation templates" loading="lazy"><figcaption>Automation creation templates</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-block" id="handover">
+  <div class="kicker reveal">Handover</div>
+  <h2 class="reveal">Built to actually ship</h2>
+  <p class="body-text reveal">Documented in Figma with states, edge cases, and annotated interaction notes — so engineering could build the reasoning loop and every fallback state without guessing.</p>
+  <div class="gallery single">
+    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/handover.jpg" alt="Handover documentation for developers" loading="lazy"><figcaption>Handover documentation</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-outcome" id="outcome">
+  <div class="kicker reveal">Outcome</div>
+  <div class="stat reveal">+750%</div>
+  <p class="stat-label reveal">More AI feature usage after the new AI branding and button placement — with +100% more messages sent by Zaapi AI following the AI thinking and performance dashboard launch.</p>
+</section>
+
+<section class="cs-nav">
+  <a href="../index.html#work" data-hover>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to all work
+  </a>
+  <a href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener" data-hover>
+    Next — Fintech UX, reimagined
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<footer>
+  <span>©2025 NANAUX.SPACE — Product Design (UX/UI) Practitioner. All rights reserved.</span>
+  <a href="#top" class="up-link" data-hover>
+    <svg viewBox="0 0 12 22" fill="none"><path d="M6 21V1M1 6l5-5 5 5" stroke="currentColor" stroke-width="1"/></svg>
+    Up
+  </a>
+</footer>
+
+<script>
+/* ---------------- starfield background ---------------- */
+(function(){
+  const canvas = document.getElementById('starfield');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let stars = [];
+  let w=0, h=0, dpr=1;
+
+  function seed(){
+    const count = Math.round((w*h)/9000);
+    stars = Array.from({ length: count }, ()=>({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*0.55+0.2,
+      baseOpacity: Math.random()*0.25+0.12,
+      phase: Math.random()*Math.PI*2,
+      speed: Math.random()*0.4+0.15
+    }));
+  }
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio||1, 2);
+    w = window.innerWidth; h = window.innerHeight;
+    canvas.width = w*dpr; canvas.height = h*dpr;
+    canvas.style.width = w+'px'; canvas.style.height = h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    seed();
+  }
+
+  const footerEl = document.querySelector('footer');
+  let footerBoost = 0;
+  function updateFooterBoost(){
+    if(!footerEl) return;
+    const rect = footerEl.getBoundingClientRect();
+    const startAt = window.innerHeight*0.55;
+    const endAt = window.innerHeight*0.05;
+    const p = (startAt - rect.top) / (startAt - endAt);
+    footerBoost = Math.max(0, Math.min(1, p));
+  }
+
+  let boostTicking = false;
+  addEventListener('scroll', ()=>{
+    if(boostTicking) return;
+    boostTicking = true;
+    requestAnimationFrame(()=>{ boostTicking = false; updateFooterBoost(); });
+  }, { passive:true });
+  updateFooterBoost();
+
+  let t = 0;
+  function draw(){
+    t += 0.016;
+    ctx.clearRect(0,0,w,h);
+    const brightBoost = 1 + footerBoost*0.55;
+    for(const s of stars){
+      const twinkle = 0.6+0.4*Math.sin(t*s.speed*2 + s.phase);
+      const o = s.baseOpacity * twinkle * brightBoost;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(243,242,238,${o.toFixed(3)})`;
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+    }
+    if(!reduceMotion) requestAnimationFrame(draw);
+  }
+
+  addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
+/* ---------------- reticle cursor ---------------- */
+const reticle = document.getElementById('reticle');
+const reticleH = document.getElementById('reticleH');
+const reticleV = document.getElementById('reticleV');
+addEventListener('mousemove', e=>{
+  reticle.style.left=e.clientX+'px'; reticle.style.top=e.clientY+'px';
+  reticleH.style.top=e.clientY+'px';
+  reticleV.style.left=e.clientX+'px';
+});
+document.querySelectorAll('[data-hover], a').forEach(el=>{
+  el.addEventListener('mouseenter', ()=>document.body.classList.add('link-hover'));
+  el.addEventListener('mouseleave', ()=>document.body.classList.remove('link-hover'));
+});
+
+/* ---------------- back to top ---------------- */
+document.querySelector('.up-link').addEventListener('click', e=>{
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ---------------- hide nav on scroll down, reveal on scroll up ---------------- */
+(function(){
+  let lastY = window.scrollY;
+  let ticking = false;
+  const revealAt = 80; // always show near the very top
+  addEventListener('scroll', ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      const y = window.scrollY;
+      if(y < revealAt || y < lastY){
+        document.body.classList.remove('nav-hidden');
+      } else if(y > lastY){
+        document.body.classList.add('nav-hidden');
+      }
+      lastY = y;
+      ticking = false;
+    });
+  }, { passive:true });
+})();
+
+/* ---------------- scroll reveal ---------------- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in'); });
+},{ threshold:0.15 });
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------------- section progress nav (scrollspy) ---------------- */
+(function(){
+  const toc = document.getElementById('csToc');
+  if(!toc) return;
+  const steps = [...toc.querySelectorAll('.step')];
+  const fill = document.getElementById('csTocFill');
+  const sections = steps.map(step => document.querySelector(step.getAttribute('href')));
+
+  function updateActive(){
+    let activeIndex = 0;
+    const markerY = window.innerHeight * 0.4;
+    sections.forEach((sec, i)=>{
+      if(!sec) return;
+      if(sec.getBoundingClientRect().top <= markerY) activeIndex = i;
+    });
+    steps.forEach((step, i)=> step.classList.toggle('active', i === activeIndex));
+    const first = steps[0], active = steps[activeIndex];
+    if(first && active){
+      fill.style.height = (active.offsetTop + active.offsetHeight/2 - first.offsetTop) + 'px';
+    }
+  }
+
+  let ticking = false;
+  addEventListener('scroll', ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{ updateActive(); ticking = false; });
+  }, { passive:true });
+  updateActive();
+})();
+</script>
+
+</body>
+</html>

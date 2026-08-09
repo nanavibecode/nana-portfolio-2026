@@ -903,8 +903,8 @@ function buildMesh(){
 buildMesh();
 
 const projectMeta = {
-  1: { name:'PROJECT_01.EXE', stat:'SCALE_SAAS.DAT', preview:'assets/videos/scale-saas-preview-v2.mp4', url:'https://uxbynana.com/impact/zaapi-growth' },
-  2: { name:'PROJECT_02.EXE', stat:'AI_AGENT_UX.DAT', preview:'assets/videos/ai-responding-preview.mp4', url:'https://uxbynana.com/impact/zaapi-conversational-ux-ai' },
+  1: { name:'PROJECT_01.EXE', stat:'SCALE_SAAS.DAT', preview:'assets/videos/scale-saas-preview-v2.mp4', url:'case-studies/zaapi-growth.html' },
+  2: { name:'PROJECT_02.EXE', stat:'AI_AGENT_UX.DAT', preview:'assets/videos/ai-responding-preview.mp4', url:'case-studies/zaapi-ai-agent.html' },
   3: { name:'PROJECT_03.EXE', stat:'FINTECH_UX.DAT', image:'assets/images/fintech-ux-ttb.jpg', url:'https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design' }
 };
 
@@ -955,7 +955,11 @@ document.querySelectorAll('.work-row').forEach(row=>{
   const meta = projectMeta[id];
   if(meta.url){
     row.style.cursor = 'pointer';
-    row.addEventListener('click', ()=>{ window.open(meta.url, '_blank', 'noopener'); });
+    const isExternal = /^https?:\/\//.test(meta.url);
+    row.addEventListener('click', ()=>{
+      if(isExternal) window.open(meta.url, '_blank', 'noopener');
+      else window.location.href = meta.url;
+    });
   }
 });
 
