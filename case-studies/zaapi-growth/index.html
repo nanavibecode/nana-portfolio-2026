@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conversational UX &amp; AI Agent — Nana, Product Design (UX/UI)</title>
-<meta name="description" content="Designing a no-code AI chat agent that uses customer context, cites sources, follows policy, and stays human-controlled — +750% AI feature usage. A product design case study by Nana.">
+<title>Zaapi Growth — Nana, Product Design (UX/UI)</title>
+<meta name="description" content="Scaling Zaapi from a Thai-only SaaS to competing internationally — +220% ARR growth. A product design case study by Nana.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=The+Impressionist&family=Roboto:wght@100;300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -105,7 +105,7 @@
   .cs-hero{ padding:180px var(--edge-pad) 70px; border-bottom:1px solid var(--line); }
   .cs-hero .logo-badge{ height:34px; width:auto; margin-bottom:24px; }
   .cs-hero .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
-  .cs-hero h1{ font-family:var(--serif); font-weight:400; line-height:1.08; font-size:clamp(2.4rem,7vw,5.2rem); max-width:16ch; }
+  .cs-hero h1{ font-family:var(--serif); font-weight:400; line-height:1.08; font-size:clamp(2.4rem,7vw,5.2rem); max-width:14ch; }
   .cs-hero .lead{ margin-top:28px; font-size:clamp(1rem,1.8vw,1.25rem); line-height:1.65; color:var(--gray); max-width:62ch; font-weight:300; }
   .cs-hero .lead strong{ color:var(--white); font-weight:400; }
 
@@ -116,6 +116,7 @@
   .cs-meta .item .lbl{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:10px; }
   .cs-meta .item .val{ font-family:var(--sans); font-weight:400; font-size:15px; color:var(--white); line-height:1.4; }
   .cs-meta .item .val.accent{ color:var(--accent); }
+  @media (max-width:760px){ .cs-meta{ grid-template-columns:1fr 1fr; row-gap:32px; } }
 
   /* ---------- stats row ---------- */
   .cs-stats{
@@ -125,19 +126,14 @@
   .cs-stats .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,4.4vw,3.2rem); color:var(--white); line-height:1; }
   .cs-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); max-width:26ch; font-weight:300; }
   @media (max-width:760px){ .cs-stats{ grid-template-columns:1fr 1fr; row-gap:40px; } }
-  @media (max-width:760px){ .cs-meta{ grid-template-columns:1fr 1fr; row-gap:32px; } }
 
   /* ---------- content blocks ---------- */
   .cs-block{ padding:90px var(--edge-pad); border-bottom:1px solid var(--line); }
   .cs-block .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
-  .cs-block h2{ font-family:var(--serif); font-weight:400; font-size:clamp(1.6rem,3.6vw,2.5rem); max-width:18ch; }
+  .cs-block h2{ font-family:var(--serif); font-weight:400; font-size:clamp(1.6rem,3.6vw,2.5rem); max-width:16ch; }
   .cs-block .body-text{ margin-top:22px; font-size:clamp(.98rem,1.5vw,1.1rem); line-height:1.75; color:var(--gray); max-width:66ch; font-weight:300; }
   .cs-block .body-text strong{ color:var(--white); font-weight:400; }
   .cs-block .body-text + .body-text{ margin-top:16px; }
-  .cs-block .body-list{ margin-top:22px; max-width:66ch; list-style:none; }
-  .cs-block .body-list li{ font-size:clamp(.95rem,1.4vw,1.05rem); line-height:1.7; color:var(--gray); font-weight:300; padding-left:22px; position:relative; margin-top:10px; }
-  .cs-block .body-list li::before{ content:''; position:absolute; left:0; top:.6em; width:6px; height:1px; background:var(--accent); }
-  .cs-block .body-list li strong{ color:var(--white); font-weight:400; }
 
   .role-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); max-width:980px; }
   .role-grid .card{ background:var(--bg); padding:26px 24px; }
@@ -153,6 +149,15 @@
   .gallery img{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; }
   .gallery figcaption{ margin-top:12px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); }
   @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } }
+
+  .compare{ margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+  .compare figure{ margin:0; }
+  .compare img{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; }
+  .compare figcaption{ margin-top:12px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; }
+  .compare .before figcaption{ color:var(--gray-dim); }
+  .compare .after figcaption{ color:var(--accent); }
+  .compare + .compare{ margin-top:56px; }
+  @media (max-width:760px){ .compare{ grid-template-columns:1fr; } .compare + .compare{ margin-top:32px; } }
 
   /* ---------- outcome ---------- */
   .cs-outcome{ padding:110px var(--edge-pad); text-align:center; border-bottom:1px solid var(--line); }
@@ -220,10 +225,10 @@
 <div class="corner bl"><svg viewBox="0 0 34 34"><path d="M2 20V32H14" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
 <div class="corner br"><svg viewBox="0 0 34 34"><path d="M32 20V32H20" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
 
-<a href="../" class="brand-fixed" data-hover><span class="brand-name">NANA</span><span class="brand-sub">Product Design (UX)</span></a>
+<a href="../../" class="brand-fixed" data-hover><span class="brand-name">NANA</span><span class="brand-sub">Product Design (UX)</span></a>
 
 <header>
-  <a class="menu work-link" href="../" data-hover>
+  <a class="menu work-link" href="../../" data-hover>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     All Work
   </a>
@@ -234,140 +239,137 @@
   <div class="fill" id="csTocFill"></div>
   <a class="step" href="#context" data-hover><span class="label">Context</span><span class="dot"></span></a>
   <a class="step" href="#research" data-hover><span class="label">Research</span><span class="dot"></span></a>
-  <a class="step" href="#design-principle" data-hover><span class="label">Design Principle</span><span class="dot"></span></a>
-  <a class="step" href="#how-it-works" data-hover><span class="label">How It Works</span><span class="dot"></span></a>
-  <a class="step" href="#validation" data-hover><span class="label">Validation</span><span class="dot"></span></a>
+  <a class="step" href="#design-process" data-hover><span class="label">Design Process</span><span class="dot"></span></a>
+  <a class="step" href="#wireframes" data-hover><span class="label">Wireframes &amp; Validation</span><span class="dot"></span></a>
   <a class="step" href="#final-interfaces" data-hover><span class="label">Final Interfaces</span><span class="dot"></span></a>
   <a class="step" href="#handover" data-hover><span class="label">Handover</span><span class="dot"></span></a>
   <a class="step" href="#outcome" data-hover><span class="label">Outcome</span><span class="dot"></span></a>
 </nav>
 
 <section class="cs-hero">
-  <img class="logo-badge reveal" src="../assets/logos/zaapi.svg" alt="Zaapi">
-  <div class="kicker reveal">Conversational UX &amp; AI</div>
-  <h1 class="reveal">Conversational UX &amp; AI Agent</h1>
-  <p class="lead reveal">Designed a no-code AI chat agent and conversational UX that uses <strong>customer context</strong> before answering, cites sources, follows policy, stays <strong>human-controlled</strong>, and speaks in the brand voice — delivering faster resolutions and scaled support without new hires.</p>
+  <img class="logo-badge reveal" src="../../assets/logos/zaapi.svg" alt="Zaapi">
+  <div class="kicker reveal">Product Market Fit &amp; Growth</div>
+  <h1 class="reveal">Zaapi Growth</h1>
+  <p class="lead reveal">Scaling Zaapi from a <strong>Thai-only SaaS</strong> to a product that competes in the <strong>international market</strong> — reworking the core chat, AI agent, automation, and analytics experience around how customer service teams actually work.</p>
 </section>
 
 <section class="cs-stats">
-  <div class="reveal"><div class="stat">+750%</div><div class="stat-desc">More AI feature usage (click) after introducing the new AI branding and relocating the button</div></div>
-  <div class="reveal"><div class="stat">+100%</div><div class="stat-desc">Increase in messages sent by Zaapi AI from start of Q1 to end of Q2 2025 after launching AI thinking and performance dashboard</div></div>
+  <div class="reveal"><div class="stat">+220%</div><div class="stat-desc">ARR (annual recurring revenue) jumped over two years (Q3 '23 – Q2 '25)</div></div>
+  <div class="reveal"><div class="stat">+650%</div><div class="stat-desc">Number of messages sent on desktop (Q3 '23 – Q2 '25)</div></div>
+  <div class="reveal"><div class="stat">+40%</div><div class="stat-desc">New subscribers in two months after website and brand refresh</div></div>
+  <div class="reveal"><div class="stat">10+</div><div class="stat-desc">First-time international clients across SEA (SG, PH &amp; MY), breaking into new regional markets</div></div>
 </section>
 
 <section class="cs-meta">
   <div class="item reveal"><div class="lbl">Role</div><div class="val">Product Design Lead</div></div>
   <div class="item reveal"><div class="lbl">Company</div><div class="val">Zaapi</div></div>
   <div class="item reveal"><div class="lbl">Timeline</div><div class="val">Q3 '23 – Q2 '25</div></div>
-  <div class="item reveal"><div class="lbl">Feature</div><div class="val accent">AI Agent &amp; Automations</div></div>
+  <div class="item reveal"><div class="lbl">Markets</div><div class="val accent">TH → SG, PH, MY</div></div>
 </section>
 
 <section class="cs-block" id="context">
   <div class="kicker reveal">Context</div>
-  <h2 class="reveal">Support volume was growing faster than support teams could hire</h2>
-  <p class="body-text reveal">Zaapi's customers run customer service across Shopee, Lazada, LINE, and other channels at once. As chat volume grew, teams couldn't scale headcount to match — but an AI agent that just auto-replied wasn't trustworthy enough to hand real customers to. It needed to know when it actually had enough context to answer, and when to step back.</p>
-  <p class="body-text reveal">My job was to design an AI agent experience that customer service teams would actually trust enough to turn on — no-code to set up, transparent in how it reasons, and easy to pull back into human hands.</p>
+  <h2 class="reveal">A Thai SaaS built for one market, asked to win a bigger one</h2>
+  <p class="body-text reveal">Zaapi is a conversational commerce and customer-service platform — unifying chat, AI agents, automations, and analytics for teams selling across Shopee, Lazada, LINE, and other channels. It grew fast domestically, but the product carried assumptions specific to the Thai market: workflows, terminology, and dashboards built around how one type of team worked, not the range of roles and markets Zaapi needed to serve next.</p>
+  <p class="body-text reveal">My job was to lead product design across the platform as Zaapi expanded internationally — starting with understanding who was actually using it, and why the product needed to flex.</p>
 </section>
 
 <section class="cs-block" id="research">
   <div class="kicker reveal">Research</div>
-  <h2 class="reveal">Who and why</h2>
-  <p class="body-text reveal">Interviews with customer service managers and frontline agents surfaced three distinct relationships to automation — from "just turn it on for me" to "let me see exactly how it decides."</p>
+  <h2 class="reveal">One product, three very different jobs to be done</h2>
+  <p class="body-text reveal">Interviews and workflow mapping across existing customers surfaced three distinct user roles sharing the same login — each with different responsibilities, KPIs, and reasons to open the dashboard. Designing for "the user" wasn't going to work; the product needed to serve all three without feeling built for none of them.</p>
   <div class="role-grid">
     <div class="card reveal">
-      <h4>Khun Nookie — Simplified Process Manager</h4>
-      <div class="kpi-lbl">Needs</div>
-      <ul><li>Automation without technical setup</li><li>Pre-built templates over custom logic</li></ul>
+      <h4>Marketing / E-commerce Manager</h4>
+      <div class="kpi-lbl">Cares about</div>
+      <ul><li>Leads &amp; ad performance</li><li>Campaign conversion</li><li>Customer acquisition</li></ul>
     </div>
     <div class="card reveal">
-      <h4>Khun Tung — Tech-Savvy Manager</h4>
-      <div class="kpi-lbl">Needs</div>
-      <ul><li>Comfortable configuring advanced flows</li><li>Visibility into how the AI decides</li></ul>
+      <h4>Customer Service Manager</h4>
+      <div class="kpi-lbl">Cares about</div>
+      <ul><li>Response rate &amp; time</li><li>CSAT</li><li>Case &amp; crisis management</li></ul>
     </div>
     <div class="card reveal">
-      <h4>Nong Fern — Frontline Agent</h4>
-      <div class="kpi-lbl">Needs</div>
-      <ul><li>Worried about chats the AI mishandles</li><li>A clear handover point back to a human</li></ul>
+      <h4>Business Owner (SME)</h4>
+      <div class="kpi-lbl">Cares about</div>
+      <ul><li>Revenue &amp; growth</li><li>Orders &amp; sales</li><li>Store health across channels</li></ul>
     </div>
   </div>
-  <div class="gallery single">
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/personas-findings.jpg" alt="User research findings — who and why" loading="lazy"><figcaption>User research — who and why</figcaption></figure>
-  </div>
-</section>
-
-<section class="cs-block" id="design-principle">
-  <div class="kicker reveal">Design Principle</div>
-  <h2 class="reveal">Simple automations first, not complex flowcharts</h2>
-  <p class="body-text reveal">The comparable tools on the market required building logic trees to get an automation running. Given Khun Nookie's need to set things up without technical help, the design bet was pre-defined templates with instant preview — anyone could turn one on, not just the tech-savvy manager.</p>
   <div class="gallery">
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/automation-principle.jpg" alt="Design principle — pre-defined templates over complex flowcharts" loading="lazy"><figcaption>Templates with instant preview vs. flowcharts</figcaption></figure>
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/design-approach.jpg" alt="Design process — where this sits in the double-diamond" loading="lazy"><figcaption>Discovery — mapping where this sits in the process</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/research-1.jpg" alt="Research synthesis — customer interviews and workflow mapping" loading="lazy"><figcaption>Customer interviews &amp; workflow mapping</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/research-2.jpg" alt="Research synthesis — role segmentation" loading="lazy"><figcaption>Role segmentation &amp; KPI mapping</figcaption></figure>
   </div>
 </section>
 
-<section class="cs-block" id="how-it-works">
-  <div class="kicker reveal">How It Works</div>
-  <h2 class="reveal">A visible reasoning loop, not a black box</h2>
-  <p class="body-text reveal">For the AI agent to be trustworthy, its reasoning couldn't be invisible. The agent works through a repeatable loop against the conversation's message history:</p>
-  <ul class="body-list reveal">
-    <li><strong>Think</strong> — decide what it needs to do next</li>
-    <li><strong>Act</strong> — retrieve knowledge, select a scenario, or select a quick reply to get more context</li>
-    <li><strong>Observe</strong> — check the result, and repeat until it has enough to answer</li>
-    <li><strong>Respond</strong> — generate the reply, then send it</li>
-  </ul>
-  <div class="gallery single">
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/ai-agent-diagram.jpg" alt="AI agent reasoning loop diagram" loading="lazy"><figcaption>Agent reasoning loop — think, act, observe, respond</figcaption></figure>
+<section class="cs-block" id="design-process">
+  <div class="kicker reveal">Design Process</div>
+  <h2 class="reveal">Designing for the role, not just the screen</h2>
+  <p class="body-text reveal">With three roles and their KPIs mapped, the design process centered on what each role needed surfaced first — same underlying data, different entry points and emphasis. Flows were stress-tested against real support scenarios: a spike in chats, a flagged case, a campaign under-performing — not just the happy path.</p>
+  <div class="gallery">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/design-process-1.jpg" alt="Design process artifact 1" loading="lazy"><figcaption>Flow &amp; information-architecture iteration</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/design-process-2.jpg" alt="Design process artifact 2" loading="lazy"><figcaption>Role-based dashboard concepts</figcaption></figure>
   </div>
 </section>
 
-<section class="cs-block" id="validation">
-  <div class="kicker reveal">Validation</div>
-  <h2 class="reveal">Where should AI activation actually live?</h2>
-  <p class="body-text reveal">Two placements were prototyped and tested: activating AI directly inside the AI Agent module, versus as a block inside the existing Flow Builder. Testing with both simplified-process and tech-savvy managers confirmed the AI module as the primary path — with the Flow Builder route kept for teams who wanted AI as one step inside a larger automation.</p>
-  <div class="gallery single">
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/validation-exploration.jpg" alt="Validation — two options for where AI activation lives" loading="lazy"><figcaption>Option A — AI module vs. Option B — Flow Builder</figcaption></figure>
+<section class="cs-block" id="wireframes">
+  <div class="kicker reveal">Wireframes &amp; Validation</div>
+  <h2 class="reveal">Validating with the teams who'd actually use it</h2>
+  <p class="body-text reveal">Low-fidelity flows were walked through with customer service managers and business owners before any visual design — catching mismatches in mental models early, while they were still cheap to fix.</p>
+  <div class="gallery">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/userflow.jpg" alt="End-to-end user flow" loading="lazy"><figcaption>End-to-end user flow</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/wireframe-1.jpg" alt="Low-fidelity wireframes" loading="lazy"><figcaption>Low-fidelity wireframes</figcaption></figure>
   </div>
 </section>
 
 <section class="cs-block" id="final-interfaces">
   <div class="kicker reveal">Final Interfaces</div>
   <h2 class="reveal">What shipped</h2>
-  <p class="body-text reveal">A conversational AI agent that cites its sources, follows policy, and stays inside the same chat workspace agents already use — plus the template-driven automation builder that made setup accessible to every persona, not just the technical ones.</p>
-  <div class="gallery">
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/chat-ai-1.jpg" alt="AI agent activation inside the chat workspace" loading="lazy"><figcaption>AI agent activation</figcaption></figure>
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/chat-ai-2.jpg" alt="AI agent set up via Flow Builder" loading="lazy"><figcaption>AI agent via Flow Builder</figcaption></figure>
+  <p class="body-text reveal">A redesigned chat workspace, a rebuilt AI agent experience, a visual automation flow builder, and analytics that speak to each role's own KPIs — shipped incrementally as the platform scaled internationally.</p>
+
+  <div class="compare">
+    <figure class="before reveal"><img src="../../assets/images/case-studies/zaapi-growth/chat-before.jpg" alt="Chat interface before redesign" loading="lazy"><figcaption>Before — Chat</figcaption></figure>
+    <figure class="after reveal"><img src="../../assets/images/case-studies/zaapi-growth/chat-after.jpg" alt="Chat interface after redesign" loading="lazy"><figcaption>After — Chat</figcaption></figure>
   </div>
-  <div class="gallery single" style="margin-top:32px">
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/ai-generated-responses.jpg" alt="AI-generated responses inside a live conversation" loading="lazy"><figcaption>AI-generated responses, in conversation</figcaption></figure>
+  <div class="compare">
+    <figure class="before reveal"><img src="../../assets/images/case-studies/zaapi-growth/ai-agent-before.jpg" alt="AI agent interface before redesign" loading="lazy"><figcaption>Before — AI Agent</figcaption></figure>
+    <figure class="after reveal"><img src="../../assets/images/case-studies/zaapi-growth/ai-agent-after.jpg" alt="AI agent interface after redesign" loading="lazy"><figcaption>After — AI Agent</figcaption></figure>
   </div>
-  <div class="gallery single" style="margin-top:32px">
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/automation-templates.jpg" alt="Automation creation templates" loading="lazy"><figcaption>Automation creation templates</figcaption></figure>
+  <div class="compare">
+    <figure class="before reveal"><img src="../../assets/images/case-studies/zaapi-growth/analytics-before.jpg" alt="Analytics dashboard before redesign" loading="lazy"><figcaption>Before — Analytics</figcaption></figure>
+    <figure class="after reveal"><img src="../../assets/images/case-studies/zaapi-growth/analytics-after.jpg" alt="Analytics dashboard after redesign" loading="lazy"><figcaption>After — Analytics</figcaption></figure>
+  </div>
+
+  <div class="gallery single" style="margin-top:56px">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/automations-flow.jpg" alt="Visual automation flow builder" loading="lazy"><figcaption>Visual automation flow builder</figcaption></figure>
   </div>
 </section>
 
 <section class="cs-block" id="handover">
   <div class="kicker reveal">Handover</div>
   <h2 class="reveal">Built to actually ship</h2>
-  <p class="body-text reveal">Documented in Figma with states, edge cases, and annotated interaction notes — so engineering could build the reasoning loop and every fallback state without guessing.</p>
+  <p class="body-text reveal">Componentized in Figma with documented states and edge cases, so engineering could build without guessing — a requirement once the roadmap meant shipping across multiple markets in parallel.</p>
   <div class="gallery single">
-    <figure class="reveal"><img src="../assets/images/case-studies/zaapi-ai-agent/handover.jpg" alt="Handover documentation for developers" loading="lazy"><figcaption>Handover documentation</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/handover-figma.jpg" alt="Figma handover documentation" loading="lazy"><figcaption>Component &amp; handover documentation</figcaption></figure>
   </div>
 </section>
 
 <section class="cs-outcome" id="outcome">
   <div class="kicker reveal">Outcome</div>
   <div class="cs-outcome-stats">
-    <div class="reveal"><div class="stat">+750%</div><div class="stat-desc">More AI feature usage (click) after introducing the new AI branding and relocating the button</div></div>
-    <div class="reveal"><div class="stat">+100%</div><div class="stat-desc">Increase in messages sent by Zaapi AI from start of Q1 to end of Q2 2025 after launching AI thinking and performance dashboard</div></div>
+    <div class="reveal"><div class="stat">+220%</div><div class="stat-desc">ARR (annual recurring revenue) jumped over two years (Q3 '23 – Q2 '25)</div></div>
+    <div class="reveal"><div class="stat">+650%</div><div class="stat-desc">Number of messages sent on desktop (Q3 '23 – Q2 '25)</div></div>
+    <div class="reveal"><div class="stat">+40%</div><div class="stat-desc">New subscribers in two months after website and brand refresh</div></div>
+    <div class="reveal"><div class="stat">10+</div><div class="stat-desc">First-time international clients across SEA (SG, PH &amp; MY), breaking into new regional markets</div></div>
   </div>
 </section>
 
 <section class="cs-nav">
-  <a class="work-link" href="../" data-hover>
+  <a class="work-link" href="../../" data-hover>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Back to all work
   </a>
-  <a href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener" data-hover>
-    Next — Fintech UX, reimagined
+  <a href="../zaapi-ai-agent/" data-hover>
+    Next — Conversational UX &amp; AI agent
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
   </a>
 </section>
