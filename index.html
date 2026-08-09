@@ -735,6 +735,26 @@ document.querySelector('.up-link').addEventListener('click', e=>{
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
+/* ---------------- clean-URL anchor scrolling (no #hash ever written to the address bar) ---------------- */
+document.querySelectorAll('a[href^="#"]:not(.up-link)').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+
+/* incoming cross-page scroll request (e.g. "All Work" clicked from a case study page) */
+(function(){
+  const target = sessionStorage.getItem('scrollTarget');
+  if(!target) return;
+  sessionStorage.removeItem('scrollTarget');
+  addEventListener('load', ()=>{
+    const el = document.getElementById(target);
+    if(el) setTimeout(()=> el.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+  });
+})();
+
 /* ---------------- scroll reveal ---------------- */
 const io = new IntersectionObserver(entries=>{
   entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in'); });

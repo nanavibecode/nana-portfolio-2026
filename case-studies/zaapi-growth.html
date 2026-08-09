@@ -228,7 +228,7 @@
 <a href="../" class="brand-fixed" data-hover><span class="brand-name">NANA</span><span class="brand-sub">Product Design (UX)</span></a>
 
 <header>
-  <a class="menu" href="../#work" data-hover>
+  <a class="menu work-link" href="../" data-hover>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     All Work
   </a>
@@ -364,7 +364,7 @@
 </section>
 
 <section class="cs-nav">
-  <a href="../#work" data-hover>
+  <a class="work-link" href="../" data-hover>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Back to all work
   </a>
@@ -472,6 +472,24 @@ document.querySelectorAll('[data-hover], a').forEach(el=>{
 document.querySelector('.up-link').addEventListener('click', e=>{
   e.preventDefault();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ---------------- clean-URL anchor scrolling (no #hash ever written to the address bar) ---------------- */
+document.querySelectorAll('a[href^="#"]:not(.up-link)').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+
+/* cross-page "All Work" / "Back to all work" — jump to homepage's Work section without a #hash */
+document.querySelectorAll('.work-link').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    sessionStorage.setItem('scrollTarget', 'work');
+    window.location.href = a.getAttribute('href');
+  });
 });
 
 /* ---------------- hide nav on scroll down, reveal on scroll up ---------------- */
