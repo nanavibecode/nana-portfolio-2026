@@ -162,8 +162,10 @@
   /* ---------- outcome ---------- */
   .cs-outcome{ padding:110px var(--edge-pad); text-align:center; border-bottom:1px solid var(--line); }
   .cs-outcome .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; }
-  .cs-outcome .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(3rem,10vw,7rem); line-height:1; color:var(--white); }
-  .cs-outcome .stat-label{ margin-top:18px; font-size:15px; color:var(--gray); max-width:44ch; margin-left:auto; margin-right:auto; font-weight:300; }
+  .cs-outcome-stats{ margin-top:8px; display:inline-grid; grid-auto-flow:column; gap:56px; }
+  .cs-outcome-stats .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(2.2rem,4.6vw,3.4rem); color:var(--white); line-height:1; text-align:left; }
+  .cs-outcome-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); font-weight:300; max-width:26ch; text-align:left; }
+  @media (max-width:760px){ .cs-outcome-stats{ display:grid; grid-auto-flow:row; grid-template-columns:1fr 1fr; gap:32px 24px; } }
 
   /* ---------- nav to next / back ---------- */
   .cs-nav{ padding:60px var(--edge-pad) 100px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; }
@@ -353,8 +355,12 @@
 
 <section class="cs-outcome" id="outcome">
   <div class="kicker reveal">Outcome</div>
-  <div class="stat reveal">+220%</div>
-  <p class="stat-label reveal">ARR growth over two years — as Zaapi moved from a Thai-only SaaS to a product competing across Singapore, the Philippines, and Malaysia.</p>
+  <div class="cs-outcome-stats">
+    <div class="reveal"><div class="stat">+220%</div><div class="stat-desc">ARR (annual recurring revenue) jumped over two years (Q3 '23 – Q2 '25)</div></div>
+    <div class="reveal"><div class="stat">+650%</div><div class="stat-desc">Number of messages sent on desktop (Q3 '23 – Q2 '25)</div></div>
+    <div class="reveal"><div class="stat">+40%</div><div class="stat-desc">New subscribers in two months after website and brand refresh</div></div>
+    <div class="reveal"><div class="stat">10+</div><div class="stat-desc">First-time international clients across SEA (SG, PH &amp; MY), breaking into new regional markets</div></div>
+  </div>
 </section>
 
 <section class="cs-nav">
