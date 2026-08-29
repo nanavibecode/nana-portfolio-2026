@@ -6,8 +6,43 @@
 <title>Zaapi Growth — Nana, Product Design (UX/UI)</title>
 <meta name="description" content="Scaling Zaapi from a Thai-only SaaS to competing internationally — +220% ARR growth. A product design case study by Nana.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Forum&family=The+Impressionist&family=Roboto:wght@100;300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=The+Impressionist&family=Playfair+Display:wght@400;700&family=Roboto:wght@100;300;400;500&family=Roboto+Mono:wght@100;300;400;500&display=swap" rel="stylesheet">
 <style>
+  @font-face{
+    font-family:'TheSeasonsAccent';
+    src:url('../../assets/fonts/Fontspring-DEMO-theseasons-it.otf') format('opentype');
+    font-weight:400; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:'TheSeasonsAccent';
+    src:url('../../assets/fonts/Fontspring-DEMO-theseasons-bdit.otf') format('opentype');
+    font-weight:700; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:'New York Personal';
+    src:url('../../assets/fonts/NewYork-Personal.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Milton One Bold';
+    src:url('../../assets/fonts/Milton_One_Bold.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'ZT Nature Regular';
+    src:url('../../assets/fonts/ZTNature-Regular.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'ZT Nature Thin';
+    src:url('../../assets/fonts/ZTNature-Thin.ttf') format('truetype');
+    font-weight:100; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'MADE Outer Sans Thin';
+    src:url('../../assets/fonts/MadeOuterSans-Thin.otf') format('opentype');
+    font-weight:100; font-style:normal; font-display:swap;
+  }
   :root{
     --bg:#070707;
     --white:#f3f2ee;
@@ -15,16 +50,16 @@
     --gray-dim:#5c5a55;
     --line:rgba(255,255,255,0.14);
     --accent:#FF2E3F;
-    --serif:'Forum', serif;
-    --swash:'The Impressionist', cursive;
-    --sans:'Helvetica Neue', 'Roboto', sans-serif;
-    --mono:'IBM Plex Mono', monospace;
+    --serif:'MADE Outer Sans Thin', 'Helvetica Neue', sans-serif;
+    --swash:'TheSeasonsAccent', cursive;
+    --sans:'Roboto Mono', 'Helvetica Neue', monospace;
+    --mono:'Roboto Mono', monospace;
     --edge-pad: max(56px, calc((100vw - 1280px)/2 + 56px));
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   body{
-    background:var(--bg); color:var(--white); font-family:var(--sans); font-weight:300;
+    background:var(--bg); color:var(--white); font-family:var(--sans); font-weight:100;
     overflow-x:hidden; cursor:none;
   }
   ::selection{ background:var(--accent); color:#0a0a0a; }
@@ -76,8 +111,8 @@
     position:fixed; top:32px; left:var(--edge-pad); z-index:61; color:var(--white);
     transition:opacity .4s ease, transform .4s ease;
   }
-  .brand-fixed .brand-name{ font-family:var(--sans); font-weight:300; font-size:13px; letter-spacing:.1em; text-transform:uppercase; display:block; line-height:1; }
-  .brand-fixed .brand-sub{ display:block; font-family:var(--sans); font-weight:300; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); margin-top:3px; }
+  .brand-fixed .brand-name{ font-family:var(--sans); font-weight:100; font-size:13px; letter-spacing:.1em; text-transform:uppercase; display:block; line-height:1; }
+  .brand-fixed .brand-sub{ display:block; font-family:var(--sans); font-weight:100; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); margin-top:3px; }
   @media (max-width:760px){ .brand-fixed{ top:31px; left:32px; } }
 
   body.nav-hidden .brand-fixed{ opacity:0; transform:translateY(-16px); pointer-events:none; }
@@ -105,8 +140,8 @@
   .cs-hero{ padding:180px var(--edge-pad) 70px; border-bottom:1px solid var(--line); }
   .cs-hero .logo-badge{ height:34px; width:auto; margin-bottom:24px; }
   .cs-hero .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
-  .cs-hero h1{ font-family:var(--serif); font-weight:400; line-height:1.08; font-size:clamp(2.4rem,7vw,5.2rem); max-width:14ch; }
-  .cs-hero .lead{ margin-top:28px; font-size:clamp(1rem,1.8vw,1.25rem); line-height:1.65; color:var(--gray); max-width:62ch; font-weight:300; }
+  .cs-hero h1{ font-family:var(--serif); font-weight:100; line-height:0.92; font-size:clamp(2.4rem,7vw,5.2rem); max-width:14ch; }
+  .cs-hero .lead{ margin-top:28px; font-size:clamp(1rem,1.8vw,1.25rem); line-height:1.65; color:var(--gray); max-width:62ch; font-weight:100; }
   .cs-hero .lead strong{ color:var(--white); font-weight:400; }
 
   .cs-meta{
@@ -114,7 +149,7 @@
     display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
   }
   .cs-meta .item .lbl{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:10px; }
-  .cs-meta .item .val{ font-family:var(--sans); font-weight:400; font-size:15px; color:var(--white); line-height:1.4; }
+  .cs-meta .item .val{ font-family:var(--sans); font-weight:100; font-size:15px; color:var(--white); line-height:1.4; }
   .cs-meta .item .val.accent{ color:var(--accent); }
   @media (max-width:760px){ .cs-meta{ grid-template-columns:1fr 1fr; row-gap:32px; } }
 
@@ -123,24 +158,24 @@
     padding:56px var(--edge-pad); border-bottom:1px solid var(--line);
     display:grid; grid-template-columns:repeat(4,1fr); gap:32px;
   }
-  .cs-stats .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,4.4vw,3.2rem); color:var(--white); line-height:1; }
-  .cs-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); max-width:26ch; font-weight:300; }
+  .cs-stats .stat{ font-family:var(--serif); font-weight:100; font-size:clamp(2.1rem,4.4vw,3.2rem); color:var(--white); line-height:1; }
+  .cs-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); max-width:26ch; font-weight:100; }
   @media (max-width:760px){ .cs-stats{ grid-template-columns:1fr 1fr; row-gap:40px; } }
 
   /* ---------- content blocks ---------- */
   .cs-block{ padding:90px var(--edge-pad); border-bottom:1px solid var(--line); }
   .cs-block .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
-  .cs-block h2{ font-family:var(--serif); font-weight:400; font-size:clamp(1.6rem,3.6vw,2.5rem); max-width:16ch; }
-  .cs-block .body-text{ margin-top:22px; font-size:clamp(.98rem,1.5vw,1.1rem); line-height:1.75; color:var(--gray); max-width:66ch; font-weight:300; }
+  .cs-block h2{ font-family:var(--serif); font-weight:100; line-height:1.02; font-size:clamp(1.6rem,3.6vw,2.5rem); max-width:16ch; }
+  .cs-block .body-text{ margin-top:22px; font-size:clamp(.98rem,1.5vw,1.1rem); line-height:1.75; color:var(--gray); max-width:66ch; font-weight:100; }
   .cs-block .body-text strong{ color:var(--white); font-weight:400; }
   .cs-block .body-text + .body-text{ margin-top:16px; }
 
   .role-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); max-width:980px; }
   .role-grid .card{ background:var(--bg); padding:26px 24px; }
-  .role-grid .card h4{ font-family:var(--sans); font-weight:400; font-size:14px; color:var(--white); margin-bottom:14px; }
+  .role-grid .card h4{ font-family:var(--sans); font-weight:100; font-size:14px; color:var(--white); margin-bottom:14px; }
   .role-grid .card .kpi-lbl{ font-family:var(--mono); font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:8px; }
   .role-grid .card ul{ list-style:none; }
-  .role-grid .card li{ font-size:12.5px; line-height:1.7; color:var(--gray); font-weight:300; }
+  .role-grid .card li{ font-size:12.5px; line-height:1.7; color:var(--gray); font-weight:100; }
   @media (max-width:760px){ .role-grid{ grid-template-columns:1fr; } }
 
   .gallery{ margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
@@ -163,8 +198,8 @@
   .cs-outcome{ padding:110px var(--edge-pad); text-align:center; border-bottom:1px solid var(--line); }
   .cs-outcome .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; }
   .cs-outcome-stats{ margin-top:8px; display:inline-grid; grid-auto-flow:column; gap:56px; }
-  .cs-outcome-stats .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(2.2rem,4.6vw,3.4rem); color:var(--white); line-height:1; text-align:left; }
-  .cs-outcome-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); font-weight:300; max-width:26ch; text-align:left; }
+  .cs-outcome-stats .stat{ font-family:var(--serif); font-weight:100; font-size:clamp(2.2rem,4.6vw,3.4rem); color:var(--white); line-height:1; text-align:left; }
+  .cs-outcome-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); font-weight:100; max-width:26ch; text-align:left; }
   @media (max-width:760px){ .cs-outcome-stats{ display:grid; grid-auto-flow:row; grid-template-columns:1fr 1fr; gap:32px 24px; } }
 
   /* ---------- nav to next / back ---------- */
@@ -375,7 +410,7 @@
 </section>
 
 <footer>
-  <span>©2025 NANAUX.SPACE — Product Design (UX/UI) Practitioner. All rights reserved.</span>
+  <span>©2026 NANADESIGN.SPACE — Product Design (UX/UI) Practitioner. All rights reserved.</span>
   <a href="#top" class="up-link" data-hover>
     <svg viewBox="0 0 12 22" fill="none"><path d="M6 21V1M1 6l5-5 5 5" stroke="currentColor" stroke-width="1"/></svg>
     Up

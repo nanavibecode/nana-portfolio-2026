@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nana — Product Design (UX/UI) Selected Works</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Forum&family=The+Impressionist&family=Roboto:wght@100;300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=The+Impressionist&family=Playfair+Display:wght@400;700&family=Roboto:wght@100;300;400;500&family=Roboto+Mono:wght@100;300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   @font-face{
     font-family:'TheSeasonsAccent';
@@ -17,6 +17,36 @@
     src:url('assets/fonts/Fontspring-DEMO-theseasons-bdit.otf') format('opentype');
     font-weight:700; font-style:italic; font-display:swap;
   }
+  @font-face{
+    font-family:'New York Personal';
+    src:url('assets/fonts/NewYork-Personal.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Milton One Bold';
+    src:url('assets/fonts/Milton_One_Bold.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'ZT Nature Medium';
+    src:url('assets/fonts/ZTNature-Medium.ttf') format('truetype');
+    font-weight:500; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'ZT Nature Regular';
+    src:url('assets/fonts/ZTNature-Regular.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'ZT Nature Thin';
+    src:url('assets/fonts/ZTNature-Thin.ttf') format('truetype');
+    font-weight:100; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'MADE Outer Sans Thin';
+    src:url('assets/fonts/MadeOuterSans-Thin.otf') format('opentype');
+    font-weight:100; font-style:normal; font-display:swap;
+  }
   :root{
     --bg:#070707;
     --white:#f3f2ee;
@@ -24,11 +54,13 @@
     --gray-dim:#5c5a55;
     --line:rgba(255,255,255,0.14);
     --accent:#FF2E3F;
-    --serif:'Forum', serif;
-    --swash:'The Impressionist', cursive;
+    --serif:'MADE Outer Sans Thin', 'Helvetica Neue', sans-serif;
+    --swash:'TheSeasonsAccent', cursive;
     --accent-font:'TheSeasonsAccent', serif;
-    --sans:'Helvetica Neue', 'Roboto', sans-serif;
-    --mono:'IBM Plex Mono', monospace;
+    --sans:'Roboto Mono', 'Helvetica Neue', monospace;
+    --mono:'Roboto Mono', monospace;
+    --hero-title:'MADE Outer Sans Thin', 'Helvetica Neue', sans-serif;
+    --hero-body:'Roboto Mono', monospace;
     /* shared side inset: 56px on normal screens, grows to track the centered
        1280px content column once the viewport is wider than that, so every
        section (including fixed/full-width ones like the header) lines up */
@@ -37,7 +69,7 @@
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   body{
-    background:var(--bg); color:var(--white); font-family:var(--sans); font-weight:300;
+    background:var(--bg); color:var(--white); font-family:var(--sans); font-weight:100;
     overflow-x:hidden; cursor:none;
   }
   ::selection{ background:var(--accent); color:#0a0a0a; }
@@ -135,8 +167,8 @@
     transition:opacity .6s ease;
   }
   body.footer-arrived .brand-fixed{ opacity:0; pointer-events:none; }
-  .brand-fixed .brand-name{ font-family:var(--sans); font-weight:300; font-size:13px; letter-spacing:.1em; text-transform:uppercase; display:block; line-height:1; }
-  .brand-fixed .brand-sub{ display:block; font-family:var(--sans); font-weight:300; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); margin-top:3px; }
+  .brand-fixed .brand-name{ font-family:var(--sans); font-weight:100; font-size:13px; letter-spacing:.1em; text-transform:uppercase; display:block; line-height:1; }
+  .brand-fixed .brand-sub{ display:block; font-family:var(--sans); font-weight:100; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); margin-top:3px; }
   @media (max-width:760px){ .brand-fixed{ top:31px; left:32px; } }
 
   /* ---------- moon scene (scroll-scrubbed) ---------- */
@@ -152,12 +184,12 @@
     position:absolute; inset:0; display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
     text-align:left; z-index:3; opacity:0; pointer-events:none; padding:0 var(--edge-pad);
   }
-  .stageA h1{ font-family:var(--serif); font-weight:400; line-height:1.1; font-size:clamp(2.2rem,6vw,5rem); }
-  .stageA .swash{ font-family:var(--swash); font-weight:400; font-size:1.35em; vertical-align:-.08em; line-height:0; display:inline-block; margin-right:-.12em; }
-  .stageA .title-accent{ font-family:var(--accent-font); font-weight:400; font-style:italic; }
+  .stageA h1{ font-family:var(--hero-title); font-weight:100; line-height:0.82; font-size:clamp(2.5rem,7vw,5.8rem); }
+  .stageA .swash{ font-family:var(--swash); font-weight:700; font-style:italic; font-size:1.35em; vertical-align:-.08em; line-height:0; display:inline-block; margin-right:-.12em; }
+  .stageA .title-accent{ font-family:var(--accent-font); font-weight:700; font-style:italic; }
   .stageA .title-accent.bold{ font-weight:700; }
   .stageA .line{ display:block; }
-  .stageA .hero-sub{ font-family:var(--sans); font-weight:300; font-size:clamp(.95rem,1.6vw,1.15rem); line-height:1.6; color:var(--gray); max-width:58ch; margin-top:28px; }
+  .stageA .hero-sub{ font-family:var(--hero-body); font-weight:100; font-size:clamp(.95rem,1.6vw,1.15rem); line-height:1.6; color:var(--gray); max-width:58ch; margin-top:28px; }
   .stageA .hero-sub .role-highlight{ color:var(--white); font-weight:300; position:relative; white-space:nowrap; }
   .stageA .hero-sub .role-highlight::after{
     content:''; position:absolute; left:0; right:0; bottom:-.1em; height:1px;
@@ -166,9 +198,9 @@
   .hero-inner{ width:100%; }
 
   .stageC{ align-items:center; justify-content:center; text-align:center; padding:0 56px; }
-  .stageC .big{ font-family:var(--serif); font-weight:400; line-height:1.1; font-size:clamp(2.2rem,6vw,5rem); }
+  .stageC .big{ font-family:var(--serif); font-weight:100; line-height:0.95; font-size:clamp(2.2rem,6vw,5rem); }
   .stageC .big .line{ display:block; }
-  .stageC .big .swash{ font-family:var(--swash); font-weight:400; font-size:1.35em; vertical-align:-.08em; line-height:0; display:inline-block; }
+  .stageC .big .swash{ font-family:var(--swash); font-weight:700; font-style:italic; font-size:1.35em; vertical-align:-.08em; line-height:0; display:inline-block; }
   @media (max-width:760px){ .stage{ padding:0 32px; } }
 
   .scrollcue{
@@ -207,7 +239,7 @@
   .marquee-group{ display:flex; align-items:center; }
   .marquee-group span{
     margin-right:64px; white-space:nowrap;
-    font-family:var(--sans); font-weight:300; font-size:15px; color:var(--gray-dim);
+    font-family:var(--sans); font-weight:100; font-size:15px; color:var(--gray-dim);
     transition:color .3s, opacity .3s; cursor:default; opacity:.65;
   }
   .marquee-group span:hover{ color:var(--white); opacity:1; }
@@ -226,7 +258,7 @@
   /* ---------- section head ---------- */
   .section-head{ text-align:center; padding:0 var(--edge-pad); margin-bottom:50px; }
   .section-head .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
-  .section-head h2{ font-family:var(--serif); font-weight:400; font-size:clamp(1.7rem,4vw,2.7rem); }
+  .section-head h2{ font-family:var(--serif); font-weight:100; line-height:1.05; font-size:clamp(1.7rem,4vw,2.7rem); }
 
   /* ---------- about panel (dragonfly-style reveal) ---------- */
   .about{ padding:60px 0 40px; border-top:1px solid var(--line); }
@@ -236,7 +268,7 @@
   }
   .about-grid .num{ font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.08em; }
   .about-grid .num .lbl{ display:block; margin-top:8px; color:var(--gray-dim); font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
-  .about-grid p{ font-family:var(--sans); font-weight:300; font-size:clamp(1.05rem,2.2vw,1.5rem); line-height:1.6; color:var(--gray); max-width:52ch; }
+  .about-grid p{ font-family:var(--sans); font-weight:100; font-size:clamp(1.05rem,2.2vw,1.5rem); line-height:1.6; color:var(--gray); max-width:52ch; }
   .about-grid p strong{ color:var(--white); font-weight:400; }
   @media (max-width:700px){ .about-grid{ grid-template-columns:1fr; gap:18px; } }
 
@@ -251,10 +283,10 @@
   .work-list .work-row:first-child{ border-top:1px solid var(--line); }
   .work-row .idx{ font-family:var(--mono); font-size:11px; color:var(--gray-dim); }
   .work-row .titles h3{
-    font-family:var(--serif); font-weight:400;
+    font-family:var(--serif); font-weight:100; line-height:1.05;
     font-size:clamp(1.4rem,3.2vw,2.3rem); transition:color .3s, transform .35s;
   }
-  .work-row .titles p{ margin-top:10px; font-size:13px; color:var(--gray); max-width:54ch; font-weight:300; }
+  .work-row .titles p{ margin-top:10px; font-size:13px; color:var(--gray); max-width:54ch; font-weight:100; }
   .work-row .titles .tags{
     margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;
     font-family:var(--mono); font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--gray-dim);
@@ -317,9 +349,9 @@
   }
   .at-sidebar{ flex:0 0 320px; padding:40px 0; }
   .at-sidebar .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
-  .at-sidebar h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem,3.4vw,2.7rem); line-height:1.05; }
+  .at-sidebar h2{ font-family:var(--serif); font-weight:100; font-size:clamp(2rem,3.4vw,2.7rem); line-height:0.95; }
   .at-sidebar h2 .name{ display:block; font-family:var(--swash); font-weight:400; font-size:2.1em; line-height:1.4; margin-top:.1em; padding-bottom:.15em; }
-  .at-sidebar p{ margin-top:26px; font-size:14px; line-height:1.7; color:var(--gray); font-weight:300; max-width:32ch; }
+  .at-sidebar p{ margin-top:26px; font-size:14px; line-height:1.7; color:var(--gray); font-weight:100; max-width:32ch; }
   .at-sidebar .btn{ margin-top:34px; display:inline-block; }
   .at-sidebar .hint{
     margin-top:56px; display:flex; align-items:center; gap:10px;
@@ -346,12 +378,12 @@
   }
   .timeline-axis{ position:absolute; left:0; right:0; top:50%; height:1px; background:var(--line); }
   .timeline-item{ position:relative; width:270px; flex:0 0 270px; margin-right:50px; }
-  .timeline-item .logo{ position:absolute; left:0; width:100%; display:flex; align-items:center; gap:8px; font-family:var(--sans); font-weight:500; font-size:14px; color:var(--white); }
+  .timeline-item .logo{ position:absolute; left:0; width:100%; display:flex; align-items:center; gap:8px; font-family:var(--sans); font-weight:100; font-size:14px; color:var(--white); }
   .timeline-item .logo .mark{ width:20px; height:20px; border-radius:5px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:9px; color:var(--gray); flex:0 0 20px; }
   .timeline-item .logo img{ height:22px; width:auto; }
-  .timeline-item .role{ position:absolute; left:0; width:100%; font-family:var(--serif); font-weight:400; font-size:19px; line-height:1.25; color:var(--white); }
-  .timeline-item .role span{ display:block; font-family:var(--sans); font-weight:300; font-size:13px; color:var(--gray); margin-top:4px; }
-  .timeline-item .desc{ position:absolute; left:0; width:100%; font-size:12.5px; line-height:1.55; color:var(--gray-dim); font-weight:300; max-width:30ch; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+  .timeline-item .role{ position:absolute; left:0; width:100%; font-family:var(--serif); font-weight:100; font-size:19px; line-height:1.05; color:var(--white); }
+  .timeline-item .role span{ display:block; font-family:var(--sans); font-weight:100; font-size:13px; color:var(--gray); margin-top:4px; }
+  .timeline-item .desc{ position:absolute; left:0; width:100%; font-size:12.5px; line-height:1.55; color:var(--gray-dim); font-weight:100; max-width:30ch; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
   .timeline-item .years{ position:absolute; left:0; width:100%; font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; color:var(--gray-dim); }
   .timeline-item .stem{ position:absolute; left:0; width:1px; background:var(--line); }
   .timeline-item .dot{ position:absolute; left:-3.5px; top:calc(50% - 3.5px); width:7px; height:7px; border-radius:50%; background:var(--bg); border:1px solid var(--accent); }
@@ -388,17 +420,17 @@
   .cta-inner{ width:100%; padding:0 var(--edge-pad); display:flex; flex-direction:column; align-items:flex-start; }
   .cta .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
   .cta .tagline{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:20px; }
-  .cta h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,5.8vw,4.4rem); line-height:1.2; }
+  .cta h2{ font-family:var(--serif); font-weight:100; font-size:clamp(2.1rem,5.8vw,4.4rem); line-height:1.0; }
   .cta h2 .line{ display:block; }
   .cta h2 .line + .line{ margin-top:.22em; }
-  .cta h2 .swash{ font-family:var(--swash); font-weight:400; font-size:0.9em; vertical-align:-.08em; line-height:0; display:inline-block; margin-left:.32em; }
+  .cta h2 .swash{ font-family:var(--swash); font-weight:700; font-style:italic; font-size:0.9em; vertical-align:-.08em; line-height:0; display:inline-block; margin-left:.32em; }
   .cta .buttons{ margin-top:48px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; justify-content:flex-start; }
-  .btn{ padding:15px 30px; border-radius:999px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; transition:all .3s; font-family:var(--sans); font-weight:300; }
+  .btn{ padding:15px 30px; border-radius:999px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; transition:all .3s; font-family:var(--sans); font-weight:100; }
   .btn-primary{ background:var(--white); color:#0a0a0a; }
   .btn-primary:hover{ background:var(--accent); color:#0a0a0a; }
   .btn-ghost{ border:1px solid var(--line); color:var(--white); }
   .btn-ghost:hover{ border-color:var(--accent); color:var(--accent); }
-  .btn-text{ font-family:var(--sans); font-weight:300; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--white); transition:color .3s; }
+  .btn-text{ font-family:var(--sans); font-weight:100; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--white); transition:color .3s; }
   .btn-text:hover{ color:var(--accent); }
 
   footer{
@@ -449,8 +481,9 @@
     <div class="stage stageA">
       <div class="hero-inner">
         <h1>
-          <span class="line"><span style="white-space:nowrap"><span class="swash">Y</span>our</span> <span style="white-space:nowrap"><span class="title-accent">m</span>oonshot,</span></span>
-          <span class="line">made <span style="white-space:nowrap"><span class="title-accent">r</span>eal</span></span>
+          <span class="line">Your</span>
+          <span class="line"><span class="title-accent">m</span>oonshot,</span>
+          <span class="line">made <span class="title-accent">real</span></span>
         </h1>
         <p class="hero-sub">I'm a <span class="role-highlight">Product Design Lead</span> with a decade of experience across UX, AI, and SaaS — turning ideas into intuitive products people love and that drive business growth.</p>
       </div>
@@ -603,7 +636,7 @@
 </section>
 
 <footer>
-  <span>©2025 NANAUX.SPACE — Product Design (UX/UI) Practitioner. All rights reserved.</span>
+  <span>©2026 NANADESIGN.SPACE — Product Design (UX/UI) Practitioner. All rights reserved.</span>
   <a href="#top" class="up-link" data-hover>
     <svg viewBox="0 0 12 22" fill="none"><path d="M6 21V1M1 6l5-5 5 5" stroke="currentColor" stroke-width="1"/></svg>
     Up
