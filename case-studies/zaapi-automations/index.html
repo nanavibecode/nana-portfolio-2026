@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No-Code Chatbots &amp; Automations — Nana, Product Design (UX/UI)</title>
+<meta name="description" content="Designing no-code chatbots and automations so non-technical business owners can build customer service agents without coding — 95% fewer unresponded chats. A product design case study by Nana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=The+Impressionist&family=Playfair+Display:wght@400;700&family=Roboto:wght@100;300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face{
+    font-family:'TheSeasonsAccent';
+    src:url('../../assets/fonts/Fontspring-DEMO-theseasons-it.otf') format('opentype');
+    font-weight:400; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:'TheSeasonsAccent';
+    src:url('../../assets/fonts/Fontspring-DEMO-theseasons-bdit.otf') format('opentype');
+    font-weight:700; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:'New York Personal';
+    src:url('../../assets/fonts/NewYork-Personal.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Milton One Bold';
+    src:url('../../assets/fonts/Milton_One_Bold.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'ZT Nature Regular';
+    src:url('../../assets/fonts/ZTNature-Regular.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'ZT Nature Thin';
+    src:url('../../assets/fonts/ZTNature-Thin.ttf') format('truetype');
+    font-weight:100; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'MADE Outer Sans Thin';
+    src:url('../../assets/fonts/MadeOuterSans-Thin.otf') format('opentype');
+    font-weight:100; font-style:normal; font-display:swap;
+  }
+  :root{
+    --bg:#faf9f6;
+    --white:#141310;
+    --gray:#6b6862;
+    --gray-dim:#8a867d;
+    --line:rgba(0,0,0,0.1);
+    --accent:#FF2E3F;
+    --serif:'Forum', serif;
+    --swash:'TheSeasonsAccent', cursive;
+    --sans:'DM Mono', 'Helvetica Neue', monospace;
+    --mono:'DM Mono', monospace;
+    --edge-pad: max(56px, calc((100vw - 1280px)/2 + 56px));
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--white); font-family:var(--sans); font-weight:300;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--accent); color:#fff; }
+  a{ color:inherit; text-decoration:none; }
+  section{ position:relative; z-index:2; }
+
+  .logo-badge{ filter:invert(1); }
+
+  .brand-fixed{
+    position:fixed; top:32px; left:var(--edge-pad); z-index:61; color:var(--white);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .brand-fixed .brand-name{ font-family:var(--sans); font-weight:300; font-size:13px; letter-spacing:.1em; text-transform:uppercase; display:block; line-height:1; }
+  .brand-fixed .brand-sub{ display:block; font-family:var(--sans); font-weight:300; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); margin-top:3px; }
+  @media (max-width:760px){ .brand-fixed{ top:31px; left:32px; } }
+
+  body.nav-hidden .brand-fixed{ opacity:0; transform:translateY(-16px); pointer-events:none; }
+
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    display:flex; align-items:center; justify-content:flex-end; gap:18px;
+    padding:32px var(--edge-pad) 22px calc(var(--edge-pad) + 149px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  body.nav-hidden header{ opacity:0; transform:translateY(-16px); pointer-events:none; }
+  header .menu{
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray);
+    border:1px solid var(--line); border-radius:999px; padding:8px 18px; transition:border-color .3s,color .3s;
+    display:flex; align-items:center; gap:8px;
+  }
+  header .menu svg{ width:11px; height:11px; }
+  header .menu:hover{ border-color:var(--accent); color:var(--accent); }
+  @media (max-width:760px){ header{ padding:28px 32px 19px 173px; } }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- hero ---------- */
+  .cs-hero{ padding:180px var(--edge-pad) 70px; border-bottom:1px solid var(--line); }
+  .cs-hero .logo-badge{ height:34px; width:auto; margin-bottom:24px; }
+  .cs-hero .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
+  .cs-hero h1{ font-family:var(--serif); font-weight:400; line-height:1.02; font-size:clamp(2.4rem,7vw,5.2rem); max-width:16ch; }
+  .cs-hero .lead{ margin-top:28px; font-size:clamp(1rem,1.8vw,1.25rem); line-height:1.65; color:var(--gray); max-width:62ch; font-weight:300; }
+  .cs-hero .lead strong{ color:var(--white); font-weight:300; }
+
+  .cs-meta{
+    padding:44px var(--edge-pad); border-bottom:1px solid var(--line);
+    display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+  }
+  .cs-meta .item .lbl{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:10px; }
+  .cs-meta .item .val{ font-family:var(--sans); font-weight:300; font-size:15px; color:var(--white); line-height:1.4; }
+  .cs-meta .item .val.accent{ color:var(--accent); }
+
+  /* ---------- stats row ---------- */
+  .cs-stats{
+    padding:56px var(--edge-pad); border-bottom:1px solid var(--line);
+    display:grid; grid-template-columns:repeat(4,1fr); gap:32px;
+  }
+  .cs-stats .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,4.4vw,3.2rem); color:var(--white); line-height:1; }
+  .cs-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); max-width:26ch; font-weight:300; }
+  @media (max-width:760px){ .cs-stats{ grid-template-columns:1fr 1fr; row-gap:40px; } }
+  @media (max-width:760px){ .cs-meta{ grid-template-columns:1fr 1fr; row-gap:32px; } }
+
+  /* ---------- content blocks ---------- */
+  .cs-block{ padding:90px var(--edge-pad); border-bottom:1px solid var(--line); }
+  .cs-block .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+  .cs-block h2{ font-family:var(--serif); font-weight:400; line-height:1.05; font-size:clamp(1.6rem,3.6vw,2.5rem); max-width:18ch; }
+  .cs-block .body-text{ margin-top:22px; font-size:clamp(.98rem,1.5vw,1.1rem); line-height:1.75; color:var(--gray); max-width:66ch; font-weight:300; }
+  .cs-block .body-text strong{ color:var(--white); font-weight:300; }
+  .cs-block .body-text + .body-text{ margin-top:16px; }
+  .cs-block .body-list{ margin-top:22px; max-width:66ch; list-style:none; }
+  .cs-block .body-list li{ font-size:clamp(.95rem,1.4vw,1.05rem); line-height:1.7; color:var(--gray); font-weight:300; padding-left:22px; position:relative; margin-top:10px; }
+  .cs-block .body-list li::before{ content:''; position:absolute; left:0; top:.6em; width:6px; height:1px; background:var(--accent); }
+  .cs-block .body-list li strong{ color:var(--white); font-weight:300; }
+
+  .role-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); max-width:980px; }
+  .role-grid .card{ background:var(--bg); padding:26px 24px; }
+  .role-grid .card h4{ font-family:var(--sans); font-weight:300; font-size:14px; color:var(--white); margin-bottom:14px; }
+  .role-grid .card .kpi-lbl{ font-family:var(--mono); font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:8px; }
+  .role-grid .card ul{ list-style:none; }
+  .role-grid .card li{ font-size:12.5px; line-height:1.7; color:var(--gray); font-weight:300; }
+  @media (max-width:760px){ .role-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- executive summary ---------- */
+  .cs-exec{ padding:70px var(--edge-pad); border-bottom:1px solid var(--line); }
+  .cs-exec .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; }
+  .cs-exec-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+  .cs-exec-grid .row{ background:var(--bg); padding:26px 28px; }
+  .cs-exec-grid .row.wide{ grid-column:1/-1; }
+  .cs-exec-grid .row .lbl{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:10px; }
+  .cs-exec-grid .row .val{ font-size:14.5px; line-height:1.7; color:var(--gray); font-weight:300; max-width:66ch; }
+  .cs-exec-grid .row .val strong{ color:var(--white); font-weight:300; }
+  @media (max-width:760px){ .cs-exec-grid{ grid-template-columns:1fr; } .cs-exec-grid .row.wide{ grid-column:auto; } }
+
+  .tbd{ color:var(--accent); font-style:italic; }
+
+  .cs-meta.five{ grid-template-columns:repeat(5,1fr); }
+  @media (max-width:900px){ .cs-meta.five{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ---------- key decisions ---------- */
+  .decision-list{ margin-top:32px; display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); max-width:820px; }
+  .decision-list .decision{ background:var(--bg); padding:26px 28px; }
+  .decision-list .decision h4{ font-family:var(--sans); font-weight:300; font-size:15px; color:var(--white); margin-bottom:10px; }
+  .decision-list .decision .alt{ font-size:12.5px; line-height:1.6; color:var(--gray-dim); margin-bottom:10px; }
+  .decision-list .decision .alt strong{ color:var(--gray); font-weight:300; }
+  .decision-list .decision p{ font-size:13.5px; line-height:1.7; color:var(--gray); font-weight:300; }
+
+  .cs-block h3{ font-family:var(--serif); font-weight:400; font-size:clamp(1.2rem,2.4vw,1.6rem); margin-top:56px; margin-bottom:14px; }
+
+  /* ---------- impact & learning ---------- */
+  .cs-learning{ margin-top:64px; max-width:640px; margin-left:auto; margin-right:auto; text-align:left; }
+  .cs-learning h3{ font-family:var(--serif); font-weight:400; font-size:clamp(1.2rem,2.4vw,1.6rem); margin-bottom:16px; }
+  .cs-learning p{ font-size:14px; line-height:1.75; color:var(--gray); font-weight:300; }
+  .cs-learning p strong{ color:var(--white); font-weight:300; }
+
+  .gallery{ margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .gallery.single{ grid-template-columns:1fr; }
+  .gallery figure{ margin:0; }
+  .gallery img{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; }
+  .gallery figcaption{ margin-top:12px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); }
+  .dd-diagram{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; background:var(--bg); padding:32px 0; }
+  @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } }
+
+  /* ---------- outcome ---------- */
+  .cs-outcome{ padding:110px var(--edge-pad); text-align:center; border-bottom:1px solid var(--line); }
+  .cs-outcome .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; }
+  .cs-outcome-stats{ margin-top:8px; display:inline-grid; grid-auto-flow:column; gap:56px; }
+  .cs-outcome-stats .stat{ font-family:var(--serif); font-weight:400; font-size:clamp(2.2rem,4.6vw,3.4rem); color:var(--white); line-height:1; text-align:left; }
+  .cs-outcome-stats .stat-desc{ margin-top:14px; font-size:13px; line-height:1.6; color:var(--gray); font-weight:300; max-width:26ch; text-align:left; }
+  @media (max-width:760px){ .cs-outcome-stats{ display:grid; grid-auto-flow:row; grid-template-columns:1fr 1fr; gap:32px 24px; } }
+
+  /* ---------- nav to next / back ---------- */
+  .cs-nav{ padding:60px var(--edge-pad) 100px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; }
+  .cs-nav a{
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray);
+    border:1px solid var(--line); border-radius:18px; padding:14px 20px; transition:border-color .3s,color .3s;
+    display:inline-flex; align-items:center; gap:12px; max-width:280px; line-height:1.6;
+  }
+  .cs-nav a svg{ width:14px; height:14px; flex:0 0 auto; }
+  .cs-nav a:hover{ border-color:var(--accent); color:var(--accent); }
+
+  /* ---------- section progress nav ---------- */
+  .cs-toc{
+    position:fixed; right:28px; top:50%; transform:translateY(-50%); z-index:55;
+    display:flex; flex-direction:column; align-items:flex-end; padding:4px 0;
+  }
+  .cs-toc .track{ position:absolute; right:3px; top:0; bottom:0; width:1px; background:var(--line); }
+  .cs-toc .fill{ position:absolute; right:3px; top:0; width:1px; background:var(--accent); height:0; transition:height .4s cubic-bezier(.2,.7,.3,1); }
+  .cs-toc .step{
+    position:relative; display:flex; align-items:center; gap:10px; padding:11px 0; cursor:pointer;
+  }
+  .cs-toc .step .label{
+    font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-dim);
+    white-space:nowrap; opacity:0; transform:translateX(6px);
+    transition:opacity .25s ease, transform .25s ease, color .3s ease;
+  }
+  .cs-toc .step:hover .label{ opacity:1; transform:translateX(0); color:var(--white); }
+  .cs-toc .step.active .label{ opacity:1; transform:translateX(0); color:var(--accent); }
+  .cs-toc .step .dot{
+    width:7px; height:7px; border-radius:50%; background:var(--bg); border:1px solid var(--line); flex:0 0 auto;
+    transition:border-color .3s ease, background .3s ease, transform .3s ease;
+  }
+  .cs-toc .step:hover .dot{ border-color:var(--accent); }
+  .cs-toc .step.active .dot{ border-color:var(--accent); background:var(--accent); transform:scale(1.3); }
+  @media (max-width:1180px){ .cs-toc{ display:none; } }
+
+  footer{
+    position:relative; z-index:2; padding:32px var(--edge-pad); display:flex; align-items:center; justify-content:space-between; gap:18px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.04em; color:var(--gray-dim); border-top:1px solid var(--line);
+  }
+  footer .up-link{ display:flex; align-items:center; gap:8px; color:var(--gray); transition:color .3s; }
+  footer .up-link:hover{ color:var(--accent); }
+  footer svg{ width:12px; height:12px; }
+  @media (max-width:760px){ footer{ flex-direction:column; align-items:flex-start; gap:14px; padding:28px 32px; } }
+</style>
+</head>
+<body>
+
+
+<a href="../../" class="brand-fixed" data-hover><span class="brand-name">NANA</span><span class="brand-sub">Product Design (UX)</span></a>
+
+<header>
+  <a class="menu work-link" href="../../" data-hover>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    All Work
+  </a>
+</header>
+
+<nav class="cs-toc" id="csToc">
+  <div class="track"></div>
+  <div class="fill" id="csTocFill"></div>
+  <a class="step" href="#summary" data-hover><span class="label">Summary</span><span class="dot"></span></a>
+  <a class="step" href="#context" data-hover><span class="label">Context</span><span class="dot"></span></a>
+  <a class="step" href="#problem" data-hover><span class="label">Problem</span><span class="dot"></span></a>
+  <a class="step" href="#my-role" data-hover><span class="label">My Role</span><span class="dot"></span></a>
+  <a class="step" href="#process" data-hover><span class="label">Design Process</span><span class="dot"></span></a>
+  <a class="step" href="#key-decisions" data-hover><span class="label">Key Decisions</span><span class="dot"></span></a>
+  <a class="step" href="#solution" data-hover><span class="label">Solution</span><span class="dot"></span></a>
+  <a class="step" href="#impact" data-hover><span class="label">Impact</span><span class="dot"></span></a>
+</nav>
+
+<section class="cs-hero">
+  <img class="logo-badge reveal" src="../../assets/logos/zaapi.svg" alt="Zaapi">
+  <div class="kicker reveal">Automations</div>
+  <h1 class="reveal">No-Code Chatbots &amp; Automations</h1>
+  <p class="lead reveal">Designed a two-phase no-code automation system — from simple <strong>templates</strong> to a full drag-and-drop <strong>flow builder</strong> — so non-technical business owners could build customer service automations without engineering help.</p>
+</section>
+
+<section class="cs-stats">
+  <div class="reveal"><div class="stat">95%</div><div class="stat-desc">Fewer unresponded chats — down from 95 to 5 per week</div></div>
+  <div class="reveal"><div class="stat">87%</div><div class="stat-desc">Faster replies — down from 1hr 24min to 11min average</div></div>
+</section>
+
+<section class="cs-meta five">
+  <div class="item reveal"><div class="lbl">Role</div><div class="val">Product Design Lead</div></div>
+  <div class="item reveal"><div class="lbl">Company</div><div class="val">Zaapi</div></div>
+  <div class="item reveal"><div class="lbl">Timeline</div><div class="val">~6 mo. to Phase 1, then Phase 2</div></div>
+  <div class="item reveal"><div class="lbl">Feature</div><div class="val accent">Automations &amp; Flow Builder</div></div>
+  <div class="item reveal"><div class="lbl">Process</div><div class="val">Design Thinking</div></div>
+</section>
+
+<section class="cs-exec" id="summary">
+  <div class="kicker reveal">Executive Summary</div>
+  <div class="cs-exec-grid">
+    <div class="row wide reveal">
+      <div class="lbl">The Situation</div>
+      <div class="val">Automations needed to close the gap versus competitors already offering it in the Thai SaaS market, introduce a "sticky" feature that boosted agent efficiency and drove renewals, and lay the foundation for future marketing and chat automations.</div>
+    </div>
+    <div class="row wide reveal">
+      <div class="lbl">The Problem</div>
+      <div class="val">Customer service managers had to meet SLA standards that varied across marketplace platforms, agents resisted after-hours work, and hiring more staff was expensive. Most teams needed automations that covered their essential needs — not comprehensive customization.</div>
+    </div>
+    <div class="row reveal">
+      <div class="lbl">Timeline &amp; Team</div>
+      <div class="val">~6 months to Phase 1, then Phase 2 · <span class="tbd">[team — add who you worked with: designers, PM, engineers]</span></div>
+    </div>
+    <div class="row reveal">
+      <div class="lbl">My Contribution</div>
+      <div class="val">Led the UX initiative end to end — research, design exploration, and handover documentation — from the first customer interviews through the Phase 2 Flow Builder.</div>
+    </div>
+    <div class="row wide reveal">
+      <div class="lbl">The Result</div>
+      <div class="val"><strong>95%</strong> fewer unresponded chats and <strong>87%</strong> faster replies after Phase 1 launched.</div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-block" id="context">
+  <div class="kicker reveal">Context</div>
+  <h2 class="reveal">Automation was table stakes Zaapi didn't have yet</h2>
+  <p class="body-text reveal">Automations needed to close the gap versus competitors already offering it in the Thai SaaS market, introduce a feature sticky enough to boost agent efficiency and drive renewals, and lay the foundation for future marketing and chat automations.</p>
+</section>
+
+<section class="cs-block" id="problem">
+  <div class="kicker reveal">Problem</div>
+  <h2 class="reveal">Two roles, one shared pressure: keep up without more headcount</h2>
+  <p class="body-text reveal">Five exploratory interviews with sellers, agents, and managers — synthesized into empathy maps and journey maps — surfaced two personas under the same pressure from different sides. The core finding: most users wanted simple automations covering their essential needs, which turned out to be the key to feature adoption.</p>
+  <div class="role-grid" style="grid-template-columns:repeat(2,1fr); max-width:660px;">
+    <div class="card reveal">
+      <h4>Customer Service / Business Manager</h4>
+      <div class="kpi-lbl">Pain points</div>
+      <ul><li>Meeting SLA standards that vary across marketplace platforms</li><li>Agents unwilling to work outside business hours</li><li>Cost and training burden of hiring more staff</li></ul>
+    </div>
+    <div class="card reveal">
+      <h4>Chat Agent</h4>
+      <div class="kpi-lbl">Pain points</div>
+      <ul><li>Struggles handling high chat volume during campaigns</li><li>Resistance to after-hours work; needs real-time breaks</li></ul>
+    </div>
+  </div>
+  <div class="gallery single">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-automations/findings-summary.png" alt="Research synthesis — interviews, empathy maps and journeys" loading="lazy"><figcaption>Research synthesis — interviews, empathy maps &amp; journeys</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-block" id="my-role">
+  <div class="kicker reveal">My Role</div>
+  <h2 class="reveal">What I owned, end to end</h2>
+  <p class="body-text reveal">I led the UX initiative end to end — the first customer interviews, empathy maps and journey maps, feature prioritization, low- and high-fidelity design exploration, usability testing, and the handover documentation engineering built from across both phases — partnering with <span class="tbd">[add PM/eng stakeholders you worked with]</span>.</p>
+</section>
+
+<section class="cs-block" id="process">
+  <div class="kicker reveal">Design Process</div>
+  <h2 class="reveal">Double Diamond — research before solutions</h2>
+  <p class="body-text reveal">I use the Double Diamond as my framework: research on-site with customers and users first, before designing anything. For Automations that meant sitting with sellers, agents, and managers before a single screen got sketched.</p>
+  <div class="gallery single">
+    <figure class="reveal">
+      <svg class="dd-diagram" viewBox="0 0 900 320" role="img" aria-label="Double Diamond design process — discover, define, develop, deliver">
+        <path d="M4,160 L227,60 L450,160 L227,260 Z" fill="none" stroke="#b5b1a8" stroke-width="1"/>
+        <path d="M450,160 L673,60 L896,160 L673,260 Z" fill="none" stroke="#b5b1a8" stroke-width="1"/>
+        <path d="M4,160 L227,60 L227,260 Z" fill="rgba(255,46,63,0.07)" stroke="none"/>
+        <path d="M4,160 L227,60 L227,260 Z" fill="none" stroke="#FF2E3F" stroke-width="1.4"/>
+        <line x1="227" y1="60" x2="227" y2="260" stroke="#c8c4ba" stroke-width="1" stroke-dasharray="2 4"/>
+        <line x1="673" y1="60" x2="673" y2="260" stroke="#c8c4ba" stroke-width="1" stroke-dasharray="2 4"/>
+        <circle cx="450" cy="160" r="3" fill="#6b6862"/>
+        <text x="115" y="40" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" fill="#8a867d">ON-SITE RESEARCH</text>
+        <text x="338" y="40" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" fill="#8a867d">PERSONAS &amp; JOURNEYS</text>
+        <text x="561" y="40" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" fill="#8a867d">DESIGN EXPLORATION</text>
+        <text x="784" y="40" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" fill="#8a867d">SHIP &amp; VALIDATE</text>
+        <text x="115" y="300" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" letter-spacing="1.5" fill="#FF2E3F">DISCOVER</text>
+        <text x="338" y="300" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" letter-spacing="1.5" fill="#6b6862">DEFINE</text>
+        <text x="561" y="300" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" letter-spacing="1.5" fill="#6b6862">DEVELOP</text>
+        <text x="784" y="300" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" letter-spacing="1.5" fill="#6b6862">DELIVER</text>
+      </svg>
+      <figcaption>Double Diamond — discover, define, develop, deliver</figcaption>
+    </figure>
+  </div>
+  <p class="body-text reveal"><strong>Discover</strong> and <strong>Define</strong> covered the five on-site interviews, empathy maps, and journey maps behind the two personas above. <strong>Develop</strong> and <strong>Deliver</strong> covered the design exploration and decisions below, through to what shipped in Phase 1 and Phase 2.</p>
+</section>
+
+<section class="cs-block" id="key-decisions">
+  <div class="kicker reveal">Key Decisions</div>
+  <h2 class="reveal">What I chose, and why</h2>
+  <p class="body-text reveal">Three decisions shaped whether this feature would get adopted at all, let alone earn a Phase 2.</p>
+  <div class="decision-list">
+    <div class="decision reveal">
+      <h4>Start simple, scale later</h4>
+      <div class="alt"><strong>Alternative:</strong> comprehensive customization options from day one</div>
+      <p>Chose to launch Phase 1 with four basic templates — auto-assignment, automated greeting/out-of-hours messages, comment reply, and label tagging — prioritizing adoption and speed-to-market over feature completeness. Rapid usability testing showed the templates met over 80% of user needs with zero learning curve; users described it as "like filling out a form."</p>
+    </div>
+    <div class="decision reveal">
+      <h4>Where automation lives in the product</h4>
+      <div class="alt"><strong>Alternative:</strong> placing the feature inside team management for a seamless entry point vs. a dedicated navigation item for standalone visibility</div>
+      <p><span class="tbd">[confirm which option shipped, and why]</span> — both were prototyped and explored before the final call.</p>
+    </div>
+    <div class="decision reveal">
+      <h4>How templates are presented</h4>
+      <div class="alt"><strong>Alternative:</strong> a single modal showing all templates on one page vs. dedicated navigation tabs per automation type</div>
+      <p><span class="tbd">[confirm which option shipped, and why]</span>.</p>
+    </div>
+  </div>
+  <div class="gallery single" style="margin-top:40px">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-automations/feature-prioritization.png" alt="Feature prioritization — user needs vs. technical comfort" loading="lazy"><figcaption>Feature prioritization — user needs vs. technical comfort</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-block" id="solution">
+  <div class="kicker reveal">Solution &amp; Delivery</div>
+  <h2 class="reveal">What shipped</h2>
+  <p class="body-text reveal">A two-phase no-code automation system: four simple templates anyone could turn on with zero learning curve, and a full drag-and-drop flow builder for teams that outgrew them.</p>
+
+  <h3>Phase 1 — Basic automation templates</h3>
+  <p class="body-text reveal">Four core templates — auto-assignment, automated greeting and out-of-hours messages, comment reply, and label tagging — set up through a one-page form with a live chat preview, so there was nothing to learn.</p>
+  <div class="gallery">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-automations/automation-templates.png" alt="Automation template list" loading="lazy"><figcaption>Automation template list</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-automations/design-exploration.png" alt="Design exploration — entry points and template selection" loading="lazy"><figcaption>Design exploration — entry points &amp; selection</figcaption></figure>
+  </div>
+  <div class="gallery single" style="margin-top:32px">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-automations/userflow.png" alt="End-to-end user flow for first-time users, experienced users, and setup" loading="lazy"><figcaption>End-to-end user flow — first-time, experienced &amp; setup</figcaption></figure>
+  </div>
+
+  <h3>Phase 2 — Custom Flow Builder</h3>
+  <p class="body-text reveal">Once Phase 1 proved demand, Phase 2 introduced a drag-and-drop visual flow system for complex logic — modular trigger → filter → action cards, so power users could build custom automations without engineering.</p>
+  <div class="gallery">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-automations/flow-builder-1.png" alt="Flow builder — trigger and node selection" loading="lazy"><figcaption>Flow builder — trigger &amp; node selection</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-automations/flow-builder-2.png" alt="Flow builder — building a flow" loading="lazy"><figcaption>Flow builder — building a flow</figcaption></figure>
+  </div>
+
+  <h3>Handover</h3>
+  <p class="body-text reveal">Documented for engineering with feature purpose, personas, flows, and specifications for both phases — so what shipped in Phase 2 could build cleanly on what Phase 1 had already proven.</p>
+  <div class="gallery single">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-automations/handover.png" alt="Handover documentation for developers" loading="lazy"><figcaption>Handover documentation</figcaption></figure>
+  </div>
+</section>
+
+<section class="cs-outcome" id="impact">
+  <div class="kicker reveal">Impact &amp; Learning</div>
+  <div class="cs-outcome-stats">
+    <div class="reveal"><div class="stat">95%</div><div class="stat-desc">Fewer unresponded chats — down from 95 to 5 per week</div></div>
+    <div class="reveal"><div class="stat">87%</div><div class="stat-desc">Faster replies — down from 1hr 24min to 11min average</div></div>
+  </div>
+  <div class="cs-learning reveal">
+    <h3>What I'd improve</h3>
+    <p>Prioritizing delivery over discovery paid off — shipping a minimum lovable product around the highest-volume use cases first is what got Phase 1 to 80% coverage with zero learning curve. What I'd change next: the jump from Basic Automations to the Flow Builder should be a single click, not a rebuild — <strong>preserving triggers, conditions, actions, and history</strong>. Longer-term, I'd standardize on the Flow Builder as the one interface, so people don't have to think about which tool they're in.</p>
+  </div>
+</section>
+
+<section class="cs-nav">
+  <a class="work-link" href="../../" data-hover>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to all work
+  </a>
+  <a href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener" data-hover>
+    Next — Fintech UX, reimagined
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<footer>
+  <span>©2026 NANADESIGN.SPACE — Product Design (UX/UI) Practitioner. All rights reserved.</span>
+  <a href="#top" class="up-link" data-hover>
+    <svg viewBox="0 0 12 22" fill="none"><path d="M6 21V1M1 6l5-5 5 5" stroke="currentColor" stroke-width="1"/></svg>
+    Up
+  </a>
+</footer>
+
+<script>
+/* ---------------- back to top ---------------- */
+document.querySelector('.up-link').addEventListener('click', e=>{
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ---------------- clean-URL anchor scrolling (no #hash ever written to the address bar) ---------------- */
+document.querySelectorAll('a[href^="#"]:not(.up-link)').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+
+/* cross-page "All Work" / "Back to all work" — jump to homepage's Work section without a #hash */
+document.querySelectorAll('.work-link').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    sessionStorage.setItem('scrollTarget', 'work');
+    window.location.href = a.getAttribute('href');
+  });
+});
+
+/* ---------------- hide nav on scroll down, reveal on scroll up ---------------- */
+(function(){
+  let lastY = window.scrollY;
+  let ticking = false;
+  const revealAt = 80; // always show near the very top
+  addEventListener('scroll', ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      const y = window.scrollY;
+      if(y < revealAt || y < lastY){
+        document.body.classList.remove('nav-hidden');
+      } else if(y > lastY){
+        document.body.classList.add('nav-hidden');
+      }
+      lastY = y;
+      ticking = false;
+    });
+  }, { passive:true });
+})();
+
+/* ---------------- scroll reveal ---------------- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in'); });
+},{ threshold:0.15 });
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------------- section progress nav (scrollspy) ---------------- */
+(function(){
+  const toc = document.getElementById('csToc');
+  if(!toc) return;
+  const steps = [...toc.querySelectorAll('.step')];
+  const fill = document.getElementById('csTocFill');
+  const sections = steps.map(step => document.querySelector(step.getAttribute('href')));
+
+  function updateActive(){
+    let activeIndex = 0;
+    const markerY = window.innerHeight * 0.4;
+    sections.forEach((sec, i)=>{
+      if(!sec) return;
+      if(sec.getBoundingClientRect().top <= markerY) activeIndex = i;
+    });
+    steps.forEach((step, i)=> step.classList.toggle('active', i === activeIndex));
+    const first = steps[0], active = steps[activeIndex];
+    if(first && active){
+      fill.style.height = (active.offsetTop + active.offsetHeight/2 - first.offsetTop) + 'px';
+    }
+  }
+
+  let ticking = false;
+  addEventListener('scroll', ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{ updateActive(); ticking = false; });
+  }, { passive:true });
+  updateActive();
+})();
+</script>
+
+</body>
+</html>

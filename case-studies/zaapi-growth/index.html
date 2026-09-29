@@ -44,11 +44,11 @@
     font-weight:100; font-style:normal; font-display:swap;
   }
   :root{
-    --bg:#070707;
-    --white:#f3f2ee;
-    --gray:#8e8c86;
-    --gray-dim:#5c5a55;
-    --line:rgba(255,255,255,0.14);
+    --bg:#faf9f6;
+    --white:#141310;
+    --gray:#6b6862;
+    --gray-dim:#8a867d;
+    --line:rgba(0,0,0,0.1);
     --accent:#FF2E3F;
     --serif:'Forum', serif;
     --swash:'TheSeasonsAccent', cursive;
@@ -60,52 +60,13 @@
   html{ scroll-behavior:smooth; }
   body{
     background:var(--bg); color:var(--white); font-family:var(--sans); font-weight:300;
-    overflow-x:hidden; cursor:none;
+    overflow-x:hidden;
   }
-  ::selection{ background:var(--accent); color:#0a0a0a; }
+  ::selection{ background:var(--accent); color:#fff; }
   a{ color:inherit; text-decoration:none; }
   section{ position:relative; z-index:2; }
 
-  #grain{
-    position:fixed; inset:0; z-index:85; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  #starfield{ position:fixed; inset:0; z-index:0; pointer-events:none; }
-
-  /* ---------- reticle cursor ---------- */
-  #reticleH, #reticleV{
-    position:fixed; z-index:9998; pointer-events:none;
-    background:rgba(255,90,46,0.3); opacity:0; transition:opacity .2s;
-  }
-  #reticleH{ left:0; width:100vw; height:1px; }
-  #reticleV{ top:0; height:100vh; width:1px; }
-  body.link-hover #reticleH, body.link-hover #reticleV{ opacity:1; }
-  #reticle{
-    position:fixed; top:0; left:0; width:34px; height:34px; z-index:9999;
-    pointer-events:none; transform:translate(-50%,-50%);
-    border:.5px solid rgba(243,242,238,0.55); border-radius:50%;
-    transition:width .2s,height .2s,border-color .2s,border-width .2s;
-  }
-  #reticle::before,#reticle::after{ content:''; position:absolute; background:rgba(243,242,238,0.75); }
-  #reticle::before{ left:50%; top:50%; width:9px; height:.5px; transform:translate(-50%,-50%); }
-  #reticle::after{ left:50%; top:50%; width:.5px; height:9px; transform:translate(-50%,-50%); }
-  body.link-hover #reticle{ width:52px; height:52px; border-width:1px; border-color:var(--accent); }
-  body.link-hover #reticle::before,body.link-hover #reticle::after{ background:var(--accent); height:1px; width:1px; }
-  body.link-hover #reticle::before{ width:9px; height:1px; }
-  body.link-hover #reticle::after{ width:1px; height:9px; }
-  @media (hover:none), (pointer:coarse){ body{ cursor:auto; } #reticle,#reticleH,#reticleV{ display:none; } }
-
-  /* ---------- HUD chrome ---------- */
-  .corner{ position:fixed; z-index:70; width:34px; height:34px; pointer-events:none; opacity:.55; }
-  .corner svg{ width:100%; height:100%; }
-  .corner.tl{ top:18px; left:18px; }
-  .corner.tr{ top:18px; right:18px; }
-  .corner.bl{ bottom:18px; left:18px; }
-  .corner.br{ bottom:18px; right:18px; }
-  @media (max-width:760px){
-    .corner.tl{ top:12px; left:12px; } .corner.tr{ top:12px; right:12px; }
-    .corner.bl{ bottom:12px; left:12px; } .corner.br{ bottom:12px; right:12px; }
-  }
+  .logo-badge{ filter:invert(1); }
 
   .brand-fixed{
     position:fixed; top:32px; left:var(--edge-pad); z-index:61; color:var(--white);
@@ -169,6 +130,10 @@
   .cs-block .body-text{ margin-top:22px; font-size:clamp(.98rem,1.5vw,1.1rem); line-height:1.75; color:var(--gray); max-width:66ch; font-weight:300; }
   .cs-block .body-text strong{ color:var(--white); font-weight:300; }
   .cs-block .body-text + .body-text{ margin-top:16px; }
+  .cs-block .body-list{ margin-top:22px; max-width:66ch; list-style:none; }
+  .cs-block .body-list li{ font-size:clamp(.95rem,1.4vw,1.05rem); line-height:1.7; color:var(--gray); font-weight:300; padding-left:22px; position:relative; margin-top:10px; }
+  .cs-block .body-list li::before{ content:''; position:absolute; left:0; top:.6em; width:6px; height:1px; background:var(--accent); }
+  .cs-block .body-list li strong{ color:var(--white); font-weight:300; }
 
   .role-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); max-width:980px; }
   .role-grid .card{ background:var(--bg); padding:26px 24px; }
@@ -178,10 +143,42 @@
   .role-grid .card li{ font-size:12.5px; line-height:1.7; color:var(--gray); font-weight:300; }
   @media (max-width:760px){ .role-grid{ grid-template-columns:1fr; } }
 
+  /* ---------- executive summary ---------- */
+  .cs-exec{ padding:70px var(--edge-pad); border-bottom:1px solid var(--line); }
+  .cs-exec .kicker{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; }
+  .cs-exec-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+  .cs-exec-grid .row{ background:var(--bg); padding:26px 28px; }
+  .cs-exec-grid .row.wide{ grid-column:1/-1; }
+  .cs-exec-grid .row .lbl{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:10px; }
+  .cs-exec-grid .row .val{ font-size:14.5px; line-height:1.7; color:var(--gray); font-weight:300; max-width:66ch; }
+  .cs-exec-grid .row .val strong{ color:var(--white); font-weight:300; }
+  @media (max-width:760px){ .cs-exec-grid{ grid-template-columns:1fr; } .cs-exec-grid .row.wide{ grid-column:auto; } }
+
+  .tbd{ color:var(--accent); font-style:italic; }
+
+  .cs-meta.five{ grid-template-columns:repeat(5,1fr); }
+  @media (max-width:900px){ .cs-meta.five{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ---------- key decisions ---------- */
+  .decision-list{ margin-top:32px; display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); max-width:820px; }
+  .decision-list .decision{ background:var(--bg); padding:26px 28px; }
+  .decision-list .decision h4{ font-family:var(--sans); font-weight:300; font-size:15px; color:var(--white); margin-bottom:10px; }
+  .decision-list .decision .alt{ font-size:12.5px; line-height:1.6; color:var(--gray-dim); margin-bottom:10px; }
+  .decision-list .decision .alt strong{ color:var(--gray); font-weight:300; }
+  .decision-list .decision p{ font-size:13.5px; line-height:1.7; color:var(--gray); font-weight:300; }
+
+  .cs-block h3{ font-family:var(--serif); font-weight:400; font-size:clamp(1.2rem,2.4vw,1.6rem); margin-top:56px; margin-bottom:14px; }
+
+  /* ---------- impact & learning ---------- */
+  .cs-learning{ margin-top:64px; max-width:640px; margin-left:auto; margin-right:auto; text-align:left; }
+  .cs-learning h3{ font-family:var(--serif); font-weight:400; font-size:clamp(1.2rem,2.4vw,1.6rem); margin-bottom:16px; }
+  .cs-learning p{ font-size:14px; line-height:1.75; color:var(--gray); font-weight:300; }
+  .cs-learning p strong{ color:var(--white); font-weight:300; }
+
   .gallery{ margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .gallery.single{ grid-template-columns:1fr; }
   .gallery figure{ margin:0; }
-  .gallery img{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; }
+  .gallery img, .gallery video{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; }
   .gallery figcaption{ margin-top:12px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); }
   @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } }
 
@@ -220,7 +217,7 @@
   .cs-toc .track{ position:absolute; right:3px; top:0; bottom:0; width:1px; background:var(--line); }
   .cs-toc .fill{ position:absolute; right:3px; top:0; width:1px; background:var(--accent); height:0; transition:height .4s cubic-bezier(.2,.7,.3,1); }
   .cs-toc .step{
-    position:relative; display:flex; align-items:center; gap:10px; padding:11px 0; cursor:none;
+    position:relative; display:flex; align-items:center; gap:10px; padding:11px 0; cursor:pointer;
   }
   .cs-toc .step .label{
     font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-dim);
@@ -249,16 +246,6 @@
 </head>
 <body>
 
-<canvas id="starfield"></canvas>
-<div id="grain"></div>
-<div id="reticleH"></div>
-<div id="reticleV"></div>
-<div id="reticle"></div>
-
-<div class="corner tl"><svg viewBox="0 0 34 34"><path d="M2 14V2H14" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
-<div class="corner tr"><svg viewBox="0 0 34 34"><path d="M32 14V2H20" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
-<div class="corner bl"><svg viewBox="0 0 34 34"><path d="M2 20V32H14" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
-<div class="corner br"><svg viewBox="0 0 34 34"><path d="M32 20V32H20" stroke="rgba(243,242,238,0.5)" stroke-width="1" fill="none"/></svg></div>
 
 <a href="../../" class="brand-fixed" data-hover><span class="brand-name">NANA</span><span class="brand-sub">Product Design (UX)</span></a>
 
@@ -272,13 +259,14 @@
 <nav class="cs-toc" id="csToc">
   <div class="track"></div>
   <div class="fill" id="csTocFill"></div>
+  <a class="step" href="#summary" data-hover><span class="label">Summary</span><span class="dot"></span></a>
   <a class="step" href="#context" data-hover><span class="label">Context</span><span class="dot"></span></a>
-  <a class="step" href="#research" data-hover><span class="label">Research</span><span class="dot"></span></a>
-  <a class="step" href="#design-process" data-hover><span class="label">Design Process</span><span class="dot"></span></a>
-  <a class="step" href="#wireframes" data-hover><span class="label">Wireframes &amp; Validation</span><span class="dot"></span></a>
-  <a class="step" href="#final-interfaces" data-hover><span class="label">Final Interfaces</span><span class="dot"></span></a>
-  <a class="step" href="#handover" data-hover><span class="label">Handover</span><span class="dot"></span></a>
-  <a class="step" href="#outcome" data-hover><span class="label">Outcome</span><span class="dot"></span></a>
+  <a class="step" href="#problem" data-hover><span class="label">Problem</span><span class="dot"></span></a>
+  <a class="step" href="#my-role" data-hover><span class="label">My Role</span><span class="dot"></span></a>
+  <a class="step" href="#process" data-hover><span class="label">Design Process</span><span class="dot"></span></a>
+  <a class="step" href="#key-decisions" data-hover><span class="label">Key Decisions</span><span class="dot"></span></a>
+  <a class="step" href="#solution" data-hover><span class="label">Solution</span><span class="dot"></span></a>
+  <a class="step" href="#impact" data-hover><span class="label">Impact</span><span class="dot"></span></a>
 </nav>
 
 <section class="cs-hero">
@@ -295,24 +283,51 @@
   <div class="reveal"><div class="stat">10+</div><div class="stat-desc">First-time international clients across SEA (SG, PH &amp; MY), breaking into new regional markets</div></div>
 </section>
 
-<section class="cs-meta">
+<section class="cs-meta five">
   <div class="item reveal"><div class="lbl">Role</div><div class="val">Product Design Lead</div></div>
   <div class="item reveal"><div class="lbl">Company</div><div class="val">Zaapi</div></div>
   <div class="item reveal"><div class="lbl">Timeline</div><div class="val">Q3 '23 – Q2 '25</div></div>
   <div class="item reveal"><div class="lbl">Markets</div><div class="val accent">TH → SG, PH, MY</div></div>
+  <div class="item reveal"><div class="lbl">Process</div><div class="val">Design Thinking (Double Diamond)</div></div>
+</section>
+
+<section class="cs-exec" id="summary">
+  <div class="kicker reveal">Executive Summary</div>
+  <div class="cs-exec-grid">
+    <div class="row wide reveal">
+      <div class="lbl">The Situation</div>
+      <div class="val">Zaapi is a conversational commerce and customer-service platform — unifying chat, AI agents, automations, and analytics for teams selling across Shopee, Lazada, LINE, and other channels. It grew fast domestically, but carried assumptions specific to the Thai market.</div>
+    </div>
+    <div class="row wide reveal">
+      <div class="lbl">The Problem</div>
+      <div class="val">Three distinct user roles shared the same login — Marketing/E-commerce Manager, Customer Service Manager, and Business Owner — each with different responsibilities, KPIs, and reasons to open the dashboard. Designing for "the user" wasn't going to work.</div>
+    </div>
+    <div class="row reveal">
+      <div class="lbl">Timeline &amp; Team</div>
+      <div class="val">Q3 '23 – Q2 '25 · Started solo, promoted Senior → Lead, grew the team to 2 designers, partnering with the Head of Product and a 5-engineer tech team</div>
+    </div>
+    <div class="row reveal">
+      <div class="lbl">My Contribution</div>
+      <div class="val">Led product design across the platform as Zaapi expanded internationally — from research and role segmentation through the redesigned chat, AI agent, automation, and analytics experience, to handover.</div>
+    </div>
+    <div class="row wide reveal">
+      <div class="lbl">The Result</div>
+      <div class="val"><strong>+220%</strong> ARR growth and <strong>10+</strong> first-time international clients across Singapore, the Philippines, and Malaysia within two years.</div>
+    </div>
+  </div>
 </section>
 
 <section class="cs-block" id="context">
   <div class="kicker reveal">Context</div>
   <h2 class="reveal">A Thai SaaS built for one market, asked to win a bigger one</h2>
-  <p class="body-text reveal">Zaapi is a conversational commerce and customer-service platform — unifying chat, AI agents, automations, and analytics for teams selling across Shopee, Lazada, LINE, and other channels. It grew fast domestically, but the product carried assumptions specific to the Thai market: workflows, terminology, and dashboards built around how one type of team worked, not the range of roles and markets Zaapi needed to serve next.</p>
-  <p class="body-text reveal">My job was to lead product design across the platform as Zaapi expanded internationally — starting with understanding who was actually using it, and why the product needed to flex.</p>
+  <p class="body-text reveal">Zaapi is a VC-backed startup out of Singapore, built to give Southeast Asia's e-commerce sellers the tools to grow. The regional ambition was there from day one — but the product itself was still Thai-only: workflows, terminology, and dashboards built around how one type of team worked in one market, not the range of roles and countries Zaapi needed to serve next.</p>
+  <p class="body-text reveal">The push into a second market wasn't even planned yet when it started. A customer in the Philippines found Zaapi organically and signed up anyway — proof the demand existed before the roadmap did.</p>
 </section>
 
-<section class="cs-block" id="research">
-  <div class="kicker reveal">Research</div>
+<section class="cs-block" id="problem">
+  <div class="kicker reveal">Problem</div>
   <h2 class="reveal">One product, three very different jobs to be done</h2>
-  <p class="body-text reveal">Interviews and workflow mapping across existing customers surfaced three distinct user roles sharing the same login — each with different responsibilities, KPIs, and reasons to open the dashboard. Designing for "the user" wasn't going to work; the product needed to serve all three without feeling built for none of them.</p>
+  <p class="body-text reveal">Designing for a single "user" would have meant guessing whose needs won by default — and workflow interviews made it clear that guess would be wrong for two out of three roles, every time. Each one opened the same dashboard for a different reason, judged it by different numbers, and would quietly stop trusting the product the moment it felt built for someone else's job.</p>
   <div class="role-grid">
     <div class="card reveal">
       <h4>Marketing / E-commerce Manager</h4>
@@ -330,37 +345,78 @@
       <ul><li>Revenue &amp; growth</li><li>Orders &amp; sales</li><li>Store health across channels</li></ul>
     </div>
   </div>
-  <div class="gallery">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/research-1.jpg" alt="Research synthesis — customer interviews and workflow mapping" loading="lazy"><figcaption>Customer interviews &amp; workflow mapping</figcaption></figure>
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/research-2.jpg" alt="Research synthesis — role segmentation" loading="lazy"><figcaption>Role segmentation &amp; KPI mapping</figcaption></figure>
-  </div>
 </section>
 
-<section class="cs-block" id="design-process">
+<section class="cs-block" id="my-role">
+  <div class="kicker reveal">My Role</div>
+  <h2 class="reveal">What I owned, end to end</h2>
+  <p class="body-text reveal">My job was to lead product design across the platform as Zaapi expanded internationally — starting with understanding who was actually using it, and why the product needed to flex. I owned the research, the role segmentation, the design direction and strategy for how each surface adapted per role, validation testing with customer service managers and business owners, and the handover documentation. I started as the only designer at Zaapi — Senior Product Designer, promoted to Product Design Lead partway through — partnering directly with the Head of Product and a five-engineer tech team. With a limited design budget, I made the case for more headcount and brought on a junior designer to help execute at the quality and pace the roadmap needed: I kept ownership of direction, strategy, and UX; they specialized in visual design and polish. We ran a one-week design cadence alongside engineering's two-week sprints, with weekly check-ins and daily standups to stay in sync as the roadmap expanded into multiple markets in parallel.</p>
+</section>
+
+<section class="cs-block" id="process">
   <div class="kicker reveal">Design Process</div>
-  <h2 class="reveal">Designing for the role, not just the screen</h2>
-  <p class="body-text reveal">With three roles and their KPIs mapped, the design process centered on what each role needed surfaced first — same underlying data, different entry points and emphasis. Flows were stress-tested against real support scenarios: a spike in chats, a flagged case, a campaign under-performing — not just the happy path.</p>
+  <h2 class="reveal">A shared process, not a design silo</h2>
+  <p class="body-text reveal">Zaapi's design process runs on a Double Diamond shape — Discover and Define before Develop and Deliver — with fast user validation and results tracked at every stage, kept in sync with product and engineering rather than run in a design silo. Research pulled from whichever method fit the question: surveys, user interviews (both online and on-site), user-journey mapping, persona mapping, fake-door mockups to test demand before building, insight from the sales team on subscribers and churn, behavioral and product analytics (Hotjar, Amplitude, user impersonation), competitor analysis, and reaching out to customers directly.</p>
   <div class="gallery">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/design-process-1.jpg" alt="Design process artifact 1" loading="lazy"><figcaption>Flow &amp; information-architecture iteration</figcaption></figure>
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/design-process-2.jpg" alt="Design process artifact 2" loading="lazy"><figcaption>Role-based dashboard concepts</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/design-process-1.jpg" alt="Zaapi Product Design Principles — user-centered, visual-simplified, usability-ensured" loading="lazy"><figcaption>Zaapi Product Design Principles</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/design-process-2.jpg" alt="Zaapi Design Working Process — a Double Diamond shape from Discover to Deliver" loading="lazy"><figcaption>Zaapi Design Working Process</figcaption></figure>
+  </div>
+
+  <h3>Key insights</h3>
+  <ul class="body-list reveal">
+    <li><strong>Fragmented channels lead to missed messages</strong> — sellers juggling WhatsApp, Facebook/Instagram DMs, and marketplace inboxes routinely dropped chats simply by switching apps, creating frustrated customers and lost revenue.</li>
+    <li><strong>SLA compliance is non-negotiable</strong> — CS managers live in fear of platform penalties; without real-time SLA visibility and automated alerts, even one missed message could hurt store ratings and incur fines.</li>
+    <li><strong>Performance is invisible, and un-rewarded</strong> — when each channel reports stats differently, managers can't fairly measure or incentivize their agents. A single dashboard with normalized KPIs was essential to drive accountability.</li>
+    <li><strong>Context is scattered, slowing agents down</strong> — hunting across order-management, product catalogs, and loyalty systems wasted agents' time. Embedding a customer-360 view directly into chat cuts resolution time and lifts service quality.</li>
+    <li><strong>Users churn out fast without sticky features</strong> — without automation, AI, and analytics keeping teams inside the product daily, there was nothing holding them there.</li>
+  </ul>
+
+  <h3>Research artifacts</h3>
+  <div class="gallery single">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/research-4.png" alt="Findings from qualitative interviews, categorized by job role" loading="lazy"><figcaption>Findings — categorized by job role</figcaption></figure>
+  </div>
+  <div class="gallery" style="margin-top:20px">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/research-1.jpg" alt="Persona deep-dive — Marketing / E-commerce Manager" loading="lazy"><figcaption>Persona 1 — Marketing / E-commerce Manager</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/research-2.jpg" alt="Persona deep-dive — Customer Service Manager" loading="lazy"><figcaption>Persona 2 — Customer Service Manager</figcaption></figure>
+  </div>
+  <div class="gallery single" style="margin-top:20px">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/research-3.jpg" alt="Persona deep-dive — Business Owner (SME)" loading="lazy"><figcaption>Persona 3 — Business Owner (SME)</figcaption></figure>
   </div>
 </section>
 
-<section class="cs-block" id="wireframes">
-  <div class="kicker reveal">Wireframes &amp; Validation</div>
-  <h2 class="reveal">Validating with the teams who'd actually use it</h2>
-  <p class="body-text reveal">Low-fidelity flows were walked through with customer service managers and business owners before any visual design — catching mismatches in mental models early, while they were still cheap to fix.</p>
-  <div class="gallery">
+<section class="cs-block" id="key-decisions">
+  <div class="kicker reveal">Key Decisions</div>
+  <h2 class="reveal">What I chose, and why</h2>
+  <p class="body-text reveal">Three decisions shaped whether this actually became a regional product, not just a Thai one with better UI — one about how the product should adapt to different roles, one about what order to spend a small team's time in, and one I had to defend, not just make.</p>
+  <div class="decision-list">
+    <div class="decision reveal">
+      <h4>Design for the role, not "the user"</h4>
+      <div class="alt"><strong>Alternative:</strong> one generic dashboard serving every login the same way</div>
+      <p>Chose to keep the underlying data the same but change entry points and emphasis per role — Marketing/E-commerce, Customer Service, and Business Owner each land on what matters to their KPIs first. A single generic view would have made the product feel built for none of the three.</p>
+    </div>
+    <div class="decision reveal">
+      <h4>Prove PMF before spending on regional polish</h4>
+      <div class="alt"><strong>Alternative:</strong> investing in the website and brand revamp for regional expansion in parallel with the core product work</div>
+      <p>Chose to sequence it instead: integrations, core chat functionality, and the sticky features — automation, AI, analytics — had to prove product-market fit in Thailand first. The regional brand revamp only got investment once Phase 1 numbers justified it. The competitive risk of waiting was lower than it looked: Thailand's customer service tools didn't focus on e-commerce, and the international e-commerce tools that did lacked integrations with SEA-specific marketplaces like Shopee, Lazada, and TikTok Shop — nobody else could easily out-execute the gap while we sequenced. The real cost was internal, not competitive: research, UX, UI, and branding all had to hit a high bar on a tight timeline with a design team that started at just one person.</p>
+    </div>
+    <div class="decision reveal">
+      <h4>Held the sequencing call under pressure to move faster</h4>
+      <div class="alt"><strong>Alternative:</strong> the instinct — in a startup where everyone wears every hat — to move on regional polish and parallel market launches at the same time as the core product work</div>
+      <p>What kept that from turning into a tug-of-war was a shared principle everyone actually followed, not a hierarchy: the Head of Product, engineering, and I each owned our own domain, but the final call never went to whoever pushed hardest — it went back to whichever answer actually solved the user's problem. Every time the sequencing got contested, the same question settled it: what do Thai customers still need fixed before we're ready to sell somewhere new. That's what held the line, not seniority.</p>
+    </div>
+  </div>
+  <div class="gallery" style="margin-top:40px">
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/userflow.jpg" alt="End-to-end user flow" loading="lazy"><figcaption>End-to-end user flow</figcaption></figure>
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/wireframe-1.jpg" alt="Low-fidelity wireframes" loading="lazy"><figcaption>Low-fidelity wireframes</figcaption></figure>
   </div>
 </section>
 
-<section class="cs-block" id="final-interfaces">
-  <div class="kicker reveal">Final Interfaces</div>
+<section class="cs-block" id="solution">
+  <div class="kicker reveal">Solution &amp; Delivery</div>
   <h2 class="reveal">What shipped</h2>
-  <p class="body-text reveal">A redesigned chat workspace, a rebuilt AI agent experience, a visual automation flow builder, and analytics that speak to each role's own KPIs — shipped incrementally as the platform scaled internationally.</p>
+  <p class="body-text reveal">Both decisions above shaped what actually got built: a redesigned chat workspace, a rebuilt AI agent experience, a visual automation flow builder, and analytics that speak to each role's own KPIs — shipped incrementally, Thailand's proof point first, as the platform scaled internationally. Flows were stress-tested against real support scenarios along the way: a spike in chats, a flagged case, a campaign under-performing — not just the happy path.</p>
 
+  <h3>Final interfaces</h3>
   <div class="compare">
     <figure class="before reveal"><img src="../../assets/images/case-studies/zaapi-growth/chat-before.jpg" alt="Chat interface before redesign" loading="lazy"><figcaption>Before — Chat</figcaption></figure>
     <figure class="after reveal"><img src="../../assets/images/case-studies/zaapi-growth/chat-after.jpg" alt="Chat interface after redesign" loading="lazy"><figcaption>After — Chat</figcaption></figure>
@@ -377,24 +433,39 @@
   <div class="gallery single" style="margin-top:56px">
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/automations-flow.jpg" alt="Visual automation flow builder" loading="lazy"><figcaption>Visual automation flow builder</figcaption></figure>
   </div>
-</section>
 
-<section class="cs-block" id="handover">
-  <div class="kicker reveal">Handover</div>
-  <h2 class="reveal">Built to actually ship</h2>
+  <h3>Website &amp; brand revamp</h3>
+  <p class="body-text reveal">The site itself still read as a Thai-only product — it had to look like something an international buyer could trust before Phase 2 could work. The revamp shipped for Q2 '25, and directly preceded the <strong>+40%</strong> new-subscriber lift in the eight weeks after launch.</p>
+  <div class="gallery single">
+    <figure class="reveal">
+      <video class="autoplay-loop" src="../../assets/videos/zaapi-growth-website-revamp.mp4" muted loop playsinline preload="metadata" poster="../../assets/images/case-studies/zaapi-growth/website-revamp-poster.png"></video>
+      <figcaption>Website revamp — Thai-only to international (SEA), Q2 '25</figcaption>
+    </figure>
+  </div>
+
+  <h3>Handover</h3>
   <p class="body-text reveal">Componentized in Figma with documented states and edge cases, so engineering could build without guessing — a requirement once the roadmap meant shipping across multiple markets in parallel.</p>
   <div class="gallery single">
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/handover-figma.jpg" alt="Figma handover documentation" loading="lazy"><figcaption>Component &amp; handover documentation</figcaption></figure>
   </div>
 </section>
 
-<section class="cs-outcome" id="outcome">
-  <div class="kicker reveal">Outcome</div>
+<section class="cs-outcome" id="impact">
+  <div class="kicker reveal">Impact &amp; Learning</div>
   <div class="cs-outcome-stats">
     <div class="reveal"><div class="stat">+220%</div><div class="stat-desc">ARR (annual recurring revenue) jumped over two years (Q3 '23 – Q2 '25)</div></div>
     <div class="reveal"><div class="stat">+650%</div><div class="stat-desc">Number of messages sent on desktop (Q3 '23 – Q2 '25)</div></div>
     <div class="reveal"><div class="stat">+40%</div><div class="stat-desc">New subscribers in two months after website and brand refresh</div></div>
     <div class="reveal"><div class="stat">10+</div><div class="stat-desc">First-time international clients across SEA (SG, PH &amp; MY), breaking into new regional markets</div></div>
+  </div>
+  <div class="cs-learning reveal">
+    <h3>Where it stands today — Q3 2026</h3>
+    <p>Zaapi now has paying customers in 8 countries outside Thailand — Malaysia (47), Singapore (25), the Philippines (23), Laos (7), Indonesia (2), and one each in Vietnam, South Korea, and Egypt: 107 paying international stores, out of 168 active international stores overall. International now makes up roughly 17% of Zaapi's ~968 active stores platform-wide, up from the 10 first international clients this project started with.</p>
+    <p style="margin-top:16px">The other half of the impact was never just geography — it was product-market fit. The features that carried Zaapi from those first 10 clients to a genuinely regional product were built around what the Marketing Manager, Customer Service Manager, and Business Owner personas actually needed, not a generic feature list.</p>
+  </div>
+  <div class="cs-learning reveal">
+    <h3>What I'd improve</h3>
+    <p>Bringing on a junior designer to handle visual execution was the right call for shipping at the quality and pace the roadmap needed — but it didn't solve for research. I stayed the only person doing discovery and validation throughout, which is exactly why Phase 2 leaned on market research and inference rather than direct interviews in Singapore, the Philippines, or Malaysia: the Thai personas held up well enough to build on, but I never had the bandwidth to confirm that with real users in the new markets before designing for them. What I'd do differently: when I made the case for headcount, I'd weight research capacity as heavily as visual execution — a junior researcher, or a second designer comfortable running discovery, would have let me validate assumptions in each new market instead of carrying that risk forward on inference alone.</p>
   </div>
 </section>
 
@@ -418,91 +489,6 @@
 </footer>
 
 <script>
-/* ---------------- starfield background ---------------- */
-(function(){
-  const canvas = document.getElementById('starfield');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  let stars = [];
-  let w=0, h=0, dpr=1;
-
-  function seed(){
-    const count = Math.round((w*h)/9000);
-    stars = Array.from({ length: count }, ()=>({
-      x: Math.random()*w,
-      y: Math.random()*h,
-      r: Math.random()*0.55+0.2,
-      baseOpacity: Math.random()*0.25+0.12,
-      phase: Math.random()*Math.PI*2,
-      speed: Math.random()*0.4+0.15
-    }));
-  }
-
-  function resize(){
-    dpr = Math.min(window.devicePixelRatio||1, 2);
-    w = window.innerWidth; h = window.innerHeight;
-    canvas.width = w*dpr; canvas.height = h*dpr;
-    canvas.style.width = w+'px'; canvas.style.height = h+'px';
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    seed();
-  }
-
-  const footerEl = document.querySelector('footer');
-  let footerBoost = 0;
-  function updateFooterBoost(){
-    if(!footerEl) return;
-    const rect = footerEl.getBoundingClientRect();
-    const startAt = window.innerHeight*0.55;
-    const endAt = window.innerHeight*0.05;
-    const p = (startAt - rect.top) / (startAt - endAt);
-    footerBoost = Math.max(0, Math.min(1, p));
-  }
-
-  let boostTicking = false;
-  addEventListener('scroll', ()=>{
-    if(boostTicking) return;
-    boostTicking = true;
-    requestAnimationFrame(()=>{ boostTicking = false; updateFooterBoost(); });
-  }, { passive:true });
-  updateFooterBoost();
-
-  let t = 0;
-  function draw(){
-    t += 0.016;
-    ctx.clearRect(0,0,w,h);
-    const brightBoost = 1 + footerBoost*0.55;
-    for(const s of stars){
-      const twinkle = 0.6+0.4*Math.sin(t*s.speed*2 + s.phase);
-      const o = s.baseOpacity * twinkle * brightBoost;
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(243,242,238,${o.toFixed(3)})`;
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-      ctx.fill();
-    }
-    if(!reduceMotion) requestAnimationFrame(draw);
-  }
-
-  addEventListener('resize', resize);
-  resize();
-  draw();
-})();
-
-/* ---------------- reticle cursor ---------------- */
-const reticle = document.getElementById('reticle');
-const reticleH = document.getElementById('reticleH');
-const reticleV = document.getElementById('reticleV');
-addEventListener('mousemove', e=>{
-  reticle.style.left=e.clientX+'px'; reticle.style.top=e.clientY+'px';
-  reticleH.style.top=e.clientY+'px';
-  reticleV.style.left=e.clientX+'px';
-});
-document.querySelectorAll('[data-hover], a').forEach(el=>{
-  el.addEventListener('mouseenter', ()=>document.body.classList.add('link-hover'));
-  el.addEventListener('mouseleave', ()=>document.body.classList.remove('link-hover'));
-});
-
 /* ---------------- back to top ---------------- */
 document.querySelector('.up-link').addEventListener('click', e=>{
   e.preventDefault();
@@ -553,6 +539,15 @@ const io = new IntersectionObserver(entries=>{
   entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in'); });
 },{ threshold:0.15 });
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------------- autoplay-in-view video (muted, looping, no controls) ---------------- */
+const videoIo = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting) en.target.play().catch(()=>{});
+    else en.target.pause();
+  });
+},{ threshold:0.4 });
+document.querySelectorAll('.autoplay-loop').forEach(el=>videoIo.observe(el));
 
 /* ---------------- section progress nav (scrollspy) ---------------- */
 (function(){
