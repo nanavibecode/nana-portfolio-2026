@@ -173,7 +173,9 @@
   .phase-table td.yr span{ display:block; margin-top:8px; font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
   .phase-table td.focus{ color:var(--white); }
   .phase-table ul{ list-style:none; }
-  .phase-table li + li{ margin-top:4px; }
+  .phase-table li{ position:relative; padding-left:16px; }
+  .phase-table li::before{ content:'–'; position:absolute; left:0; color:var(--gray-dim); }
+  .phase-table li + li{ margin-top:6px; }
   @media (max-width:760px){
     .phase-table thead{ display:none; }
     .phase-table tr{ display:block; border-top:1px solid var(--line); padding:20px 18px; }
