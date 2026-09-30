@@ -166,6 +166,18 @@
   .decision-list .decision .alt{ font-size:12.5px; line-height:1.6; color:var(--gray-dim); margin-bottom:10px; }
   .decision-list .decision .alt strong{ color:var(--gray); font-weight:300; }
   .decision-list .decision p{ font-size:13.5px; line-height:1.7; color:var(--gray); font-weight:300; }
+  .tech-table{ margin-top:32px; width:100%; border-collapse:collapse; border:1px solid var(--line); font-size:13.5px; line-height:1.7; }
+  .tech-table th{ text-align:left; font-family:var(--mono); font-weight:400; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-dim); padding:14px 20px; border-bottom:1px solid var(--line); }
+  .tech-table td{ padding:22px 20px; border-top:1px solid var(--line); vertical-align:top; color:var(--gray); font-weight:300; width:40%; }
+  .tech-table td.tech{ width:20%; font-family:var(--serif); font-size:1.2rem; line-height:1.2; color:var(--white); }
+  @media (max-width:760px){
+    .tech-table thead{ display:none; }
+    .tech-table tr{ display:block; border-top:1px solid var(--line); padding:20px 18px; }
+    .tech-table tr:first-child{ border-top:0; }
+    .tech-table td, .tech-table td.tech{ display:block; width:auto; padding:0; border:0; }
+    .tech-table td + td{ margin-top:10px; }
+    .tech-table td:last-child::before{ content:'For the design — '; color:var(--gray-dim); }
+  }
   .ladder{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
   .ladder .rung{ background:var(--bg); padding:24px 22px; display:flex; flex-direction:column; }
   .ladder .rung-no{ font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
@@ -439,6 +451,40 @@
 
   <h3>04 — Actions: what's next</h3>
   <p class="body-text reveal">AI Agent 2.0 is Zaapi's 2026 focus: moving from answers to actions — suggesting the next step, or taking it with granted authority (like cancelling an order, approving a refund, or exchanging data with an external platform) — with higher accuracy, shipped behind feature flags and expanded based on adoption and quality signals.</p>
+
+  <h3>Under the hood — how Zaapi's agent is built</h3>
+  <p class="body-text reveal">Designing an AI agent well means understanding what sits underneath it — the design decisions above only work because of how the system retrieves, reasons, and acts. These are the core techniques behind Zaapi's agent, and what each one meant for the experience.</p>
+  <table class="tech-table reveal">
+    <thead><tr><th>Technique</th><th>How it works</th><th>What it meant for the design</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="tech">Retrieval-Augmented Generation (RAG)</td>
+        <td>Before answering, the agent searches the business's own knowledge — website text, PDFs, CSVs, SOPs, plus order and customer context — and hands the model only the relevant passages, each with its source and timestamp. Replies are grounded in the brand's facts, not the model's general knowledge.</td>
+        <td>Every reply can show where its information came from and when it was last updated. Chats the AI couldn't resolve expose gaps in the knowledge base, which feeds the training loop.</td>
+      </tr>
+      <tr>
+        <td class="tech">Reranking</td>
+        <td>Retrieval casts a wide net — the AI thinking view shows it pulling a list of candidate documents. A reranker then scores those candidates against the customer's actual question and keeps only the most relevant few for the model to use.</td>
+        <td>Better sources in means fewer confident-but-wrong answers out. It's also why AI thinking can show the knowledge behind each step, rather than everything the agent glanced at.</td>
+      </tr>
+      <tr>
+        <td class="tech">Agentic tool calling</td>
+        <td>The model can decide to call typed functions — look up an order, check delivery status, and in AI Agent 2.0 cancel an order, approve a refund, or call an external platform's API over HTTP — then read the result and keep reasoning in its think → act → observe loop.</td>
+        <td>Actions are where trust gets expensive. Each needs permissions the business grants, a visible confirmation, an audit record, and a clear fallback when the call fails — the core UX problem of 2.0.</td>
+      </tr>
+      <tr>
+        <td class="tech">Multi-agent architecture</td>
+        <td>Instead of one model doing everything, the work is split across specialized agents — for example, one understanding intent, one retrieving knowledge, one taking actions, one checking safety — coordinated by an orchestrator that passes context between them.</td>
+        <td>Hand-offs between agents, and from agent to human, have to be invisible to the customer but traceable for the team — so the reasoning view has to tell one coherent story.</td>
+      </tr>
+      <tr>
+        <td class="tech">Model routing &amp; multi-provider inference</td>
+        <td>Not every message needs the largest model. A router sends simple, high-volume requests like order status to faster, cheaper models, and harder ones — complaints, policy questions — to stronger models, across more than one AI provider, which also keeps the agent running if one provider is slow or down.</td>
+        <td>The customer should never be able to tell which model answered: brand voice, tone, and policy have to hold across all of them, while speed and cost stay viable at customer-service volume.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="body-text reveal"><span class="tbd">[Confirm which of these are live today vs. part of AI Agent 2.0 — and the Zaapi specifics: which agents the multi-agent setup actually runs, and which models/providers the router chooses between.]</span></p>
 
   <h3>Handover</h3>
   <p class="body-text reveal">Documented in Figma with states, edge cases, and annotated interaction notes — so engineering could build the reasoning loop and every fallback state without guessing.</p>
