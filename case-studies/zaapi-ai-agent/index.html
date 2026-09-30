@@ -178,6 +178,22 @@
     .tech-table td + td{ margin-top:10px; }
     .tech-table td:last-child::before{ content:'For the design — '; color:var(--gray-dim); }
   }
+  .flow{ margin:48px 0 0; }
+  .flow-head{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:14px; }
+  .flow-head .flow-key{ color:var(--accent); }
+  .flow-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); counter-reset:step; }
+  .flow-step{ background:var(--bg); padding:24px 22px 22px; display:flex; flex-direction:column; position:relative; }
+  .flow-no{ font-family:var(--serif); font-size:1.9rem; line-height:1; color:var(--accent); margin-bottom:12px; }
+  .flow-step h4{ font-family:var(--serif); font-weight:400; font-size:1.25rem; line-height:1.2; color:var(--white); margin-bottom:8px; }
+  .flow-step p{ font-size:13px; line-height:1.65; color:var(--gray); font-weight:300; }
+  .flow-ex{ margin-top:auto; padding-top:18px; display:flex; flex-direction:column; gap:8px; }
+  .flow-ex .bubble{ font-size:12.5px; line-height:1.5; padding:9px 13px; border-radius:14px; max-width:92%; }
+  .flow-ex .bubble.in{ background:rgba(0,0,0,0.05); color:var(--white); align-self:flex-start; border-bottom-left-radius:4px; }
+  .flow-ex .bubble.out{ background:var(--white); color:var(--bg); align-self:flex-end; border-bottom-right-radius:4px; }
+  .flow-ex .tag{ font-family:var(--mono); font-size:10.5px; letter-spacing:.02em; line-height:1.5; color:var(--gray-dim); border-left:1px solid var(--accent); padding-left:10px; }
+  .flow figcaption{ margin-top:12px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); }
+  @media (max-width:960px){ .flow-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .flow-grid{ grid-template-columns:1fr; } }
   .ladder{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
   .ladder .rung{ background:var(--bg); padding:24px 22px; display:flex; flex-direction:column; }
   .ladder .rung-no{ font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
@@ -377,9 +393,48 @@
     <li><strong>Intent mapping with power users</strong> — reviewing real chats and chat logs from our highest-usage accounts to rank what the AI should handle first. For one large CS team, order status alone was 40% of all chats.</li>
     <li><strong>Targeted interviews</strong> — with managers overseeing AI agents and experienced AI users, including workshops to agree how AI quality should be measured.</li>
   </ul>
-  <div class="gallery single">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/workflow-map.jpg" alt="Customer service workflow mapped against AI and automation capabilities, stage by stage" loading="lazy"><figcaption>Customer service workflow × AI capabilities — from assist to copilot to autopilot</figcaption></figure>
-  </div>
+  <figure class="flow reveal">
+    <div class="flow-head"><span>How a customer message moves through Zaapi — and what AI does at each step</span><span class="flow-key">Example: an order-status question, the most common request</span></div>
+    <div class="flow-grid">
+    <div class="flow-step reveal">
+      <div class="flow-no">01</div>
+      <h4>A message arrives</h4>
+      <p>AI reads it: which language, what the customer wants, how urgent it is — and hides personal data.</p>
+      <div class="flow-ex"><div class="bubble in">Hi, where's my order #1234?</div><div class="tag">English · order status · not urgent</div></div>
+    </div>
+    <div class="flow-step reveal">
+      <div class="flow-no">02</div>
+      <h4>It goes to the right place</h4>
+      <p>AI sorts it to the right team or agent, and flags it if a marketplace reply deadline is close.</p>
+      <div class="flow-ex"><div class="tag">→ Orders queue · Shopee SLA: 11h left</div></div>
+    </div>
+    <div class="flow-step reveal">
+      <div class="flow-no">03</div>
+      <h4>AI finds the answer</h4>
+      <p>AI looks up the facts it needs — the order, its delivery status, the store's policies — and notes where each fact came from.</p>
+      <div class="flow-ex"><div class="tag">Order #1234: shipped yesterday · Source: Shopee order data</div></div>
+    </div>
+    <div class="flow-step reveal">
+      <div class="flow-no">04</div>
+      <h4>A reply is written</h4>
+      <p>AI writes a short, on-brand reply grounded in those facts. Depending on the team's setting, a person reviews it first — or the AI sends it itself.</p>
+      <div class="flow-ex"><div class="bubble out">It shipped yesterday and should arrive by Friday. Here's your tracking link!</div></div>
+    </div>
+    <div class="flow-step reveal">
+      <div class="flow-no">05</div>
+      <h4>Hand off, or take action</h4>
+      <p>If AI isn't sure, or the request needs a person, it passes the chat to a human with a summary. In AI Agent 2.0, it can take the action itself — like cancelling the order.</p>
+      <div class="flow-ex"><div class="bubble in">Actually, can I cancel it?</div><div class="tag">→ Human agent, with summary · or AI cancels (2.0)</div></div>
+    </div>
+    <div class="flow-step reveal">
+      <div class="flow-no">06</div>
+      <h4>Close, and learn</h4>
+      <p>The chat is marked resolved by AI, by a human, or by both. Thumbs up/down and unanswered questions show the team what knowledge to add next.</p>
+      <div class="flow-ex"><div class="tag">Resolved by AI · no knowledge gaps found</div></div>
+    </div>
+    </div>
+    <figcaption>Simplified from our full workflow map of 11 service stages × AI capabilities</figcaption>
+  </figure>
   <h3>What managers told us they needed</h3>
   <ul class="body-list reveal">
     <li><strong>Quality they could audit</strong> — QA teams were already reviewing AI replies by hand for empathy and accuracy. They wanted the AI's reasoning and sources visible on every response.</li>
@@ -421,7 +476,7 @@
 <section class="cs-block" id="solution">
   <div class="kicker reveal">Solution &amp; Delivery</div>
   <h2 class="reveal">A ladder of trust, from draft to action</h2>
-  <p class="body-text reveal">Every step up in autonomy asks a customer service team to trust the AI with more — so each step had to earn that trust before the next one made sense. The workflow map above names the rungs: <strong>assist</strong>, <strong>copilot</strong>, <strong>autopilot</strong>, and now <strong>actions</strong>.</p>
+  <p class="body-text reveal">Every step up in autonomy asks a customer service team to trust the AI with more — so each step had to earn that trust before the next one made sense. Step 04 above is where that choice lives — the rungs are <strong>draft</strong>, <strong>copilot</strong>, <strong>autopilot</strong>, and now <strong>actions</strong>.</p>
   <div class="ladder">
     <div class="rung reveal"><div class="rung-no">01 · Draft</div><h4>AI writes, a human sends</h4><p>AI 1.0 (beta), Sep 2023. Every reply is reviewed before it goes out.</p><div class="proof"><strong>Had to prove:</strong> people would use it at all.</div></div>
     <div class="rung reveal"><div class="rung-no">02 · Copilot</div><h4>AI shows its work</h4><p>Sources, freshness, step-by-step reasoning, and a safe place to test.</p><div class="proof"><strong>Had to prove:</strong> answers could be checked, not just trusted.</div></div>
