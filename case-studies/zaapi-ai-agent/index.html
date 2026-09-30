@@ -536,10 +536,10 @@
   <h3>04 — Actions: what's next</h3>
   <p class="body-text reveal">AI Agent 2.0 is Zaapi's 2026 focus. It restructures the AI features around a single agent per brand — holding that brand's knowledge, procedures, and actions, the way a human brand representative would — and moves it from answers to actions — suggesting the next step, or taking it with granted authority (like cancelling an order, approving a refund, or exchanging data with an external platform) — with higher accuracy, shipped behind feature flags and expanded based on adoption and quality signals.</p>
 
-  <h3>Under the hood — how Zaapi's agent is built</h3>
-  <p class="body-text reveal">Designing an AI agent well means understanding what sits underneath it — the design decisions above only work because of how the system retrieves, reasons, and acts. These are the core techniques behind Zaapi's agent, and what each one meant for the experience.</p>
+  <h3>Under the hood — how AI Agent 2.0 is built</h3>
+  <p class="body-text reveal">AI Agent 2.0 isn't just new features on the old system — it's rebuilt on a new architecture, designed for an agent that can act, not just answer. These are the core techniques behind it, and what each one means for the experience.</p>
   <table class="tech-table reveal">
-    <thead><tr><th>Technique</th><th>How it works</th><th>What it meant for the design</th></tr></thead>
+    <thead><tr><th>Technique</th><th>How it works</th><th>What it means for the design</th></tr></thead>
     <tbody>
       <tr>
         <td class="tech">Retrieval-Augmented Generation (RAG)</td>
@@ -553,7 +553,7 @@
       </tr>
       <tr>
         <td class="tech">Agentic tool calling</td>
-        <td>The AI can use tools, not just write — look up an order, and in AI Agent 2.0 cancel an order, approve a refund, or connect to other platforms.</td>
+        <td>The AI can use tools, not just write — look up an order, cancel an order, approve a refund, or connect to other platforms.</td>
         <td>Every action needs permission, a clear confirmation, a record, and a safe fallback.</td>
       </tr>
       <tr>
@@ -568,7 +568,6 @@
       </tr>
     </tbody>
   </table>
-  <p class="body-text reveal"><span class="tbd">[Confirm which of these are live today vs. part of AI Agent 2.0 — and the Zaapi specifics: which agents the multi-agent setup actually runs, and which models/providers the router chooses between.]</span></p>
 
   <h3>Handover</h3>
   <p class="body-text reveal">Documented in Figma with states, edge cases, and annotated interaction notes — so engineering could build the reasoning loop and every fallback state without guessing.</p>
