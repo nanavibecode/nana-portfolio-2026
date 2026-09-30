@@ -199,6 +199,7 @@
   .cs-learning p strong{ color:var(--white); font-weight:300; }
 
   .gallery{ margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .dd-diagram{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; background:var(--bg); padding:32px 0; }
   .gallery.single{ grid-template-columns:1fr; }
   .gallery figure{ margin:0; }
   .gallery img, .gallery video{ width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:2px; }
@@ -380,6 +381,29 @@
   <div class="kicker reveal">Design Process</div>
   <h2 class="reveal">A shared process, not a design silo</h2>
   <p class="body-text reveal">Zaapi's design process runs on a Double Diamond shape — Discover and Define before Develop and Deliver — with fast user validation and results tracked at every stage, kept in sync with product and engineering rather than run in a design silo. Research pulled from whichever method fit the question: surveys, user interviews (both online and on-site), user-journey mapping, persona mapping, fake-door mockups to test demand before building, insight from the sales team on subscribers and churn, behavioral and product analytics (Hotjar, Amplitude, user impersonation), competitor analysis, and reaching out to customers directly.</p>
+  <div class="gallery single">
+    <figure class="reveal">
+      <svg class="dd-diagram" viewBox="0 0 900 320" role="img" aria-label="Double Diamond design process — discover, define, develop, deliver">
+        <path d="M4,160 L227,60 L450,160 L227,260 Z" fill="none" stroke="#b5b1a8" stroke-width="1"/>
+        <path d="M450,160 L673,60 L896,160 L673,260 Z" fill="none" stroke="#b5b1a8" stroke-width="1"/>
+        <path d="M4,160 L227,60 L227,260 Z" fill="rgba(255,46,63,0.07)" stroke="none"/>
+        <path d="M4,160 L227,60 L227,260 Z" fill="none" stroke="#FF2E3F" stroke-width="1.4"/>
+        <line x1="227" y1="60" x2="227" y2="260" stroke="#c8c4ba" stroke-width="1" stroke-dasharray="2 4"/>
+        <line x1="673" y1="60" x2="673" y2="260" stroke="#c8c4ba" stroke-width="1" stroke-dasharray="2 4"/>
+        <circle cx="450" cy="160" r="3" fill="#6b6862"/>
+        <text x="115" y="40" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" fill="#8a867d">INTERVIEWS &amp; ANALYTICS</text>
+        <text x="338" y="40" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" fill="#8a867d">ROLE-BASED PERSONAS</text>
+        <text x="561" y="40" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" fill="#8a867d">FLOWS &amp; WIREFRAMES</text>
+        <text x="784" y="40" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" fill="#8a867d">SHIP &amp; TRACK RESULTS</text>
+        <text x="115" y="300" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" letter-spacing="1.5" fill="#FF2E3F">DISCOVER</text>
+        <text x="338" y="300" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" letter-spacing="1.5" fill="#6b6862">DEFINE</text>
+        <text x="561" y="300" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" letter-spacing="1.5" fill="#6b6862">DEVELOP</text>
+        <text x="784" y="300" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" letter-spacing="1.5" fill="#6b6862">DELIVER</text>
+      </svg>
+      <figcaption>Double Diamond — discover, define, develop, deliver</figcaption>
+    </figure>
+  </div>
+  <p class="body-text reveal"><strong>Discover</strong> and <strong>Define</strong> covered the interviews, analytics, and research behind the three role-based personas. <strong>Develop</strong> and <strong>Deliver</strong> covered the user flows, wireframes, and validation testing, through to what shipped — with results tracked at every stage.</p>
   <div class="gallery">
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/design-process-1.jpg" alt="Zaapi Product Design Principles — user-centered, visual-simplified, usability-ensured" loading="lazy"><figcaption>Zaapi Product Design Principles</figcaption></figure>
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-growth/design-process-2.jpg" alt="Zaapi Design Working Process — a Double Diamond shape from Discover to Deliver" loading="lazy"><figcaption>Zaapi Design Working Process</figcaption></figure>
