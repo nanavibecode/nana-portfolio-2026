@@ -537,34 +537,34 @@
   <p class="body-text reveal">AI Agent 2.0 is Zaapi's 2026 focus. It restructures the AI features around a single agent per brand — holding that brand's knowledge, procedures, and actions, the way a human brand representative would — and moves it from answers to actions — suggesting the next step, or taking it with granted authority (like cancelling an order, approving a refund, or exchanging data with an external platform) — with higher accuracy, shipped behind feature flags and expanded based on adoption and quality signals.</p>
 
   <h3>Under the hood — how Zaapi's agent is built</h3>
-  <p class="body-text reveal">You don't need to be an engineer to design a good AI agent, but you do need to understand how it thinks. Here are the five ideas behind Zaapi's agent, in plain language — and what each one changed about the design.</p>
+  <p class="body-text reveal">Designing an AI agent well means understanding what sits underneath it — the design decisions above only work because of how the system retrieves, reasons, and acts. These are the core techniques behind Zaapi's agent, and what each one meant for the experience.</p>
   <table class="tech-table reveal">
-    <thead><tr><th>What it does</th><th>How it works</th><th>What it meant for the design</th></tr></thead>
+    <thead><tr><th>Technique</th><th>How it works</th><th>What it meant for the design</th></tr></thead>
     <tbody>
       <tr>
-        <td class="tech">Looks things up before answering<span>Retrieval-Augmented Generation (RAG)</span></td>
-        <td>Like a new staff member checking the company handbook before replying. The AI first searches the brand's own information — website, documents, product lists, order details — and answers from what it finds, not from general knowledge.</td>
-        <td>Every reply can show where its answer came from and how up to date it is. When the AI can't find an answer, that shows the team exactly what information to add.</td>
+        <td class="tech">Retrieval-Augmented Generation (RAG)</td>
+        <td>Before answering, the AI looks up the brand's own information — website, documents, order details — and answers from that, not from general knowledge.</td>
+        <td>Replies can show their source, and unanswered questions show the team what to add.</td>
       </tr>
       <tr>
-        <td class="tech">Picks the most useful sources<span>Reranking</span></td>
-        <td>A search brings back lots of possible matches. The AI then re-reads them against the customer's actual question and keeps only the few that really answer it — like skimming ten search results and opening the best two.</td>
-        <td>Better sources mean fewer confident-but-wrong answers — and the reasoning view shows the information the AI actually used, not everything it glanced at.</td>
+        <td class="tech">Reranking</td>
+        <td>The AI's search brings back many possible matches; reranking keeps only the few that best answer the customer's question.</td>
+        <td>Fewer confident-but-wrong answers, and the reasoning view shows only what the AI actually used.</td>
       </tr>
       <tr>
-        <td class="tech">Uses tools, not just words<span>Agentic tool calling</span></td>
-        <td>Besides writing replies, the AI can press buttons in other systems: look up an order, check delivery status — and in AI Agent 2.0, cancel an order, approve a refund, or send and receive data with other platforms. It checks the result, then decides what to do next.</td>
-        <td>Taking action is where trust matters most. Every action needs the business's permission, a clear confirmation, a record of what happened, and a safe fallback if something fails.</td>
+        <td class="tech">Agentic tool calling</td>
+        <td>The AI can use tools, not just write — look up an order, and in AI Agent 2.0 cancel an order, approve a refund, or connect to other platforms.</td>
+        <td>Every action needs permission, a clear confirmation, a record, and a safe fallback.</td>
       </tr>
       <tr>
-        <td class="tech">A team of specialists, not one generalist<span>Multi-agent architecture</span></td>
-        <td>Instead of one AI doing everything, the work is shared between smaller AIs that are each good at one job — for example, understanding the question, finding information, taking actions, or double-checking safety — with a coordinator passing the conversation between them.</td>
-        <td>The customer should feel like they're talking to one assistant, while the team can still see which part did what.</td>
+        <td class="tech">Multi-agent architecture</td>
+        <td>Instead of one AI doing everything, several specialist AIs each handle one job — understanding, finding information, acting, checking safety — with a coordinator between them.</td>
+        <td>It should feel like one assistant to the customer, while the team can see which part did what.</td>
       </tr>
       <tr>
-        <td class="tech">The right AI for each question<span>Model routing & multi-provider inference</span></td>
-        <td>Not every question needs the most powerful (and most expensive) AI. Simple, common questions like "where's my order?" go to faster, cheaper models; tricky ones like complaints go to stronger models. Using more than one AI provider also keeps things running if one of them is slow or down.</td>
-        <td>Whichever AI answers, it has to sound like the same brand — same voice, same tone, same rules — while staying fast and affordable at customer-service volume.</td>
+        <td class="tech">Model routing and multi-provider inference</td>
+        <td>Simple questions go to fast, low-cost AI models and harder ones to stronger models, across more than one AI provider so it keeps running if one goes down.</td>
+        <td>Whichever model answers, the brand voice, tone, and rules must stay the same.</td>
       </tr>
     </tbody>
   </table>
