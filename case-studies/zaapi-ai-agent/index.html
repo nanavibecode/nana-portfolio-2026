@@ -166,6 +166,16 @@
   .decision-list .decision .alt{ font-size:12.5px; line-height:1.6; color:var(--gray-dim); margin-bottom:10px; }
   .decision-list .decision .alt strong{ color:var(--gray); font-weight:300; }
   .decision-list .decision p{ font-size:13.5px; line-height:1.7; color:var(--gray); font-weight:300; }
+  .ladder{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .ladder .rung{ background:var(--bg); padding:24px 22px; display:flex; flex-direction:column; }
+  .ladder .rung-no{ font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+  .ladder .rung h4{ font-family:var(--serif); font-weight:400; font-size:1.3rem; line-height:1.15; color:var(--white); margin-bottom:10px; }
+  .ladder .rung p{ font-size:13px; line-height:1.65; color:var(--gray); font-weight:300; }
+  .ladder .rung .proof{ margin-top:auto; padding-top:16px; font-size:12.5px; line-height:1.6; color:var(--gray-dim); }
+  .ladder .rung .proof strong{ color:var(--gray); font-weight:300; }
+  .ladder .rung.next{ background:repeating-linear-gradient(135deg, var(--bg) 0 10px, rgba(0,0,0,0.018) 10px 11px); }
+  @media (max-width:960px){ .ladder{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .ladder{ grid-template-columns:1fr; } }
 
   .cs-block h3{ font-family:var(--serif); font-weight:400; font-size:clamp(1.2rem,2.4vw,1.6rem); margin-top:56px; margin-bottom:14px; }
 
@@ -337,31 +347,23 @@
 <section class="cs-block" id="process">
   <div class="kicker reveal">Design Process</div>
   <h2 class="reveal">Validate in production, not in a lab</h2>
-  <p class="body-text reveal">We skipped a traditional discovery phase on purpose. Because we'd anticipated the AI trend and already had working prototypes, the design process kicked in afterward — focused on solution validation through real usage rather than problem discovery. That meant four methods, each picked for a specific question:</p>
+  <p class="body-text reveal">We skipped a traditional discovery phase on purpose. Engineering already had working AI prototypes, so design focused on validating the solution through real usage rather than discovering the problem — using four methods:</p>
   <ul class="body-list reveal">
-    <li><strong>Solution validation in production</strong> — released a lightweight MVP (answer suggestions), learned from real usage, then ran quick A/B-style tweaks on naming and placement.</li>
-    <li><strong>Workflow mapping</strong> — AI capabilities mapped against every stage of the customer service workflow, used to align roadmap, ownership, and metrics.</li>
-    <li><strong>Targeted interviews</strong> — exploratory and solution-validation interviews after launch, with managers overseeing AI agents and experienced AI users.</li>
-    <li><strong>KPI and quality definition</strong> — workshops inside those interviews to agree how to track full vs. partial resolution, agent time saved, and AI vs. human handling volume.</li>
+    <li><strong>Validation in production</strong> — ship a lightweight MVP, learn from real usage, then run quick A/B-style tweaks.</li>
+    <li><strong>Workflow mapping</strong> — AI capabilities mapped against every stage of the customer service workflow, to align roadmap, ownership, and metrics.</li>
+    <li><strong>Intent mapping with power users</strong> — reviewing real chats and chat logs from our highest-usage accounts to rank what the AI should handle first. For one large CS team, order status alone was 40% of all chats.</li>
+    <li><strong>Targeted interviews</strong> — with managers overseeing AI agents and experienced AI users, including workshops to agree how AI quality should be measured.</li>
   </ul>
   <div class="gallery single">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/workflow-map.jpg" alt="Customer service workflow mapped against AI and automation capabilities, stage by stage" loading="lazy"><figcaption>Customer service workflow × AI capabilities</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/workflow-map.jpg" alt="Customer service workflow mapped against AI and automation capabilities, stage by stage" loading="lazy"><figcaption>Customer service workflow × AI capabilities — from assist to copilot to autopilot</figcaption></figure>
   </div>
-  <h3>Intent mapping with power users</h3>
-  <p class="body-text reveal">To decide what the AI should handle first, I asked top agents and owners which requests they handled most, reviewed a sample of their recent chats together, and ran intent detection on chat histories from our highest-usage accounts — then validated the ranked list back with those same power users. For a large multi-brand CS team, order status alone was 40% of chats (with cancellations needing empathy), order problems and invoice requests 10%, product questions 10%, and other order requests 10%. A supplement store's top jobs were checking order and delivery status — and answering medical-condition questions accurately and responsibly, which set a clear bar for grounding and policy.</p>
   <h3>What managers told us they needed</h3>
   <ul class="body-list reveal">
-    <li><strong>Quality they could audit</strong> — QA teams were manually reviewing AI replies for empathy and accuracy. They wanted the AI's decision process and source data visible on every response.</li>
-    <li><strong>A training loop, not a one-time setup</strong> — clear templates and data-format guidance, plus one place to see escalations with suggestions for filling content gaps.</li>
-    <li><strong>AI as the first line of defense</strong> — escalating only when needed, so it actually lowers staffing needs.</li>
-    <li><strong>Numbers they could report upward</strong> — full vs. partial resolution, agent time saved, and AI vs. human chat volume, filterable by channel and account — plus a precise definition of when a chat counts as "closed by AI."</li>
-    <li><strong>Cases tagged by intent</strong> — to track daily volume and see which conversations the AI couldn't resolve because of missing data or training.</li>
+    <li><strong>Quality they could audit</strong> — QA teams were already reviewing AI replies by hand for empathy and accuracy. They wanted the AI's reasoning and sources visible on every response.</li>
+    <li><strong>A training loop, not a one-time setup</strong> — one place to see what the AI couldn't resolve, with suggestions for filling the content gaps.</li>
+    <li><strong>Numbers they could report upward</strong> — full vs. partial resolution, agent time saved, AI vs. human chat volume, and a precise definition of when a chat counts as "closed by AI."</li>
   </ul>
-  <div class="gallery single">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/validation-exploration.jpg" alt="Solution validation for AI agent setup — setup inside the AI module vs. inside the Flow Builder" loading="lazy"><figcaption>Solution validation — AI agent setup, two options</figcaption></figure>
-  </div>
-  <h3>Defining success up front</h3>
-  <p class="body-text reveal">The north star was messages sent by AI — it tracks directly to revenue — alongside AI full-resolution rate. Around it: quality and trust (fewer escalations to humans, fewer hallucination reports), usability (more users adopting AI on first trial, knowledge sources with enough coverage and recency), and ROI (human agent cost saved, agent time saved, faster time to resolution).</p>
+  <p class="body-text reveal">That set the success measures up front: messages sent by AI as the north star (it tracks directly to revenue) and AI full-resolution rate, backed by quality (fewer escalations and hallucination reports), usability (adoption on first trial), and ROI (agent time and cost saved).</p>
 </section>
 <section class="cs-block" id="key-decisions">
   <div class="kicker reveal">Key Decisions</div>
@@ -389,45 +391,51 @@
       <p>We prototyped and validated both placements. We launched with the AI module path — a single page with an on/off toggle — because it was the fastest way for a manager with no time to get AI live. It worked for getting started, but it wasn't enough control for B2B power users. Deployment now runs through the Flow Builder or a template instead: trigger → conditions → action ("Let AI Agent handle") — a quick first run, with the customization advanced teams asked for.</p>
     </div>
   </div>
+  <div class="gallery single" style="margin-top:40px">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/validation-exploration.jpg" alt="Solution validation for AI agent setup — setup inside the AI module vs. inside the Flow Builder" loading="lazy"><figcaption>Validated options — set up inside the AI module vs. inside the Flow Builder</figcaption></figure>
+  </div>
 </section>
 <section class="cs-block" id="solution">
   <div class="kicker reveal">Solution &amp; Delivery</div>
-  <h2 class="reveal">From a draft button to an agent teams can train, test, and measure</h2>
-  <p class="body-text reveal">The AI agent shipped in stages, each one earning the next: a draft-reply beta, a discoverability fix that got it used, and then the full train → test → deploy → analyse loop — all inside the same chat workspace agents already live in.</p>
-  <h3>Where it started — AI 1.0 (beta)</h3>
-  <p class="body-text reveal">September 2023: an "AI Assistant" set up from a single FAQ document in Settings, generating draft replies from the customer's most recent message.</p>
-  <div class="gallery single">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/mvp-before.jpg" alt="Zaapi AI 1.0 beta settings — AI Assistant configured with a single FAQ document" loading="lazy"><figcaption>AI 1.0 (beta), Sep 2023 — draft replies only</figcaption></figure>
+  <h2 class="reveal">A ladder of trust, from draft to action</h2>
+  <p class="body-text reveal">Every step up in autonomy asks a customer service team to trust the AI with more — so each step had to earn that trust before the next one made sense. The workflow map above names the rungs: <strong>assist</strong>, <strong>copilot</strong>, <strong>autopilot</strong>, and now <strong>actions</strong>.</p>
+  <div class="ladder">
+    <div class="rung reveal"><div class="rung-no">01 · Draft</div><h4>AI writes, a human sends</h4><p>AI 1.0 (beta), Sep 2023. Every reply is reviewed before it goes out.</p><div class="proof"><strong>Had to prove:</strong> people would use it at all.</div></div>
+    <div class="rung reveal"><div class="rung-no">02 · Copilot</div><h4>AI shows its work</h4><p>Sources, freshness, step-by-step reasoning, and a safe place to test.</p><div class="proof"><strong>Had to prove:</strong> answers could be checked, not just trusted.</div></div>
+    <div class="rung reveal"><div class="rung-no">03 · Autopilot</div><h4>AI replies — and knows when to stop</h4><p>Opt-in. Confidence thresholds, escalation to a human, human override.</p><div class="proof"><strong>Had to prove:</strong> it resolves chats without costing trust — measurably.</div></div>
+    <div class="rung reveal next"><div class="rung-no">04 · Actions · 2026</div><h4>AI does the next step</h4><p>AI Agent 2.0: update a status, send a confirmation, create a task.</p><div class="proof"><strong>Has to prove:</strong> accuracy high enough to act, not just answer.</div></div>
   </div>
-  <div class="gallery" style="margin-top:32px">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/chat-ai-2.jpg" alt="Live-app UI validation — renamed AI response button with accent color in the chat composer" loading="lazy"><figcaption>UI validation in the live app — "AI response"</figcaption></figure>
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/chat-ai-1.jpg" alt="AI Assistant panel in chat — generate a response, summarize the conversation, or ask a question" loading="lazy"><figcaption>AI Assistant panel — generate, summarize, ask</figcaption></figure>
+
+  <h3>01 — Draft: getting it used</h3>
+  <p class="body-text reveal">AI 1.0 was an "AI Assistant" set up from a single FAQ document, drafting a reply from the customer's latest message for an agent to review. The first problem wasn't accuracy — it was that few people found it. Renaming the button, giving it a label, and moving it into the chat composer took daily AI events from about 10 to 85: <strong>+750%</strong>.</p>
+  <div class="gallery">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/mvp-before.jpg" alt="Zaapi AI 1.0 beta settings — AI Assistant configured with a single FAQ document" loading="lazy"><figcaption>AI 1.0 (beta), Sep 2023 — set up from one FAQ document</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/chat-ai-2.jpg" alt="Live-app UI validation — renamed AI response button with accent color in the chat composer" loading="lazy"><figcaption>Validated in the live app — "AI response" in the composer</figcaption></figure>
   </div>
   <div class="gallery single" style="margin-top:32px">
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/ai-generated-responses.jpg" alt="The AI button switched from icon-only to an outlined icon with a label" loading="lazy"><figcaption>Icon-only → icon + label: +750% daily AI events</figcaption></figure>
   </div>
-  <h3>A visible reasoning loop, not a black box</h3>
-  <p class="body-text reveal">For the AI agent to be trustworthy, its reasoning couldn't be invisible. The agent works through a repeatable loop against the conversation's message history:</p>
-  <ul class="body-list reveal">
-    <li><strong>Think</strong> — decide what it needs to do next</li>
-    <li><strong>Act</strong> — retrieve knowledge, select a scenario, or select a quick reply to get more context</li>
-    <li><strong>Observe</strong> — check the result, and repeat until it has enough to answer</li>
-    <li><strong>Respond</strong> — generate the reply, then send it</li>
-  </ul>
-  <p class="body-text reveal">Around that loop sit safety gates: message caps and forbidden outbound messages are enforced, personal data is redacted, and confidence thresholds decide when the agent should ask a clarifying question or escalate to a human instead of answering.</p>
-  <div class="gallery single">
+
+  <h3>02 — Copilot: making the AI checkable</h3>
+  <p class="body-text reveal">Managers wouldn't hand over more until they could audit the AI's work. So every answer shows where its information came from and when it was last updated; an "AI thinking" view walks through each step of the agent's loop — <strong>think</strong> (decide what to do next), <strong>act</strong> (retrieve knowledge, pick a scenario or quick reply), <strong>observe</strong> (check the result, repeat until it has enough), <strong>respond</strong>; and teams can try the agent in a test environment before it ever talks to a customer.</p>
+  <div class="gallery">
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/final-thinking.jpg" alt="AI thinking panel showing reasoning steps and the knowledge sources retrieved" loading="lazy"><figcaption>AI thinking — reasoning steps &amp; sources</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/final-testing.jpg" alt="AI testing environment for trying the agent before deploying it" loading="lazy"><figcaption>AI testing — a safe environment before deploy</figcaption></figure>
+  </div>
+  <div class="gallery single" style="margin-top:32px">
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/ai-agent-diagram.jpg" alt="AI agent reasoning loop diagram" loading="lazy"><figcaption>Agent reasoning loop — think, act, observe, respond</figcaption></figure>
   </div>
-  <h3>Final interfaces</h3>
+
+  <h3>03 — Autopilot: replying on its own, safely</h3>
+  <p class="body-text reveal">With reasoning visible, teams could let the agent reply by itself — opt-in, and never unsupervised. Safety gates enforce message caps and forbidden outbound messages and redact personal data; confidence thresholds decide when the agent should ask a clarifying question or escalate to a human instead of answering. A performance dashboard then made the result measurable: messages sent by AI, full vs. partial resolution, agent time and cost saved, and every chat the AI touched. After AI thinking and the dashboard launched, messages sent by AI grew <strong>+100%</strong> in two quarters.</p>
   <div class="gallery">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/final-chat.jpg" alt="Chat screen with an AI agent reply" loading="lazy"><figcaption>Chat screen &amp; AI reply</figcaption></figure>
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/final-thinking.jpg" alt="AI thinking panel showing reasoning steps and the knowledge sources retrieved" loading="lazy"><figcaption>AI thinking — reasoning steps &amp; sources</figcaption></figure>
-  </div>
-  <div class="gallery" style="margin-top:32px">
-    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/final-testing.jpg" alt="AI testing environment for trying the agent before deploying it" loading="lazy"><figcaption>AI testing — safe environment before deploy</figcaption></figure>
+    <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/final-chat.jpg" alt="Chat screen with an AI agent reply" loading="lazy"><figcaption>AI agent replying in the chat workspace</figcaption></figure>
     <figure class="reveal"><img src="../../assets/images/case-studies/zaapi-ai-agent/final-dashboard.jpg" alt="AI performance dashboard — messages sent, full and partial resolution, time and cost saved" loading="lazy"><figcaption>AI performance dashboard</figcaption></figure>
   </div>
-  <p class="body-text reveal" style="margin-top:32px">Next on the roadmap: moving from answers to actions — suggesting the next step, or doing it with granted authority (updating a status, sending a confirmation, creating a task), shipped behind feature flags and expanded based on adoption and quality signals.</p>
+
+  <h3>04 — Actions: what's next</h3>
+  <p class="body-text reveal">AI Agent 2.0 is Zaapi's 2026 focus: moving from answers to actions — suggesting the next step, or taking it with granted authority (updating a status, sending a confirmation, creating a task) — with higher accuracy, shipped behind feature flags and expanded based on adoption and quality signals.</p>
+
   <h3>Handover</h3>
   <p class="body-text reveal">Documented in Figma with states, edge cases, and annotated interaction notes — so engineering could build the reasoning loop and every fallback state without guessing.</p>
   <div class="gallery single">
