@@ -441,10 +441,21 @@
 
   @media (max-width:760px){ .cs-block, .cs-exec, .cs-part{ padding-left:16px; padding-right:16px; } .cs-hero, .cs-meta, .cs-stats{ padding-left:16px; padding-right:16px; } }
   .ux-notes{ margin-top:4px; }
+  .h3-sub{ margin:-6px 0 0; font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-dim); }
+  .insight-table.two-col td{ width:50%; }
+  .insight-table.two-col td strong{ display:block; font-weight:400; color:var(--white); }
+  .insight-table.two-col td span{ display:block; margin-top:4px; color:var(--gray); }
+  .card-grid .c p.opp{ margin-top:12px; color:var(--accent); }
+  .card-grid .c p.opp strong{ color:var(--accent); font-weight:500; }
+  .risk-table td{ width:auto; }
+  .risk-table td:nth-child(3){ color:var(--white); }
+  .risk-table td:last-child a{ color:var(--accent); text-decoration:underline; }
   .cs-block .body-list.plain li{ padding-left:0; }
   .cs-block .body-list.plain li::before{ display:none; }
   .entry-shots{ margin-top:22px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:640px; }
   .entry-shots figure{ margin:0; }
+  .entry-shots.six{ grid-template-columns:repeat(6,1fr); max-width:none; gap:12px; }
+  @media (max-width:1100px){ .entry-shots.six{ grid-template-columns:repeat(3,1fr); max-width:520px; } }
   .entry-shots.four{ grid-template-columns:repeat(4,1fr); max-width:820px; }
   @media (max-width:760px){ .entry-shots.four{ grid-template-columns:1fr 1fr; max-width:420px; } }
   .entry-shots img{ width:100%; aspect-ratio:1/2; object-fit:cover; display:block; border:1px solid var(--line); border-radius:12px; }
@@ -507,6 +518,7 @@
   <a class="step" href="#approach" data-hover><span class="label">My Approach</span><span class="dot"></span></a>
   <a class="step" href="#users" data-hover><span class="label">Understand · Users</span><span class="dot"></span></a>
   <a class="step" href="#competitors" data-hover><span class="label">Understand · Competitors</span><span class="dot"></span></a>
+  <a class="step" href="#risks" data-hover><span class="label">Frame · Risks</span><span class="dot"></span></a>
   <a class="step" href="#assumptions" data-hover><span class="label">Frame · Assumptions</span><span class="dot"></span></a>
   <a class="step" href="#use-cases" data-hover><span class="label">Frame · Use Cases</span><span class="dot"></span></a>
   <a class="step" href="#rationale" data-hover><span class="label">Frame · Rationale</span><span class="dot"></span></a>
@@ -610,6 +622,7 @@
 <section class="cs-block" id="users">
   <div class="kicker reveal">03 — Users &amp; insights</div>
   <h2 class="reveal">Who borrows, and what worries them</h2>
+  <p class="body-text reveal">Both are <strong>blue-collar employees who need money</strong> and share the same insights. The only difference: <mark class="hl">one already uses Salary Hero, one doesn't yet</mark>.</p>
 
   <div class="card-grid two">
     <div class="c reveal">
@@ -646,8 +659,9 @@
         </g>
       </svg>
       <div class="lbl">Persona A · Existing Salary Hero user</div>
-      <h4>Blue-collar worker who already uses salary advance</h4>
-      <ul><li>Withdraws earned wages near month-end</li><li>Knows "it comes back on payday"</li><li>Needs a bigger lump sum than an advance covers</li><li>Can't get a bank loan — turns to loan sharks</li></ul>
+      <h4>Blue-collar employee who already uses Salary Hero</h4>
+      <ul><li>Familiar with the app and Salary on Demand</li><li>Already trusts it with their wages</li></ul>
+      <p class="opp"><strong>Design →</strong> Introduce the loan alongside Salary on Demand, where they already are.</p>
     </div>
     <div class="c reveal">
       <svg class="persona-art" viewBox="0 0 240 170" role="img" aria-label="Illustration: warehouse worker in a cap, new to Salary Hero, unsure about the app">
@@ -677,9 +691,10 @@
         <text x="176" y="56" text-anchor="middle" font-family="'Forum',serif" font-size="26" fill="#FF2E3F">?</text>
         <text x="196" y="46" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="#FF2E3F">฿</text>
       </svg>
-      <div class="lbl">Persona B · New to Salary Hero</div>
-      <h4>Blue-collar worker discovering the app for the loan</h4>
-      <ul><li>Employer just offered Salary Hero</li><li>Unfamiliar with payroll deduction</li><li>Unsure if eligible or trustworthy</li><li>Used to informal lenders</li></ul>
+      <div class="lbl">Persona B · New to Salary Hero — not a user yet</div>
+      <h4>Blue-collar employee discovering the app, not a Salary Hero user yet</h4>
+      <ul><li>Not familiar with the app</li><li>Trust not yet earned — unsure if it's safe or if they're eligible</li></ul>
+      <p class="opp"><strong>Design →</strong> Build more trust before, and while, introducing a loan.</p>
     </div>
   </div>
   <h3>Persona A, in their own words</h3>
@@ -691,24 +706,16 @@
   </div>
   <p class="voices-src reveal">Source: <a href="https://www.youtube.com/@salaryhero9406" target="_blank" rel="noopener">Salary Hero YouTube channel</a> · Persona B remains a hypothesis to validate.</p>
 
-  <h3>Shared insights — both personas</h3>
-  <div class="card-grid">
-    <div class="c reveal">
-      <div class="lbl">Insight 1</div>
-      <h4>Sometimes need money fast — and turn to loan sharks</h4>
-      <p><strong>→</strong> Offer a safer, cheaper option right where they already get paid.</p>
-    </div>
-    <div class="c reveal">
-      <div class="lbl">Insight 2</div>
-      <h4>Not so tech-savvy</h4>
-      <p><strong>→</strong> An easy-to-understand app flow: few steps, plain language, one action per screen.</p>
-    </div>
-    <div class="c reveal">
-      <div class="lbl">Insight 3</div>
-      <h4>Not so financially literate</h4>
-      <p><strong>→</strong> Introduce loans ethically, and always make clear how much and when they repay.</p>
-    </div>
-  </div>
+  <h3>Key insights — both personas</h3>
+  <p class="h3-sub reveal">Blue-collar employee, money in need</p>
+  <table class="insight-table two-col reveal">
+    <thead><tr><th>Insight</th><th>UX opportunity</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1 · Need cash, but have no credit history</strong><span>Banks turn them away, so loan sharks feel like the only option.</span></td><td>Check eligibility first, and show how much they can borrow upfront.</td></tr>
+      <tr><td><strong>2 · Fixed costs, thin margins</strong><span>A smaller payslip could leave them short next month.</span></td><td>Show the eligible amount upfront and let them choose how much salary to keep each month. Borrowing too much triggers a red warning.</td></tr>
+      <tr><td><strong>3 · Money can't wait (ร้อนเงิน)</strong><span>When cash is urgent, every extra step is a reason to go elsewhere.</span></td><td>If they're eligible, make applying as frictionless as possible.</td></tr>
+    </tbody>
+  </table>
 
   <h3>Pain point → insight → UX opportunity</h3>
   <table class="insight-table reveal">
@@ -847,10 +854,22 @@
   </div>
 
   <h3>Salary Hero app inspect</h3>
-  <div class="card-grid two">
+  <p class="body-text reveal" style="margin-top:0">Onboarding and registration, as a new user.</p>
+  <div class="entry-shots six">
+    <figure class="reveal"><img class="zoomable" src="../../assets/images/case-studies/salary-hero/inspect-onboard-1.jpg" alt="Salary Hero onboarding slide: access your salary freely" loading="lazy"><figcaption>Onboarding 1 — "Access your salary freely"</figcaption></figure>
+    <figure class="reveal"><img class="zoomable" src="../../assets/images/case-studies/salary-hero/inspect-onboard-2.jpg" alt="Salary Hero onboarding slide: check the balance you can withdraw instantly" loading="lazy"><figcaption>Onboarding 2 — "Check your balance instantly"</figcaption></figure>
+    <figure class="reveal"><img class="zoomable" src="../../assets/images/case-studies/salary-hero/inspect-onboard-3.jpg" alt="Salary Hero onboarding slide: approved within 24 hours" loading="lazy"><figcaption>Onboarding 3 — "Approved within 24 hrs"</figcaption></figure>
+    <figure class="reveal"><img class="zoomable" src="../../assets/images/case-studies/salary-hero/inspect-onboard-4.jpg" alt="Salary Hero registration: search for your company; company must be registered first" loading="lazy"><figcaption>Register — "Where do you work?"</figcaption></figure>
+    <figure class="reveal"><img class="zoomable" src="../../assets/images/case-studies/salary-hero/inspect-onboard-5.jpg" alt="Salary Hero empty state with a ghost illustration: your company is not registered yet, send a request to your HR" loading="lazy"><figcaption>"Can't find my company" — request access from HR</figcaption></figure>
+    <figure class="reveal"><img class="zoomable" src="../../assets/images/case-studies/salary-hero/inspect-onboard-6.jpg" alt="Salary Hero help centre with contact admin and common questions" loading="lazy"><figcaption>Help centre — FAQs, contact admin</figcaption></figure>
+  </div>
+  <p class="body-text reveal"><strong>Takeaway:</strong> only employees of partner companies can use Salary Hero, so I couldn't get past registration. But what I can see already shows the key — <mark class="hl">a simple, easy-to-use interface</mark>.</p>
+  <div class="card-grid two" style="margin-top:28px">
     <div class="c reveal">
       <div class="lbl">Reuse</div>
       <ul>
+        <li><strong>Friendly onboarding</strong> — 3 simple slides, plain Thai copy</li>
+        <li><strong>"Can't find my company" state</strong> — friendly ghost + "request access from my HR"; a pattern for non-eligible users</li>
         <li>Home shows earned salary — surface eligibility here</li>
         <li>Bank account already on file</li>
         <li>Users know "it comes back on payday"</li>
@@ -859,20 +878,15 @@
     <div class="c reveal">
       <div class="lbl">Watch out</div>
       <ul>
+        <li><strong>No partner employer = no access</strong> — registration starts with "Where do you work?"; support confirms new users can't join alone</li>
+        <li><strong>Support replies in hours</strong>, not minutes — too slow for an emergency loan</li>
         <li>Advance + loan hit the same payslip — show together</li>
         <li>Don't crowd the withdraw action</li>
-        <li><strong>No partner employer = no access</strong> — support confirms new users can't join alone</li>
-        <li><strong>Support replies in hours</strong>, not minutes — too slow for an emergency loan</li>
-        <li class="tbd">[other issues you found]</li>
       </ul>
     </div>
   </div>
   <div class="entry-shots" style="grid-template-columns:1fr; max-width:200px">
     <figure class="reveal"><img class="zoomable" src="../../assets/images/case-studies/salary-hero/inspect-support-chat.jpg" alt="Salary Hero support chat: asked if the app can be used without a partner company; support replies it only serves partner companies with a contract" loading="lazy"><figcaption>Support chat — only partner companies can use it</figcaption></figure>
-  </div>
-  <div class="gallery reveal" style="margin-top:24px">
-    <figure><div class="tbd" style="border:1px dashed var(--line);padding:60px 20px;text-align:center">[screenshot: home]</div><figcaption>Current — home</figcaption></figure>
-    <figure><div class="tbd" style="border:1px dashed var(--line);padding:60px 20px;text-align:center">[screenshot: withdraw]</div><figcaption>Current — withdraw</figcaption></figure>
   </div>
 
   <h3>Salary Hero’s unfair advantage</h3>
@@ -890,9 +904,23 @@
   <p class="reveal">The rules, questions and goals the design must meet.</p>
 </section>
 
+<!-- Risks -->
+<section class="cs-block" id="risks">
+  <div class="kicker reveal">05 — Risks &amp; friction points</div>
+  <h2 class="reveal">Three reasons users could leave — or stop trusting us</h2>
+  <table class="insight-table risk-table reveal">
+    <thead><tr><th>Risk</th><th>Why it happens</th><th>Effect</th><th>How the design handles it</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1 · Surprise salary deduction</strong></td><td>Low financial literacy; auto-deduction is invisible</td><td>Distrust, support tickets</td><td>Take-home pay everywhere, plain consent, loan card — <a href="#journey-b">B2</a>, <a href="#journey-c">C2</a>, <a href="#journey-e">E1–E2</a></td></tr>
+      <tr><td><strong>2 · Dead end or rejection</strong></td><td>"Can't find my company"; partner-only gate; rejection feels personal</td><td>Abandon</td><td>Eligibility first, soft rejection with alternatives, request access from HR — <a href="#journey-a">A2–A3</a>, <a href="#journey-d">D3</a></td></tr>
+      <tr><td><strong>3 · Heavy or slow application</strong></td><td>Not tech-savvy; emergencies; documents and waits (Noburo, support in hours)</td><td>Drop-off — back to loan sharks</td><td>Pre-filled, no documents, 3 steps, decision within 1 working day — <a href="#journey-c">C1–C4</a>, <a href="#journey-d">D1</a></td></tr>
+    </tbody>
+  </table>
+</section>
+
 <!-- Assumptions -->
 <section class="cs-block" id="assumptions">
-  <div class="kicker reveal">05 — Assumptions</div>
+  <div class="kicker reveal">06 — Assumptions</div>
   <h2 class="reveal">What I assumed, to design without waiting</h2>
   <ul class="body-list reveal">
     <li><strong>Eligibility</strong> — 6+ months at a partner employer, and total deductions stay under a set share of salary</li>
@@ -907,7 +935,7 @@
 
 <!-- Use cases -->
 <section class="cs-block" id="use-cases">
-  <div class="kicker reveal">06 — Use cases</div>
+  <div class="kicker reveal">07 — Use cases</div>
   <h2 class="reveal">The questions users ask at each stage</h2>
   <div class="matrix-wrap reveal">
     <table class="matrix">
@@ -928,7 +956,7 @@
 
 <!-- 5. Rationale -->
 <section class="cs-block" id="rationale">
-  <div class="kicker reveal">07 — Business &amp; UX rationale</div>
+  <div class="kicker reveal">08 — Business &amp; UX rationale</div>
   <h2 class="reveal">Good for business only if good for the borrower</h2>
   <div class="card-grid two">
     <div class="c reveal">
@@ -962,7 +990,7 @@
 
 <!-- 6. Metrics -->
 <section class="cs-block" id="metrics">
-  <div class="kicker reveal">08 — Success metrics</div>
+  <div class="kicker reveal">09 — Success metrics</div>
   <h2 class="reveal">Growth and understanding, together</h2>
   <div class="kpi-cols">
     <div class="kpi-col reveal">
@@ -999,7 +1027,7 @@
 
 <!-- 7. Flows -->
 <section class="cs-block" id="flows">
-  <div class="kicker reveal">09 — User flows</div>
+  <div class="kicker reveal">10 — User flows</div>
   <h2 class="reveal">One journey, four entry points</h2>
 
   <h3>Lifecycle</h3>
@@ -1039,11 +1067,11 @@
 
 <!-- 8. Prototype -->
 <section class="cs-block" id="prototype">
-  <div class="kicker reveal">10 — Prototype</div>
+  <div class="kicker reveal">11 — Prototype</div>
   <h2 class="reveal">Screen by screen</h2>
   <p class="disclaimer reveal">Illustrative: ฿20,000 · 6 months · ฿3,500/month · payday 25th.</p>
 
-  <div class="journey">
+  <div class="journey" id="journey-a">
     <div class="journey-head"><span class="tag">A</span><h3>Finding out</h3></div>
     <div class="phones">
       <figure class="phone-wrap reveal">
@@ -1105,7 +1133,7 @@
     </ul>
   </div>
 
-  <div class="journey">
+  <div class="journey" id="journey-b">
     <div class="journey-head"><span class="tag">B</span><h3>Considering</h3></div>
     <div class="phones">
       <figure class="phone-wrap reveal">
@@ -1187,7 +1215,7 @@
     </ul>
   </div>
 
-  <div class="journey">
+  <div class="journey" id="journey-c">
     <div class="journey-head"><span class="tag">C</span><h3>Registering</h3></div>
     <div class="phones">
       <figure class="phone-wrap reveal">
@@ -1270,7 +1298,7 @@
     </ul>
   </div>
 
-  <div class="journey">
+  <div class="journey" id="journey-d">
     <div class="journey-head"><span class="tag">D</span><h3>Waiting and decision</h3></div>
     <div class="phones">
       <figure class="phone-wrap reveal">
@@ -1329,7 +1357,7 @@
     </ul>
   </div>
 
-  <div class="journey">
+  <div class="journey" id="journey-e">
     <div class="journey-head"><span class="tag">E</span><h3>Repaying and paying off</h3></div>
     <div class="phones">
       <figure class="phone-wrap reveal">
@@ -1413,7 +1441,7 @@
 
 <!-- 9. Validation -->
 <section class="cs-block" id="validation">
-  <div class="kicker reveal">11 — Validation plan</div>
+  <div class="kicker reveal">12 — Validation plan</div>
   <h2 class="reveal">Test the riskiest assumptions first</h2>
 
   <h3>Assumptions to test</h3>
