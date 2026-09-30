@@ -184,6 +184,10 @@
   .cs-learning h3{ font-family:var(--serif); font-weight:400; font-size:clamp(1.2rem,2.4vw,1.6rem); margin-bottom:16px; }
   .cs-learning p{ font-size:14px; line-height:1.75; color:var(--gray); font-weight:300; }
   .cs-learning p strong{ color:var(--white); font-weight:300; }
+  .cs-learning ul{ list-style:none; }
+  .cs-learning li{ font-size:14px; line-height:1.75; color:var(--gray); font-weight:300; padding-left:20px; position:relative; margin-top:8px; }
+  .cs-learning li::before{ content:''; position:absolute; left:0; top:.8em; width:6px; height:1px; background:var(--accent); }
+  .cs-learning li strong{ color:var(--white); font-weight:300; }
 
   .gallery{ margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .gallery.single{ grid-template-columns:1fr; }
@@ -403,7 +407,7 @@
     <div class="rung reveal"><div class="rung-no">01 · Draft</div><h4>AI writes, a human sends</h4><p>AI 1.0 (beta), Sep 2023. Every reply is reviewed before it goes out.</p><div class="proof"><strong>Had to prove:</strong> people would use it at all.</div></div>
     <div class="rung reveal"><div class="rung-no">02 · Copilot</div><h4>AI shows its work</h4><p>Sources, freshness, step-by-step reasoning, and a safe place to test.</p><div class="proof"><strong>Had to prove:</strong> answers could be checked, not just trusted.</div></div>
     <div class="rung reveal"><div class="rung-no">03 · Autopilot</div><h4>AI replies — and knows when to stop</h4><p>Opt-in. Confidence thresholds, escalation to a human, human override.</p><div class="proof"><strong>Had to prove:</strong> it resolves chats without costing trust — measurably.</div></div>
-    <div class="rung reveal next"><div class="rung-no">04 · Actions · 2026</div><h4>AI does the next step</h4><p>AI Agent 2.0: update a status, send a confirmation, create a task.</p><div class="proof"><strong>Has to prove:</strong> accuracy high enough to act, not just answer.</div></div>
+    <div class="rung reveal next"><div class="rung-no">04 · Actions · 2026</div><h4>AI does the next step</h4><p>AI Agent 2.0: cancel an order, approve a refund, send and receive data with external platforms.</p><div class="proof"><strong>Has to prove:</strong> accuracy high enough to act, not just answer.</div></div>
   </div>
 
   <h3>01 — Draft: getting it used</h3>
@@ -434,7 +438,7 @@
   </div>
 
   <h3>04 — Actions: what's next</h3>
-  <p class="body-text reveal">AI Agent 2.0 is Zaapi's 2026 focus: moving from answers to actions — suggesting the next step, or taking it with granted authority (updating a status, sending a confirmation, creating a task) — with higher accuracy, shipped behind feature flags and expanded based on adoption and quality signals.</p>
+  <p class="body-text reveal">AI Agent 2.0 is Zaapi's 2026 focus: moving from answers to actions — suggesting the next step, or taking it with granted authority (like cancelling an order, approving a refund, or exchanging data with an external platform) — with higher accuracy, shipped behind feature flags and expanded based on adoption and quality signals.</p>
 
   <h3>Handover</h3>
   <p class="body-text reveal">Documented in Figma with states, edge cases, and annotated interaction notes — so engineering could build the reasoning loop and every fallback state without guessing.</p>
@@ -460,6 +464,16 @@
   <div class="cs-learning reveal">
     <h3>What I'd improve</h3>
     <p>Moving fast created two kinds of debt, and they're the same lesson. <strong>Architecture:</strong> we tied AI training sources to the account, so every new source had to be mapped to that account — fast to ship, but hard to reuse and it doesn't scale to many teams or brands. Next time I'd make the AI Agent a top-level object: attach its datasets, policies, and tools once, then assign an agent to a chat, inbox, or account, with a per-chat override. <strong>Deployment:</strong> the single on/off page got people started but gave B2B power users too little control, which is why deployment moved into the Flow Builder. Both came from optimizing the first release for speed — the right call in an unvalidated market — without designing what an "agent" <em>is</em> as a system from day one. Renaming a button is cheap; re-architecting the model underneath isn't. Today I'd let the first release stay simple on the surface, but spend the design time up front on the object model it sits on.</p>
+  </div>
+  <div class="cs-learning reveal">
+    <h3>Why we're doubling down — AI Agent 2.0</h3>
+    <p>The AI agent earned its place: AI became Zaapi's most revenue-generating feature, messages sent by AI doubled in two quarters, and AI agents are exactly where customer service software is heading. So in 2026 we're building <strong>AI Agent 2.0</strong>, taking the agent from answering to acting:</p>
+    <ul class="body-list" style="margin-top:14px">
+      <li><strong>Order actions</strong> — cancel an order, approve a cancellation, approve a refund.</li>
+      <li><strong>Connecting to other platforms</strong> — calling HTTP requests and APIs to send information from Zaapi to external platforms, and to receive data back from them.</li>
+      <li><strong>Higher accuracy</strong> — across everything the agent already does.</li>
+    </ul>
+    <p style="margin-top:16px">That makes the AI agent a far more powerful tool for customer service teams: able to do much of what a human agent can do, not just say what they'd say. It's also the next rung of the same ladder — every action raises the cost of a wrong answer, so the trust design behind version one (visible reasoning, confidence thresholds, a human who can always step in) matters more in 2.0, not less.</p>
   </div>
 </section>
 <section class="cs-nav">
