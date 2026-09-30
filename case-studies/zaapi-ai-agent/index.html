@@ -186,8 +186,13 @@
   .ladder .rung .proof{ margin-top:auto; padding-top:16px; font-size:12.5px; line-height:1.6; color:var(--gray-dim); }
   .ladder .rung .proof strong{ color:var(--gray); font-weight:300; }
   .ladder .rung.next{ background:repeating-linear-gradient(135deg, var(--bg) 0 10px, rgba(0,0,0,0.018) 10px 11px); }
+  .ladder.two{ grid-template-columns:1fr 1fr; }
+  .ladder .rung ul{ list-style:none; margin-top:4px; }
+  .ladder .rung li{ font-size:13px; line-height:1.65; color:var(--gray); font-weight:300; padding-left:16px; position:relative; margin-top:8px; }
+  .ladder .rung li::before{ content:''; position:absolute; left:0; top:.8em; width:6px; height:1px; background:var(--accent); }
+  .ladder .rung li strong{ color:var(--white); font-weight:300; }
   @media (max-width:960px){ .ladder{ grid-template-columns:1fr 1fr; } }
-  @media (max-width:560px){ .ladder{ grid-template-columns:1fr; } }
+  @media (max-width:560px){ .ladder, .ladder.two{ grid-template-columns:1fr; } }
 
   .cs-block h3{ font-family:var(--serif); font-weight:400; font-size:clamp(1.2rem,2.4vw,1.6rem); margin-top:56px; margin-bottom:14px; }
 
@@ -200,6 +205,7 @@
   .cs-learning li{ font-size:14px; line-height:1.75; color:var(--gray); font-weight:300; padding-left:20px; position:relative; margin-top:8px; }
   .cs-learning li::before{ content:''; position:absolute; left:0; top:.8em; width:6px; height:1px; background:var(--accent); }
   .cs-learning li strong{ color:var(--white); font-weight:300; }
+  .cs-learning p.fine{ margin-top:16px; font-size:12px; line-height:1.65; color:var(--gray-dim); }
 
   .gallery{ margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .gallery.single{ grid-template-columns:1fr; }
@@ -294,6 +300,7 @@
   <div class="reveal"><div class="stat">+750%</div><div class="stat-desc">More AI feature usage (click) after introducing the new AI branding and relocating the button</div></div>
   <div class="reveal"><div class="stat">+100%</div><div class="stat-desc">Increase in messages sent by Zaapi AI from start of Q1 to end of Q2 2025 after launching AI thinking and performance dashboard</div></div>
   <div class="reveal"><div class="stat">#1</div><div class="stat-desc">AI became the most revenue-generating feature in the product (Sep '23 – Jan '25)</div></div>
+    <div class="reveal"><div class="stat">61%</div><div class="stat-desc">Of tickets the AI worked on were fully resolved with no human (Q3 2026)</div></div>
 </section>
 <section class="cs-meta five">
   <div class="item reveal"><div class="lbl">Role</div><div class="val">Product Design Lead</div></div>
@@ -422,6 +429,27 @@
     <div class="rung reveal next"><div class="rung-no">04 · Actions · 2026</div><h4>AI does the next step</h4><p>AI Agent 2.0: cancel an order, approve a refund, send and receive data with external platforms.</p><div class="proof"><strong>Has to prove:</strong> accuracy high enough to act, not just answer.</div></div>
   </div>
 
+  <h3>What we built, by phase</h3>
+  <div class="ladder two">
+    <div class="rung reveal"><div class="rung-no">Phase 1 · AI Agent · 2023–2025</div><h4>Give teams every lever for a trustworthy AI reply</h4>
+      <ul>
+        <li><strong>One-click AI response</strong> — generate a reply straight from the chat composer</li>
+        <li><strong>System prompt</strong> — instructions for how the AI should behave</li>
+        <li><strong>Knowledge sources</strong> — website text, PDFs, CSVs</li>
+        <li><strong>Scenario handling</strong> — defined handling for specific situations, like order tracking</li>
+        <li><strong>Personality</strong> — the brand's voice and tone</li>
+        <li><strong>Analytics</strong> — every AI case, broken down into handled by a human, by AI, or by both</li>
+      </ul>
+    </div>
+    <div class="rung reveal next"><div class="rung-no">Phase 2 · AI Agent 2.0 · 2026</div><h4>Restructure the AI around an agent that works like a brand representative</h4>
+      <ul>
+        <li><strong>One agent per brand</strong> — the way a human agent represents a brand, one AI agent holds everything for it: knowledge sources, procedures, and actions</li>
+        <li><strong>Human actions</strong> — cancel an order, approve a cancellation or refund, send and receive data with external platforms through APIs</li>
+        <li><strong>More accuracy features</strong> — so the agent can be trusted to act, not just answer</li>
+      </ul>
+    </div>
+  </div>
+
   <h3>01 — Draft: getting it used</h3>
   <p class="body-text reveal">AI 1.0 was an "AI Assistant" set up from a single FAQ document, drafting a reply from the customer's latest message for an agent to review. The first problem wasn't accuracy — it was that few people found it. Renaming the button, giving it a label, and moving it into the chat composer took daily AI events from about 10 to 85: <strong>+750%</strong>.</p>
   <div class="gallery">
@@ -450,7 +478,7 @@
   </div>
 
   <h3>04 — Actions: what's next</h3>
-  <p class="body-text reveal">AI Agent 2.0 is Zaapi's 2026 focus: moving from answers to actions — suggesting the next step, or taking it with granted authority (like cancelling an order, approving a refund, or exchanging data with an external platform) — with higher accuracy, shipped behind feature flags and expanded based on adoption and quality signals.</p>
+  <p class="body-text reveal">AI Agent 2.0 is Zaapi's 2026 focus. It restructures the AI features around a single agent per brand — holding that brand's knowledge, procedures, and actions, the way a human brand representative would — and moves it from answers to actions — suggesting the next step, or taking it with granted authority (like cancelling an order, approving a refund, or exchanging data with an external platform) — with higher accuracy, shipped behind feature flags and expanded based on adoption and quality signals.</p>
 
   <h3>Under the hood — how Zaapi's agent is built</h3>
   <p class="body-text reveal">Designing an AI agent well means understanding what sits underneath it — the design decisions above only work because of how the system retrieves, reasons, and acts. These are the core techniques behind Zaapi's agent, and what each one meant for the experience.</p>
@@ -498,10 +526,17 @@
     <div class="reveal"><div class="stat">+750%</div><div class="stat-desc">More AI feature usage (click) after introducing the new AI branding and relocating the button</div></div>
     <div class="reveal"><div class="stat">+100%</div><div class="stat-desc">Increase in messages sent by Zaapi AI from start of Q1 to end of Q2 2025 after launching AI thinking and performance dashboard</div></div>
     <div class="reveal"><div class="stat">#1</div><div class="stat-desc">AI became the most revenue-generating feature in the product (Sep '23 – Jan '25)</div></div>
+    <div class="reveal"><div class="stat">61%</div><div class="stat-desc">Of tickets the AI worked on were fully resolved with no human (Q3 2026)</div></div>
   </div>
   <div class="cs-learning reveal">
     <h3>Where it stands today — Q3 2026</h3>
-    <p><span class="tbd">[Current AI agent numbers, if you have them: share of all messages now sent by AI, full-resolution rate, and how many active stores run the AI agent — the same "where it stands today" shape as the Growth case study.]</span></p>
+    <p>From 1 July to 29 September 2026:</p>
+    <ul style="margin-top:6px">
+      <li><strong>1 in 20 replies</strong> sent through Zaapi now comes from AI (5.2%), rising from 4.6% in July to 5.7% in September. That's 1.67M AI replies in the quarter, +68% vs. Q2 (0.99M). Counting replies sellers type directly in the marketplace apps too, AI is 2.6% of all seller-side messages.</li>
+      <li><strong>13% of all closed tickets</strong> were resolved end to end by AI (586K of 4.49M), up from 10% in Q2, and 17% in September. Of the tickets the AI worked on, <strong>61%</strong> were fully resolved with no human — steady vs. Q2, and 64% in September.</li>
+      <li><strong>240 stores</strong> ran the AI agent in September, up from 165 in April (+45%) — roughly 1 in 4 of Zaapi's 968 active stores. 382 different stores used it at some point in the quarter.</li>
+    </ul>
+    <p class="fine">"Replies through Zaapi" are messages sent by seller agents, flows, automations, and AI in Zaapi, excluding buyer messages and replies typed in Shopee's or Lazada's own apps. "Full resolution" means a ticket closed with AI handling it and no human reply; "partial" means AI replied, then a human stepped in (376K tickets in Q3). "Running the AI agent" means at least one ticket resolved fully or partly by AI that month. September data runs to 29 Sep, so final quarter figures will be slightly higher.</p>
   </div>
   <div class="cs-learning reveal">
     <h3>What worked</h3>
@@ -509,15 +544,16 @@
   </div>
   <div class="cs-learning reveal">
     <h3>What I'd improve</h3>
-    <p>Moving fast created two kinds of debt, and they're the same lesson. <strong>Architecture:</strong> we tied AI training sources to the account, so every new source had to be mapped to that account — fast to ship, but hard to reuse and it doesn't scale to many teams or brands. Next time I'd make the AI Agent a top-level object: attach its datasets, policies, and tools once, then assign an agent to a chat, inbox, or account, with a per-chat override. <strong>Deployment:</strong> the single on/off page got people started but gave B2B power users too little control, which is why deployment moved into the Flow Builder. Both came from optimizing the first release for speed — the right call in an unvalidated market — without designing what an "agent" <em>is</em> as a system from day one. Renaming a button is cheap; re-architecting the model underneath isn't. Today I'd let the first release stay simple on the surface, but spend the design time up front on the object model it sits on.</p>
+    <p>Moving fast created two kinds of debt, and they're the same lesson. <strong>Architecture:</strong> we tied AI training sources to the account, so every new source had to be mapped to that account — fast to ship, but hard to reuse and it doesn't scale to many teams or brands. The fix was to make the AI Agent itself the top-level object — and that's exactly what AI Agent 2.0 does: like a human brand representative, one agent now holds all of its brand's knowledge sources, procedures, and actions in one place. <strong>Deployment:</strong> the single on/off page got people started but gave B2B power users too little control, which is why deployment moved into the Flow Builder. Both came from optimizing the first release for speed — the right call in an unvalidated market — without designing what an "agent" <em>is</em> as a system from day one. Renaming a button is cheap; re-architecting the model underneath isn't. Today I'd let the first release stay simple on the surface, but spend the design time up front on the object model it sits on.</p>
   </div>
   <div class="cs-learning reveal">
     <h3>Why we're doubling down — AI Agent 2.0</h3>
     <p>The AI agent earned its place: AI became Zaapi's most revenue-generating feature, messages sent by AI doubled in two quarters, and AI agents are exactly where customer service software is heading. So in 2026 we're building <strong>AI Agent 2.0</strong>, taking the agent from answering to acting:</p>
     <ul class="body-list" style="margin-top:14px">
+      <li><strong>An agent that works like a brand representative</strong> — restructuring the AI features so one agent holds all of a brand's knowledge sources, procedures, and actions, just as a human agent would.</li>
       <li><strong>Order actions</strong> — cancel an order, approve a cancellation, approve a refund.</li>
       <li><strong>Connecting to other platforms</strong> — calling HTTP requests and APIs to send information from Zaapi to external platforms, and to receive data back from them.</li>
-      <li><strong>Higher accuracy</strong> — across everything the agent already does.</li>
+      <li><strong>More features to ensure accuracy</strong> — across everything the agent does.</li>
     </ul>
     <p style="margin-top:16px">That makes the AI agent a far more powerful tool for customer service teams: able to do much of what a human agent can do, not just say what they'd say. It's also the next rung of the same ladder — every action raises the cost of a wrong answer, so the trust design behind version one (visible reasoning, confidence thresholds, a human who can always step in) matters more in 2.0, not less.</p>
   </div>
