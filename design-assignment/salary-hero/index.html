@@ -671,6 +671,15 @@
   .assume-table td:first-child{ color:var(--white); width:26%; }
   .assume-table td.imp{ width:20%; }
   .assume-table td:last-child{ color:var(--accent); }
+  .phone.sh .shcar{ overflow:hidden; margin-right:-12px; padding:2px 0 8px; margin-bottom:-6px; }
+  .phone.sh .shtrack{ display:flex; gap:8px; }
+  .phone.sh .shtrack > .shsod{ flex:0 0 84%; }
+  .phone.sh .shcar.s2{ margin-left:-12px; margin-right:-12px; }
+  .phone.sh .shcar.s2 .shtrack > .shsod:first-child{ margin-left:calc(-84% + 4px); }
+  .phone.sh .shloanslide{ background:#fff; }
+  .phone.sh .shdots{ display:flex; justify-content:center; gap:4px; margin-top:-2px; }
+  .phone.sh .shdots i{ width:5px; height:5px; border-radius:3px; background:#D9D3EE; display:block; }
+  .phone.sh .shdots i.on{ width:14px; background:var(--app-ink); }
 </style>
 </head>
 <body>
@@ -1587,12 +1596,38 @@
           <div class="shbody">
             <div class="shsod"><div class="row"><span class="sodt">Salary on Demand</span><span class="mut">***1234</span></div><div class="big">฿4,500</div><div class="row mut" style="font-size:9px"><span>Pay cycle 1–25 Jul</span><span>Left: <b style="color:var(--app)">12 days</b></span></div><div class="prog"><i style="width:52%"></i></div><div class="mut" style="font-size:9px;margin-top:4px">After ฿3,500 for your loan + ฿2,000 withdrawn</div></div>
             <span class="btn">Withdraw</span>
-            <div class="shloan active"><div class="row"><span class="mid">Your loan</span><span class="pill brand">On track</span></div><div class="row" style="margin-top:6px"><span class="mut">Left to repay</span><span class="mid" style="color:var(--app)">฿14,000</span></div><div class="prog" style="background:#fff"><i style="width:33%;background:var(--app)"></i></div><div class="row" style="margin-top:6px"><span class="mut">Next · 25 Jul</span><span>฿3,500</span></div><div class="row"><span class="mut">2 of 6 paid</span><span>Ends 25 Oct</span></div></div>
+            <div class="shloan active"><div class="row"><span class="mid">Your loan</span></div><div class="row" style="margin-top:6px"><span class="mut">Left to repay</span><span class="mid" style="color:var(--app)">฿14,000</span></div><div class="prog" style="background:#fff"><i style="width:33%;background:var(--app)"></i></div><div class="row" style="margin-top:6px"><span class="mut">Next · 25 Jul</span><span>฿3,500</span></div><div class="row"><span class="mut">2 of 6 paid</span><span>Ends 25 Oct</span></div></div>
             <div class="shicons"><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/><path d="M10 7v10" stroke-dasharray="2 2"/></svg></span>Coupon</div><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6.5" r="1.2"/><path d="M6 12h12"/><circle cx="12" cy="17.5" r="1.2"/></svg></span>Budgeting</div><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h6a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H3z"/><path d="M21 5h-6a3 3 0 0 0-3 3v11a2 2 0 0 1 2-2h7z"/></svg></span>Education</div><div class="shi loan"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M10 7.5v9M10 7.5h2.6a2.2 2.2 0 0 1 0 4.4H10M10 11.9h3a2.3 2.3 0 0 1 0 4.6h-3M11.5 6v1.5M11.5 16.5V18"/></svg></span>Loan</div></div>
           </div>
           <div class="tabs shtabs"><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3.5 4v4h4"/><path d="M12 7.5V12l3 2"/></svg>History</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>More</span></div>
         </div>
         <figcaption><b>D1</b> · Home — loan card</figcaption>
+      </figure>
+<figure class="phone-wrap reveal">
+        <div class="phone sh"><div class="sb">12:30</div>
+          <div class="shhead"><img src="../../assets/logos/salaryhero.svg" alt=""><div><b>พิชัย สะสมทรัพย์</b><span>Salary Hero</span></div><em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><i class="shd"></i></em></div>
+          <div class="shbody">
+            <div class="shcar"><div class="shtrack"><div class="shsod"><div class="row"><span class="sodt">Salary on Demand</span><span class="mut">***1234</span></div><div class="big">฿4,500</div><div class="row mut" style="font-size:9px"><span>Pay cycle 1–25 Jul</span><span>Left: <b style="color:var(--app)">12 days</b></span></div><div class="prog"><i style="width:52%"></i></div><div class="mut" style="font-size:9px;margin-top:4px">After ฿3,500 for your loan + ฿2,000 withdrawn</div></div><div class="shsod shloanslide"><div class="row"><span class="sodt" style="color:var(--app)">Your loan</span><span class="mut">2 of 6 paid</span></div><div class="big">฿14,000</div><div class="row mut" style="font-size:9px"><span>Left to repay</span><span>Ends <b style="color:var(--app)">25 Oct</b></span></div><div class="prog"><i style="width:33%"></i></div><div class="mut" style="font-size:9px;margin-top:4px">Next deduction 25 Jul · ฿3,500</div></div></div></div>
+            <span class="btn">Withdraw</span>
+            <div class="shdots"><i class="on"></i><i class=""></i></div>
+            <div class="shicons"><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/><path d="M10 7v10" stroke-dasharray="2 2"/></svg></span>Coupon</div><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6.5" r="1.2"/><path d="M6 12h12"/><circle cx="12" cy="17.5" r="1.2"/></svg></span>Budgeting</div><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h6a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H3z"/><path d="M21 5h-6a3 3 0 0 0-3 3v11a2 2 0 0 1 2-2h7z"/></svg></span>Education</div><div class="shi loan"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M10 7.5v9M10 7.5h2.6a2.2 2.2 0 0 1 0 4.4H10M10 11.9h3a2.3 2.3 0 0 1 0 4.6h-3M11.5 6v1.5M11.5 16.5V18"/></svg></span>Loan</div></div>
+          </div>
+          <div class="tabs shtabs"><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3.5 4v4h4"/><path d="M12 7.5V12l3 2"/></svg>History</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>More</span></div>
+        </div>
+        <figcaption><b>D1-B</b> · Variation — carousel, Salary on Demand first<span class="shcap">Loan card sits second in the top carousel, peeking in from the right.</span></figcaption>
+      </figure>
+<figure class="phone-wrap reveal">
+        <div class="phone sh"><div class="sb">12:30</div>
+          <div class="shhead"><img src="../../assets/logos/salaryhero.svg" alt=""><div><b>พิชัย สะสมทรัพย์</b><span>Salary Hero</span></div><em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><i class="shd"></i></em></div>
+          <div class="shbody">
+            <div class="shcar s2"><div class="shtrack"><div class="shsod"><div class="row"><span class="sodt">Salary on Demand</span><span class="mut">***1234</span></div><div class="big">฿4,500</div><div class="row mut" style="font-size:9px"><span>Pay cycle 1–25 Jul</span><span>Left: <b style="color:var(--app)">12 days</b></span></div><div class="prog"><i style="width:52%"></i></div><div class="mut" style="font-size:9px;margin-top:4px">After ฿3,500 for your loan + ฿2,000 withdrawn</div></div><div class="shsod shloanslide"><div class="row"><span class="sodt" style="color:var(--app)">Your loan</span><span class="mut">2 of 6 paid</span></div><div class="big">฿14,000</div><div class="row mut" style="font-size:9px"><span>Left to repay</span><span>Ends <b style="color:var(--app)">25 Oct</b></span></div><div class="prog"><i style="width:33%"></i></div><div class="mut" style="font-size:9px;margin-top:4px">Next deduction 25 Jul · ฿3,500</div></div></div></div>
+            <span class="btn">Withdraw</span>
+            <div class="shdots"><i class=""></i><i class="on"></i></div>
+            <div class="shicons"><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/><path d="M10 7v10" stroke-dasharray="2 2"/></svg></span>Coupon</div><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6.5" r="1.2"/><path d="M6 12h12"/><circle cx="12" cy="17.5" r="1.2"/></svg></span>Budgeting</div><div class="shi"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h6a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H3z"/><path d="M21 5h-6a3 3 0 0 0-3 3v11a2 2 0 0 1 2-2h7z"/></svg></span>Education</div><div class="shi loan"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M10 7.5v9M10 7.5h2.6a2.2 2.2 0 0 1 0 4.4H10M10 11.9h3a2.3 2.3 0 0 1 0 4.6h-3M11.5 6v1.5M11.5 16.5V18"/></svg></span>Loan</div></div>
+          </div>
+          <div class="tabs shtabs"><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3.5 4v4h4"/><path d="M12 7.5V12l3 2"/></svg>History</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>More</span></div>
+        </div>
+        <figcaption><b>D1-C</b> · Variation — carousel, swiped to the loan card<span class="shcap">Same level as Salary on Demand — one swipe to see balance and end date.</span></figcaption>
       </figure>
       <figure class="phone-wrap reveal">
         <div class="phone"><div class="sb">12:30</div>
@@ -1751,7 +1786,7 @@
     <h3>With more time</h3>
     <p>More explorations on UX improvements and component variations, like:</p>
     <ul class="body-list" style="margin-top:10px">
-      <li>Loan card variations — e.g. compact vs. expanded, progress bar vs. ring, and states like “due in 3 days”, “deduction adjusted” or “paid off”</li>
+      <li>Loan card variations</li>
       <li>Loan entry points</li>
       <li>Loan details page variations</li>
       <li>Registration flow variations</li>
