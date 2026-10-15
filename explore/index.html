@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nana — Explore the Work</title>
+<meta name="description" content="Fly through a decade of product design work by Nana — Product Design Lead across UX, AI, and SaaS.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070707;
+    --white:#f3f2ee;
+    --gray:#8e8c86;
+    --gray-dim:#5c5a55;
+    --line:rgba(255,255,255,0.14);
+    --accent:#FF2E3F;
+    --serif:'Forum', serif;
+    --mono:'DM Mono', monospace;
+    --pad:clamp(16px, 4vw, 48px);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ background:var(--bg); }
+  body{ background:var(--bg); color:var(--white); font-family:var(--mono); font-weight:300; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
+  :focus-visible{ outline:1px solid var(--accent); outline-offset:4px; }
+
+  /* the page scrolls; the scene stays put and the scroll drives the flight */
+  #scene{ position:fixed; inset:0; width:100%; height:100%; display:block; z-index:0; }
+  .track{ height:1000vh; }
+  .shade{ position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:radial-gradient(ellipse at center, transparent 45%, rgba(7,7,7,.55) 100%); }
+
+  /* ---------- top bar ---------- */
+  .bar{ position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:5;
+    display:flex; align-items:center; gap:4px; padding:6px; border:1px solid var(--line); border-radius:999px;
+    background:rgba(12,12,12,.55); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); white-space:nowrap; }
+  .bar a, .bar button{ font:400 12px/1 var(--mono); letter-spacing:.06em; color:var(--gray); text-decoration:none;
+    padding:10px 14px; border-radius:999px; border:0; background:none; cursor:pointer; transition:color .2s, background .2s; }
+  .bar a:hover, .bar button:hover{ color:var(--white); }
+  .bar .brand{ color:var(--white); font-weight:500; letter-spacing:.2em; }
+  .bar .classic{ color:var(--bg); background:var(--white); }
+  .bar .classic:hover{ color:var(--bg); background:#fff; }
+
+  /* ---------- overlays ---------- */
+  .layer{ position:fixed; z-index:3; pointer-events:none; opacity:0; visibility:hidden;
+    transition:opacity .6s ease, transform .6s ease, visibility 0s linear .6s; }
+  .layer.on{ opacity:1; visibility:visible; transition:opacity .6s ease, transform .6s ease, visibility 0s; }
+  .layer a, .layer button{ pointer-events:auto; }
+
+  .intro{ background:radial-gradient(ellipse 44% 40% at 50% 50%, rgba(7,7,7,.94) 0%, rgba(7,7,7,.78) 45%, rgba(7,7,7,0) 78%); }
+  .intro{ inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 var(--pad); }
+  .eyebrow{ font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--gray); }
+  .intro h1{ font-family:var(--serif); font-weight:400; font-size:clamp(3rem, 10vw, 9rem); line-height:.95; margin:22px 0 26px; letter-spacing:-.01em; }
+  .intro h1 em{ font-style:normal; color:var(--accent); }
+  .intro p{ max-width:40ch; font-size:13px; line-height:1.7; color:var(--gray); }
+  .hint{ position:absolute; bottom:36px; left:50%; transform:translateX(-50%); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--gray-dim); }
+  .hint::after{ content:''; display:block; width:1px; height:34px; margin:12px auto 0; background:linear-gradient(var(--gray-dim), transparent); }
+
+  .station{ left:var(--pad); bottom:var(--pad); max-width:min(460px, calc(100vw - var(--pad)*2 - 40px)); transform:translateY(16px); }
+  .station.on{ transform:none; }
+  .station .no{ font-size:11px; letter-spacing:.2em; color:var(--accent); }
+  .station h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem, 4.6vw, 3.6rem); line-height:1; margin:14px 0 14px; }
+  .station p{ font-size:13px; line-height:1.7; color:var(--gray); }
+  .stats{ list-style:none; display:flex; flex-wrap:wrap; gap:6px 22px; margin-top:18px; }
+  .stats li{ font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--gray); }
+  .stats b{ font-family:var(--serif); font-weight:400; font-size:1.5rem; letter-spacing:0; color:var(--white); margin-right:6px; text-transform:none; }
+  .open{ display:inline-flex; align-items:center; gap:10px; margin-top:24px; font-size:12px; letter-spacing:.08em;
+    text-decoration:none; padding:12px 18px; border:1px solid var(--line); border-radius:999px; background:rgba(12,12,12,.5); transition:border-color .2s, background .2s; }
+  .open:hover{ border-color:var(--white); background:rgba(243,242,238,.08); }
+  .bottom-fade{ position:fixed; left:0; right:0; bottom:0; height:70vh; z-index:2; pointer-events:none;
+    background:
+      radial-gradient(ellipse 52% 80% at 0% 100%, rgba(7,7,7,.94) 0%, rgba(7,7,7,.8) 45%, rgba(7,7,7,0) 100%),
+      linear-gradient(rgba(7,7,7,0) 40%, rgba(7,7,7,.6));
+    opacity:0; transition:opacity .6s; }
+  .bottom-fade.on{ opacity:1; }
+
+  .outro{ inset:0; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; text-align:center; padding:clamp(110px, 17vh, 170px) var(--pad) 0; }
+  .outro h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2.6rem, 8vw, 7rem); line-height:1; margin:20px 0 32px; }
+  .outro .links{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .outro .again{ margin-top:28px; font:300 11px var(--mono); letter-spacing:.2em; text-transform:uppercase; color:var(--gray-dim); background:none; border:0; cursor:pointer; }
+  .outro .again:hover{ color:var(--white); }
+
+  /* ---------- depth rail: one tick per project, in flight order ---------- */
+  .rail{ position:fixed; right:var(--pad); top:50%; transform:translateY(-50%); z-index:4; height:min(46vh, 360px); width:28px; }
+  .rail .line, .rail .fill{ position:absolute; right:3px; top:0; width:1px; background:var(--line); height:100%; }
+  .rail .fill{ background:var(--white); height:0; }
+  .rail button{ position:absolute; right:-6px; transform:translateY(-50%); background:none; border:0; cursor:pointer;
+    font:400 10px var(--mono); letter-spacing:.1em; color:var(--gray-dim); display:flex; align-items:center; gap:8px; padding:6px; }
+  .rail button::after{ content:''; width:7px; height:7px; border-radius:50%; border:1px solid var(--gray-dim); background:var(--bg); }
+  .rail button.on{ color:var(--white); }
+  .rail button.on::after{ background:var(--accent); border-color:var(--accent); }
+
+  .tip{ position:fixed; z-index:6; pointer-events:none; font-size:11px; letter-spacing:.06em; padding:8px 12px; border-radius:999px;
+    background:var(--white); color:var(--bg); opacity:0; transform:translate(14px, 14px); transition:opacity .15s; white-space:nowrap; }
+  .tip.on{ opacity:1; }
+
+  /* ---------- no-WebGL fallback: a plain list of the work ---------- */
+  .fallback{ display:none; }
+  .no-webgl #scene, .no-webgl .track, .no-webgl .rail, .no-webgl .layer, .no-webgl .bottom-fade, .no-webgl .shade{ display:none; }
+  .no-webgl .fallback{ display:block; max-width:720px; margin:0 auto; padding:120px var(--pad) 80px; }
+  .fallback h1{ font-family:var(--serif); font-weight:400; font-size:3rem; margin-bottom:32px; }
+  .fallback li{ list-style:none; border-top:1px solid var(--line); padding:20px 0; }
+  .fallback a{ font-family:var(--serif); font-size:1.6rem; text-decoration:none; }
+
+  @media (max-width:640px){
+    .bar{ top:12px; }
+    .bar a, .bar button{ padding:9px 10px; font-size:11px; }
+    .bar .hide-sm{ display:none; }
+    .rail{ right:10px; }
+    .rail button{ font-size:0; gap:0; }
+    .station{ bottom:24px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="shade"></div>
+<div class="track" aria-hidden="true"></div>
+
+<nav class="bar" aria-label="Main">
+  <a class="brand" href="./">NANA</a>
+  <button type="button" data-jump="0">Work</button>
+  <button type="button" data-jump="end">Contact</button>
+  <a class="classic" href="../">Classic site <span class="hide-sm">→</span></a>
+</nav>
+
+<section class="layer intro on" id="intro" aria-label="Introduction">
+  <div class="eyebrow">Nana — Product Design Lead</div>
+  <h1>Your moonshot,<br>made <em>real</em></h1>
+  <p>A decade of UX, AI, and SaaS work.<br>Scroll to fly through it.</p>
+  <div class="hint">Scroll to fly in</div>
+</section>
+
+<div class="bottom-fade" id="bottomFade"></div>
+
+<section class="layer station" data-station="0" aria-label="Project 1">
+  <div class="no">01 / 04 — ZAAPI</div>
+  <h2>Scaling a SaaS from scratch</h2>
+  <p>From a Thai-only product to an international market, rebuilt around the messages people actually needed to send.</p>
+  <ul class="stats"><li><b>+220%</b>ARR</li><li><b>+650%</b>Messages sent</li><li><b>+40%</b>New subs</li></ul>
+  <a class="open" href="../case-studies/zaapi-growth/">Open case study →</a>
+</section>
+<section class="layer station" data-station="1" aria-label="Project 2">
+  <div class="no">02 / 04 — ZAAPI</div>
+  <h2>Conversational UX &amp; AI agent</h2>
+  <p>A no-code AI agent that cites its sources, follows policy, and stays human-controlled — trusted enough for teams to switch on.</p>
+  <ul class="stats"><li><b>61%</b>Resolved with no human</li><li><b>1.67M</b>AI replies a quarter</li></ul>
+  <a class="open" href="../case-studies/zaapi-ai-agent/">Open case study →</a>
+</section>
+<section class="layer station" data-station="2" aria-label="Project 3">
+  <div class="no">03 / 04 — ZAAPI</div>
+  <h2>No-code chatbots &amp; automations</h2>
+  <p>From simple templates non-technical managers could turn on in minutes, to a drag-and-drop flow builder for complex logic.</p>
+  <ul class="stats"><li><b>95%</b>Fewer unresponded chats</li><li><b>87%</b>Faster replies</li></ul>
+  <a class="open" href="../case-studies/zaapi-automations/">Open case study →</a>
+</section>
+<section class="layer station" data-station="3" aria-label="Project 4">
+  <div class="no">04 / 04 — TTB</div>
+  <h2>Fintech UX, reimagined</h2>
+  <p>Digitizing loan registration and management for a market used to paper trails and long waits.</p>
+  <ul class="stats"><li><b>+117%</b>Online applications</li></ul>
+  <a class="open" href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener">Open on Behance ↗</a>
+</section>
+
+<section class="layer outro" id="outro" aria-label="Contact">
+  <div class="eyebrow">You made it this far</div>
+  <h2>We should probably talk</h2>
+  <div class="links">
+    <a class="open" href="https://www.linkedin.com/in/nanapas/" target="_blank" rel="noopener">Connect on LinkedIn ↗</a>
+    <a class="open" href="https://www.behance.net/nanapas" target="_blank" rel="noopener">Behance ↗</a>
+  </div>
+  <button class="again" type="button" data-jump="start">Fly back to the start ↑</button>
+</section>
+
+<div class="rail" aria-label="Projects">
+  <div class="line"></div><div class="fill" id="railFill"></div>
+</div>
+<div class="tip" id="tip" aria-hidden="true"></div>
+
+<main class="fallback">
+  <h1>Selected work</h1>
+  <ul>
+    <li><a href="../case-studies/zaapi-growth/">Scaling a SaaS from scratch</a></li>
+    <li><a href="../case-studies/zaapi-ai-agent/">Conversational UX &amp; AI agent</a></li>
+    <li><a href="../case-studies/zaapi-automations/">No-code chatbots &amp; automations</a></li>
+    <li><a href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design">Fintech UX, reimagined</a></li>
+  </ul>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  const IMG = '../assets/images/tunnel/';
+  const PROJECTS = [
+    { key:'growth', title:'Scaling a SaaS from scratch', url:'../case-studies/zaapi-growth/', count:16 },
+    { key:'ai',     title:'Conversational UX & AI agent', url:'../case-studies/zaapi-ai-agent/', count:10 },
+    { key:'auto',   title:'No-code chatbots & automations', url:'../case-studies/zaapi-automations/', count:13 },
+    { key:'fintech',title:'Fintech UX, reimagined', url:'https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design', count:1, external:true },
+  ];
+  const TEAM = { key:'team', title:null, url:null, count:4 };
+
+  // ---- WebGL check ----
+  let gl = null;
+  try { gl = window.THREE && document.createElement('canvas').getContext('webgl'); } catch(e){}
+  if(!gl){ document.documentElement.classList.add('no-webgl'); return; }
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const small = window.innerWidth < 700;
+
+  // ---- renderer / scene ----
+  const canvas = document.getElementById('scene');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x070707, 1);
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x070707, 8, small ? 46 : 58);
+  const camera = new THREE.PerspectiveCamera(small ? 82 : 68, 1, 0.1, 600);
+
+  // ---- tunnel layout ----
+  const R = small ? 3.7 : 5.4;          // tunnel radius
+  const PER_RING = small ? 6 : 9;       // panels around each ring
+  const GAP = 2.7;                      // distance between rings
+  const PANEL_W = small ? 1.9 : 2.5;
+  // flight order: a mixed doorway, the four projects, then the team, then the moon
+  const SEGMENTS = [
+    { set:'mix',     rings:5,  fill:0.6 },
+    { set:0,         rings:14, fill:0.74 },
+    { set:1,         rings:14, fill:0.74 },
+    { set:2,         rings:14, fill:0.74 },
+    { set:3,         rings:8,  fill:0.32 },
+    { set:'team',    rings:7,  fill:0.5 },
+  ];
+
+  const loader = new THREE.TextureLoader();
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+  const geo = new THREE.PlaneGeometry(1, 1);
+  const matCache = {};
+  function material(file){
+    if(!matCache[file]){
+      const tex = loader.load(IMG + file);
+      tex.anisotropy = Math.min(8, maxAniso);
+      matCache[file] = new THREE.MeshBasicMaterial({ map:tex, transparent:true, opacity:0.9, side:THREE.DoubleSide });
+    }
+    return matCache[file];
+  }
+  // real aspect ratios of the generated thumbnails (w/h)
+  const ASPECT = {"growth":[1.41,1.41,1.41,1.58,1.69,1.69,1.69,1.7,1.76,0.77,1.33,1.36,1.33,0.78,1.83,1.3],"ai":[1.41,1.11,1.5,0.74,1.18,1.41,1.41,1.7,1.29,1.38],"auto":[1.4,1.4,1.6,2.69,1.73,1.68,1.72,1.68,0.77,1.76,1.71,1.71,1.75],"fintech":[1.06],"team":[1.33,1.33,1.33,0.75]};
+
+  // seeded random so the tunnel is the same on every visit
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  const tunnel = new THREE.Group(); scene.add(tunnel);
+  const panels = [];
+  const segBounds = []; // [zStart, zEnd] per segment (zStart > zEnd)
+  let ringIndex = 0;
+  const counters = {};
+  function pick(proj){
+    counters[proj.key] = ((counters[proj.key] || 0) + 1 + Math.floor(rnd()*3)) % proj.count;
+    return counters[proj.key];
+  }
+  SEGMENTS.forEach((seg) => {
+    const zStart = -ringIndex * GAP;
+    for(let r = 0; r < seg.rings; r++, ringIndex++){
+      const z = -ringIndex * GAP;
+      const offset = rnd() * Math.PI * 2;
+      for(let k = 0; k < PER_RING; k++){
+        if(rnd() > seg.fill) continue;
+        let proj;
+        if(seg.set === 'mix') proj = PROJECTS[Math.floor(rnd()*3)];
+        else if(seg.set === 'team') proj = rnd() < 0.75 ? TEAM : PROJECTS[Math.floor(rnd()*3)];
+        else if(seg.set === 3) proj = rnd() < 0.5 ? PROJECTS[3] : PROJECTS[Math.floor(rnd()*3)];
+        else proj = PROJECTS[seg.set];
+        const i = pick(proj);
+        const file = proj.key + '-' + (i+1) + '.jpg';
+        const aspect = ASPECT[proj.key][i];
+        const a = offset + (k / PER_RING) * Math.PI * 2 + (rnd() - 0.5) * 0.22;
+        const rad = R + (rnd() - 0.5) * 0.9;
+        const m = new THREE.Mesh(geo, material(file));
+        const w = PANEL_W * (0.85 + rnd() * 0.3);
+        m.scale.set(w, w / aspect, 1);
+        m.position.set(Math.cos(a) * rad, Math.sin(a) * rad, z + (rnd() - 0.5) * 1.2);
+        // face the tunnel's axis, with each image's top pointing deeper into the tunnel
+        const n = new THREE.Vector3(-Math.cos(a), -Math.sin(a), 0);
+        const up = new THREE.Vector3(0, 0, -1);
+        const right = new THREE.Vector3().crossVectors(up, n);
+        m.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right, up, n));
+        m.userData = proj.url ? { url:proj.url, title:proj.title, external:!!proj.external } : {};
+        tunnel.add(m); panels.push(m);
+      }
+    }
+    segBounds.push([zStart, -(ringIndex - 1) * GAP]);
+  });
+  const TUNNEL_END = -(ringIndex - 1) * GAP;
+
+  // ---- stars: around the tunnel and far beyond it ----
+  function stars(count, rMin, rMax, zMin, zMax, size){
+    const pos = new Float32Array(count * 3);
+    for(let i = 0; i < count; i++){
+      const a = rnd() * Math.PI * 2, r = rMin + rnd() * (rMax - rMin);
+      pos[i*3] = Math.cos(a) * r; pos[i*3+1] = Math.sin(a) * r; pos[i*3+2] = zMin + rnd() * (zMax - zMin);
+    }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    return new THREE.Points(g, new THREE.PointsMaterial({ color:0xf3f2ee, size, sizeAttenuation:true, fog:false, transparent:true, opacity:0.85 }));
+  }
+  scene.add(stars(small ? 1400 : 2600, R + 2, 70, TUNNEL_END - 260, 30, 0.11));
+  scene.add(stars(900, 0, 140, TUNNEL_END - 420, TUNNEL_END - 300, 0.6));
+
+  // ---- the moon at the end of the tunnel ----
+  const MOON_Z = TUNNEL_END - 70;
+  const moonTex = loader.load(IMG + 'moon.jpg');
+  const moon = new THREE.Mesh(new THREE.SphereGeometry(13, 64, 48),
+    new THREE.MeshStandardMaterial({ map:moonTex, roughness:1, metalness:0, fog:false }));
+  moon.position.set(0, -13, MOON_Z);
+  scene.add(moon);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.9); sun.position.set(-30, 40, MOON_Z + 70); scene.add(sun);
+
+  // ---- flight path: scroll maps to camera depth ----
+  const Z0 = 9, Z1 = MOON_Z + 36;
+  const track = document.querySelector('.track');
+  let target = Z0, camZ = Z0;
+  function progress(){ const max = track.offsetHeight - innerHeight; return max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0; }
+  function zToScroll(z){ const max = track.offsetHeight - innerHeight; return ((Z0 - z) / (Z0 - Z1)) * max; }
+  addEventListener('scroll', () => { target = Z0 + (Z1 - Z0) * progress(); }, { passive:true });
+  target = Z0 + (Z1 - Z0) * progress(); camZ = target;
+
+  // ---- overlays ----
+  const intro = document.getElementById('intro');
+  const outro = document.getElementById('outro');
+  const fade = document.getElementById('bottomFade');
+  const stationEls = [...document.querySelectorAll('.station')];
+  const rail = document.querySelector('.rail');
+  const railFill = document.getElementById('railFill');
+  const mids = [1,2,3,4].map(i => (segBounds[i][0] + segBounds[i][1]) / 2);
+  const ticks = mids.map((z, i) => {
+    const b = document.createElement('button'); b.type = 'button';
+    b.textContent = '0' + (i+1); b.setAttribute('aria-label', 'Fly to project ' + (i+1));
+    b.style.top = (((Z0 - z) / (Z0 - Z1)) * 100) + '%';
+    b.addEventListener('click', () => scrollTo({ top:zToScroll(segBounds[i+1][0] - 4), behavior: reduce ? 'auto' : 'smooth' }));
+    rail.appendChild(b); return b;
+  });
+  document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => {
+    const j = b.dataset.jump;
+    const top = j === 'start' ? 0 : j === 'end' ? track.offsetHeight : zToScroll(segBounds[1][0] - 4);
+    scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+  }));
+
+  let current = -2;
+  function updateOverlays(){
+    const look = camZ - 9; // what's just ahead of the camera
+    let s = -1;
+    if(camZ > segBounds[1][0] + 2) s = -1;                  // intro
+    else if(camZ < TUNNEL_END - 8) s = 9;                    // outro
+    else for(let i = 1; i <= 4; i++) if(look <= segBounds[i][0] + 3 && look >= segBounds[i][1] - 3) s = i - 1;
+    if(s === current) return;
+    current = s;
+    intro.classList.toggle('on', s === -1);
+    outro.classList.toggle('on', s === 9);
+    stationEls.forEach((el, i) => el.classList.toggle('on', s === i));
+    fade.classList.toggle('on', s >= 0 && s < 4);
+    ticks.forEach((t, i) => t.classList.toggle('on', s === i));
+  }
+
+  // ---- hover + click on the walls ----
+  const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2(9, 9);
+  const tip = document.getElementById('tip');
+  let hovered = null, px = 0, py = 0, pointerMoved = false;
+  addEventListener('pointermove', e => {
+    mouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+    px = e.clientX; py = e.clientY; pointerMoved = true;
+  }, { passive:true });
+  canvas.addEventListener('click', e => {
+    mouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+    ray.setFromCamera(mouse, camera);
+    const hit = ray.intersectObjects(panels)[0];
+    if(hit && hit.object.userData.url && hit.distance < 40){
+      const d = hit.object.userData;
+      if(d.external) window.open(d.url, '_blank', 'noopener'); else location.href = d.url;
+    }
+  });
+  // overlays sit above the canvas but let clicks fall through to it
+  document.querySelectorAll('.intro, .outro').forEach(el => el.style.pointerEvents = 'none');
+  function updateHover(){
+    if(!pointerMoved) return;
+    ray.setFromCamera(mouse, camera);
+    const hit = ray.intersectObjects(panels)[0];
+    const obj = hit && hit.distance < 40 && hit.object.userData.url ? hit.object : null;
+    if(obj !== hovered){
+      if(hovered){ hovered.material.opacity = 0.9; hovered.scale.multiplyScalar(1/1.08); }
+      hovered = obj;
+      if(hovered){ hovered.material.opacity = 1; hovered.scale.multiplyScalar(1.08); }
+      canvas.style.cursor = hovered ? 'pointer' : '';
+      tip.classList.toggle('on', !!hovered);
+      if(hovered) tip.textContent = (hovered.userData.external ? 'Open on Behance — ' : 'Open — ') + hovered.userData.title;
+    }
+    tip.style.left = px + 'px'; tip.style.top = py + 'px';
+  }
+
+  // ---- loop ----
+  function resize(){
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize); resize();
+
+  const clock = new THREE.Clock();
+  function frame(){
+    const t = clock.getElapsedTime();
+    camZ += (target - camZ) * (reduce ? 1 : 0.075);
+    camera.position.z = camZ;
+    if(!reduce){
+      tunnel.rotation.z = t * 0.035;
+      camera.position.x += ((mouse.x > 5 ? 0 : mouse.x * 0.6) - camera.position.x) * 0.04;
+      camera.position.y += ((mouse.y > 5 ? 0 : mouse.y * 0.4) - camera.position.y) * 0.04;
+      moon.rotation.y = t * 0.02;
+    }
+    camera.lookAt(0, 0, camZ - 20);
+    railFill.style.height = (Math.max(0, Math.min(1, (Z0 - camZ) / (Z0 - Z1))) * 100) + '%';
+    updateOverlays();
+    updateHover();
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>
