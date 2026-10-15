@@ -41,8 +41,6 @@
     padding:10px 14px; border-radius:999px; border:0; background:none; cursor:pointer; transition:color .2s, background .2s; }
   .bar a:hover, .bar button:hover{ color:var(--white); }
   .bar .brand{ color:var(--white); font-weight:500; letter-spacing:.2em; }
-  .bar .classic{ color:var(--bg); background:var(--white); }
-  .bar .classic:hover{ color:var(--bg); background:#fff; }
 
   /* ---------- overlays ---------- */
   .layer{ position:fixed; z-index:3; pointer-events:none; opacity:0; visibility:hidden;
@@ -108,7 +106,6 @@
   @media (max-width:640px){
     .bar{ top:12px; }
     .bar a, .bar button{ padding:9px 10px; font-size:11px; }
-    .bar .hide-sm{ display:none; }
     .rail{ right:10px; }
     .rail button{ font-size:0; gap:0; }
     .station{ bottom:24px; }
@@ -124,7 +121,6 @@
   <a class="brand" href="./">NANA</a>
   <button type="button" data-jump="0">Work</button>
   <button type="button" data-jump="end">Contact</button>
-  <a class="classic" href="../">Classic site <span class="hide-sm">→</span></a>
 </nav>
 
 <section class="layer intro on" id="intro" aria-label="Introduction">
