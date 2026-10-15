@@ -212,22 +212,22 @@
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setClearColor(0x070707, 1);
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x070707, 8, small ? 46 : 58);
+  scene.fog = new THREE.Fog(0x070707, 10, small ? 44 : 54);
   const camera = new THREE.PerspectiveCamera(small ? 82 : 68, 1, 0.1, 600);
 
   // ---- tunnel layout ----
   const R = small ? 3.7 : 5.4;          // tunnel radius
-  const PER_RING = small ? 6 : 9;       // panels around each ring
-  const GAP = 2.7;                      // distance between rings
-  const PANEL_W = small ? 1.9 : 2.5;
+  const PER_RING = small ? 5 : 6;       // panels around each ring
+  const GAP = 4.2;                      // distance between rings
+  const PANEL_W = small ? 1.6 : 2.1;
   // flight order: a mixed doorway, the four projects, then the team, then the moon
   const SEGMENTS = [
-    { set:'mix',     rings:5,  fill:0.6 },
-    { set:0,         rings:14, fill:0.74 },
-    { set:1,         rings:14, fill:0.74 },
-    { set:2,         rings:14, fill:0.74 },
-    { set:3,         rings:8,  fill:0.32 },
-    { set:'team',    rings:7,  fill:0.5 },
+    { set:'mix',     rings:4, fill:0.62 },
+    { set:0,         rings:9, fill:0.62 },
+    { set:1,         rings:9, fill:0.62 },
+    { set:2,         rings:9, fill:0.62 },
+    { set:3,         rings:5, fill:0.3 },
+    { set:'team',    rings:4, fill:0.5 },
   ];
 
   const loader = new THREE.TextureLoader();
@@ -272,12 +272,12 @@
         const i = pick(proj);
         const file = proj.key + '-' + (i+1) + '.jpg';
         const aspect = ASPECT[proj.key][i];
-        const a = offset + (k / PER_RING) * Math.PI * 2 + (rnd() - 0.5) * 0.22;
-        const rad = R + (rnd() - 0.5) * 0.9;
+        const a = offset + (k / PER_RING) * Math.PI * 2 + (rnd() - 0.5) * 0.7;
+        const rad = R + (rnd() - 0.5) * 2.2;
         const m = new THREE.Mesh(geo, material(file));
         const w = PANEL_W * (0.85 + rnd() * 0.3);
         m.scale.set(w, w / aspect, 1);
-        m.position.set(Math.cos(a) * rad, Math.sin(a) * rad, z + (rnd() - 0.5) * 1.2);
+        m.position.set(Math.cos(a) * rad, Math.sin(a) * rad, z + (rnd() - 0.5) * 3);
         // face the tunnel's axis, with each image's top pointing deeper into the tunnel
         const n = new THREE.Vector3(-Math.cos(a), -Math.sin(a), 0);
         const up = new THREE.Vector3(0, 0, -1);
@@ -408,7 +408,7 @@
     camZ += (target - camZ) * (reduce ? 1 : 0.075);
     camera.position.z = camZ;
     if(!reduce){
-      tunnel.rotation.z = t * 0.035;
+      tunnel.rotation.z = t * 0.02;
       camera.position.x += ((mouse.x > 5 ? 0 : mouse.x * 0.6) - camera.position.x) * 0.04;
       camera.position.y += ((mouse.y > 5 ? 0 : mouse.y * 0.4) - camera.position.y) * 0.04;
       moon.rotation.y = t * 0.02;
