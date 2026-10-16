@@ -48,11 +48,19 @@
 
   .intro{ inset:0; display:flex; align-items:center; justify-content:center; padding:0 var(--pad);
     background:radial-gradient(ellipse 46% 36% at 50% 50%, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 80%); }
-  .intro{ align-items:flex-start; padding-top:clamp(64px, 13vh, 150px); }
-  .intro h1{ font-size:clamp(3.4rem, min(13vw, 21vh), 12.5rem); }
+  .intro h1{ font-size:clamp(3.2rem, 11.5vw, 11rem); }
   .intro h1 span{ display:block; }
-  .intro h1 .l1{ padding-right:2.2em; }
-  .intro h1 .l2{ padding-left:1.2em; }
+  .intro h1 .l1{ padding-right:1.6em; }
+  .intro h1 .l2{ padding-left:1.1em; }
+  .intro h1 .l3{ text-align:center; }
+  .intro .sub{ position:absolute; left:50%; bottom:var(--pad); transform:translateX(-50%); text-align:center; }
+
+  /* about Nana: the stop before the end of the flight */
+  .aboutsec{ inset:0; display:flex; justify-content:center; padding:clamp(64px, 13vh, 150px) var(--pad) 0; }
+  .aboutsec h2{ font-size:clamp(3.4rem, min(13vw, 21vh), 12.5rem); }
+  .aboutsec h2 span{ display:block; }
+  .aboutsec h2 .l1{ padding-right:2.2em; }
+  .aboutsec h2 .l2{ padding-left:1.2em; }
   /* about + job timeline: same small-print system as the project zones */
   .about{ position:absolute; left:var(--pad); right:var(--pad); bottom:calc(var(--pad) + 46px); }
   .about .meta{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:14px; }
@@ -103,8 +111,9 @@
     .station .meta .right{ text-align:left; }
     .station .row{ flex-direction:column; align-items:flex-start; gap:6px; }
     .station .row .name{ text-align:left; }
-    .intro h1 .l1, .intro h1 .l2{ padding:0; }
-    .intro{ padding-top:64px; }
+    .intro h1 .l1, .intro h1 .l2, .aboutsec h2 .l1, .aboutsec h2 .l2{ padding:0; }
+    .intro h1{ text-align:center; }
+    .aboutsec{ padding-top:64px; }
     .about .meta .right{ display:none; }
     .timeline li{ grid-template-columns:1fr; gap:0; }
     .timeline li span:first-child{ order:3; }
@@ -124,24 +133,12 @@
 <div class="corner bl small">Product design lead<br>UX, AI &amp; SaaS</div>
 <div class="corner br small">©2026</div>
 
-<section class="layer intro on" id="intro" aria-label="About Nana">
-  <h1 class="display"><span class="l1">Hello,</span><span class="l2">I'm Nana</span></h1>
-  <div class="about">
-    <div class="meta small">
-      <p>Product Design Lead with a decade across UX, AI, and SaaS — turning ideas into intuitive products that drive business growth. Clients and teams include AIS, ttb bank, SCB, CardX, and SCG.</p>
-      <p class="right">Scroll to fly through the work ↓</p>
-    </div>
-    <ol class="timeline small">
-      <li><span>2023 — Now</span><span>Product Design Lead</span><span>Zaapi</span></li>
-      <li><span><span class="tbd">[years]</span></span><span>Founder &amp; Principal Design Consultant</span><span>Effortless Design</span></li>
-      <li><span><span class="tbd">[years]</span></span><span>Lead Experience Designer</span><span>Bluebik</span></li>
-      <li><span><span class="tbd">[years]</span></span><span>UX/UI Designer</span><span>Morphosis (Seven Peaks)</span></li>
-      <li><span><span class="tbd">[years]</span></span><span>UX/UI Designer</span><span>AIS</span></li>
-    </ol>
-  </div>
+<section class="layer intro on" id="intro" aria-label="Introduction">
+  <h1 class="display"><span class="l1">Your</span><span class="l2">moonshot,</span><span class="l3">made real</span></h1>
+  <div class="sub small">Scroll to fly in</div>
 </section>
 
-<div class="fade on" id="bottomFade"></div>
+<div class="fade" id="bottomFade"></div>
 
 <section class="layer station" data-station="0" aria-label="Project 1">
   <div class="meta small">
@@ -170,6 +167,23 @@
     <div class="right">+117% online applications<br><a href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener">Open on Behance ↗</a></div>
   </div>
   <div class="row"><span class="display">04</span><span class="display name">Fintech</span></div>
+</section>
+
+<section class="layer aboutsec" id="about" aria-label="About Nana">
+  <h2 class="display"><span class="l1">Hello,</span><span class="l2">I'm Nana</span></h2>
+  <div class="about">
+    <div class="meta small">
+      <p>Product Design Lead with a decade across UX, AI, and SaaS — turning ideas into intuitive products that drive business growth. Clients and teams include AIS, ttb bank, SCB, CardX, and SCG.</p>
+      <p class="right">Where I've worked</p>
+    </div>
+    <ol class="timeline small">
+      <li><span>2023 — Now</span><span>Product Design Lead</span><span>Zaapi</span></li>
+      <li><span><span class="tbd">[years]</span></span><span>Founder &amp; Principal Design Consultant</span><span>Effortless Design</span></li>
+      <li><span><span class="tbd">[years]</span></span><span>Lead Experience Designer</span><span>Bluebik</span></li>
+      <li><span><span class="tbd">[years]</span></span><span>UX/UI Designer</span><span>Morphosis (Seven Peaks)</span></li>
+      <li><span><span class="tbd">[years]</span></span><span>UX/UI Designer</span><span>AIS</span></li>
+    </ol>
+  </div>
 </section>
 
 <section class="layer outro" id="outro" aria-label="Contact">
@@ -233,7 +247,7 @@
     { set:1,         rings:6, fill:0.5 },
     { set:2,         rings:6, fill:0.5 },
     { set:3,         rings:3, fill:0.4 },
-    { set:'team',    rings:3, fill:0.5 },
+    { set:'team',    rings:5, fill:0.5 },
   ];
 
   const loader = new THREE.TextureLoader();
@@ -332,6 +346,7 @@
   // ---- overlays ----
   const intro = document.getElementById('intro');
   const outro = document.getElementById('outro');
+  const aboutEl = document.getElementById('about');
   const fade = document.getElementById('bottomFade');
   const stationEls = [...document.querySelectorAll('.station')];
   document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => {
@@ -346,13 +361,15 @@
     let s = -1;
     if(camZ > segBounds[1][0] + 2) s = -1;                  // intro
     else if(camZ < TUNNEL_END - 8) s = 9;                    // outro
+    else if(look <= segBounds[5][0] + 3) s = 5;              // about, among the team photos
     else for(let i = 1; i <= 4; i++) if(look <= segBounds[i][0] + 3 && look >= segBounds[i][1] - 3) s = i - 1;
     if(s === current) return;
     current = s;
     intro.classList.toggle('on', s === -1);
     outro.classList.toggle('on', s === 9);
+    aboutEl.classList.toggle('on', s === 5);
     stationEls.forEach((el, i) => el.classList.toggle('on', s === i));
-    fade.classList.toggle('on', s < 4);
+    fade.classList.toggle('on', s >= 0 && s <= 5);
   }
 
   // ---- hover + click on the walls ----
