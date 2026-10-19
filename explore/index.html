@@ -242,7 +242,9 @@
   const R = small ? 2.5 : 4.7;          // how far each image sits off the flight path
   const PANEL_W = small ? 2.6 : 4.4;    // image width
   const STEP = 10;                      // distance between images along the flight
-  const TUNNEL_TILT = 0.35;             // 0 = facing the viewer, 1 = flat against the tunnel wall
+  // 0 = facing the viewer, 1 = flat against the tunnel wall.
+  // Far away, images lean toward the wall; as you approach they turn to face you.
+  const TILT_FAR = 0.55, TILT_NEAR = 0, NEAR = 9, FAR = 28;
   // narrower windows pull side images inward so they stay on screen
   const SPREAD_X = small ? 1 : Math.min(1, Math.max(0.55, (innerWidth / innerHeight) / 1.6));
   const IMG_HD = IMG + 'hd/';
@@ -285,7 +287,8 @@
       const wall = new THREE.Quaternion().setFromRotationMatrix(
         new THREE.Matrix4().makeBasis(new THREE.Vector3().crossVectors(deeper, inward), deeper, inward));
       const face = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.sin(a) * 0.26, -Math.cos(a) * 0.42, 0));
-      m.quaternion.copy(face).slerp(wall, TUNNEL_TILT);
+      m.qFace = face; m.qWall = wall;
+      m.quaternion.copy(face).slerp(wall, TILT_FAR);
       m.userData = zone.proj.url ? { url:zone.proj.url, title:zone.proj.title, external:!!zone.proj.external } : {};
       tunnel.add(m); panels.push(m);
       z -= STEP;
@@ -416,6 +419,11 @@
       const d = camZ - p.position.z;
       p.material.opacity = Math.max(0, Math.min(1, (d - 2.5) / 5));
       p.visible = p.material.opacity > 0.01;
+      if(p.visible){
+        const k = Math.max(0, Math.min(1, (d - NEAR) / (FAR - NEAR)));
+        const ease = k * k * (3 - 2 * k);
+        p.quaternion.copy(p.qFace).slerp(p.qWall, TILT_NEAR + (TILT_FAR - TILT_NEAR) * ease);
+      }
     }
     updateOverlays();
     updateHover();
