@@ -242,6 +242,7 @@
   const R = small ? 2.5 : 4.7;          // how far each image sits off the flight path
   const PANEL_W = small ? 2.6 : 4.4;    // image width
   const STEP = 10;                      // distance between images along the flight
+  const TUNNEL_TILT = 0.5;              // 0 = facing the viewer, 1 = flat against the tunnel wall
   // narrower windows pull side images inward so they stay on screen
   const SPREAD_X = small ? 1 : Math.min(1, Math.max(0.55, (innerWidth / innerHeight) / 1.6));
   const IMG_HD = IMG + 'hd/';
@@ -256,7 +257,7 @@
     { proj:TEAM,       lead:6, items:[1,2,3] },
   ];
   // positions cycle around the path, favouring the sides and top so the text below stays clear
-  const SLOTS = small ? [100, 260, 80, 280] : [28, 152, 0, 180, 205, 335];
+  const SLOTS = small ? [100, 260, 80, 280, 60, 120] : [20, 160, 95, 200, 340, 265, 55, 125];
 
   const loader = new THREE.TextureLoader();
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
@@ -276,10 +277,15 @@
       const w = aspect < 1 ? PANEL_W * 0.8 * aspect * 1.25 : PANEL_W;
       m.scale.set(w, w / aspect, 1);
       const a = SLOTS[slot++ % SLOTS.length] * Math.PI / 180;
-      m.position.set(Math.cos(a) * R * SPREAD_X, Math.sin(a) * R * (small ? 1.6 : 0.75), z);
-      // face the viewer, turned slightly toward the flight path so it reads as part of the tunnel
-      m.rotation.y = -Math.cos(a) * 0.42;
-      m.rotation.x = Math.sin(a) * 0.26;
+      m.position.set(Math.cos(a) * R * SPREAD_X, Math.sin(a) * R * (small ? 1.6 : 0.9), z);
+      // halfway between lining the tunnel wall and facing the viewer:
+      // enough angle to read as a tunnel, enough face-on to see the work clearly
+      const inward = new THREE.Vector3(-Math.cos(a), -Math.sin(a), 0);
+      const deeper = new THREE.Vector3(0, 0, -1);
+      const wall = new THREE.Quaternion().setFromRotationMatrix(
+        new THREE.Matrix4().makeBasis(new THREE.Vector3().crossVectors(deeper, inward), deeper, inward));
+      const face = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.sin(a) * 0.26, -Math.cos(a) * 0.42, 0));
+      m.quaternion.copy(face).slerp(wall, TUNNEL_TILT);
       m.userData = zone.proj.url ? { url:zone.proj.url, title:zone.proj.title, external:!!zone.proj.external } : {};
       tunnel.add(m); panels.push(m);
       z -= STEP;
