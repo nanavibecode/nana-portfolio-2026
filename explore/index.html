@@ -129,6 +129,8 @@
   .progress button.on::after{ height:9px; background:var(--white); }
   .progress .label{ position:absolute; top:12px; left:0; right:0; text-align:center; font-size:9px; white-space:nowrap; }
   .no-webgl .progress{ display:none; }
+  /* phones: the nav needs the top row, so the progress line drops just below it */
+  @media (max-width:640px){ .tr{ gap:16px; } .progress{ top:calc(var(--pad) + 30px); width:44vw; } }
 
   /* ---------- no-WebGL fallback: a plain list of the work ---------- */
   .fallback{ display:none; }
@@ -161,6 +163,7 @@
 <a class="corner tl small" href="./">Nana</a>
 <nav class="corner tr small" aria-label="Main">
   <button type="button" data-jump="0">Work</button>
+  <button type="button" data-jump="about">About</button>
   <button type="button" data-jump="end">Contact</button>
 </nav>
 <div class="corner bl small">Product design lead<br>UX, AI &amp; SaaS</div>
@@ -372,7 +375,7 @@
   const stationEls = [...document.querySelectorAll('.station')];
   document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => {
     const j = b.dataset.jump;
-    const top = j === 'start' ? 0 : j === 'end' ? track.offsetHeight : zToScroll(segBounds[1][0] - 4);
+    const top = j === 'start' ? 0 : j === 'end' ? track.offsetHeight : j === 'about' ? zToScroll(segBounds[5][0] - 4) : zToScroll(segBounds[1][0] - 4);
     scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
   }));
 
