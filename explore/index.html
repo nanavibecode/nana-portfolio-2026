@@ -96,6 +96,17 @@
   .outro .links a, .outro .links button{ border-bottom:1px solid var(--white); padding-bottom:2px; }
   .outro .links a:hover, .outro .links button:hover{ color:var(--dim); border-color:var(--dim); }
 
+  /* progress: one tick per section, placed at its real position along the flight */
+  .progress{ position:fixed; right:var(--pad); top:50%; transform:translateY(-50%); height:min(42vh, 340px); width:150px; z-index:4; }
+  .progress .line, .progress .fill{ position:absolute; right:0; top:0; width:1px; height:100%; background:rgba(255,255,255,.22); }
+  .progress .fill{ background:var(--white); height:0; }
+  .progress button{ position:absolute; right:0; transform:translateY(-50%); display:flex; align-items:center; gap:10px;
+    color:rgba(255,255,255,.4); white-space:nowrap; padding:4px 0; transition:color .3s; }
+  .progress button::after{ content:''; width:7px; height:1px; background:currentColor; margin-right:-3px; }
+  .progress button:hover{ color:rgba(255,255,255,.8); }
+  .progress button.on{ color:var(--white); }
+  .no-webgl .progress{ display:none; }
+  @media (max-width:900px){ .progress{ width:24px; } .progress button span{ display:none; } }
   .tip{ position:fixed; z-index:6; pointer-events:none; padding:6px 8px; background:var(--white); color:var(--bg);
     opacity:0; transform:translate(14px, 14px); transition:opacity .15s; white-space:nowrap; }
   .tip.on{ opacity:1; }
@@ -196,6 +207,7 @@
   </div>
 </section>
 
+<nav class="progress small" id="progress" aria-label="Sections"><div class="line"></div><div class="fill" id="progressFill"></div></nav>
 <div class="tip small" id="tip" aria-hidden="true"></div>
 
 <main class="fallback">
@@ -345,6 +357,38 @@
     scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
   }));
 
+  // ---- progress: which section you're in ----
+  const SECTIONS = [
+    { label:'Start',          z:Z0 },
+    { label:'01 Growth',      z:segBounds[1][0] + 9 },
+    { label:'02 AI agent',    z:segBounds[2][0] + 9 },
+    { label:'03 Automations', z:segBounds[3][0] + 9 },
+    { label:'04 Fintech',     z:segBounds[4][0] + 9 },
+    { label:'About',          z:segBounds[5][0] + 9 },
+    { label:'Contact',        z:TUNNEL_END - 8 },
+  ];
+  const progressEl = document.getElementById('progress');
+  const progressFill = document.getElementById('progressFill');
+  const toFrac = zz => Math.max(0, Math.min(1, (Z0 - zz) / (Z0 - Z1)));
+  const sectionBtns = SECTIONS.map(sec => {
+    const b = document.createElement('button'); b.type = 'button';
+    b.innerHTML = '<span>' + sec.label + '</span>';
+    b.setAttribute('aria-label', 'Go to ' + sec.label);
+    b.style.top = (toFrac(sec.z) * 100) + '%';
+    b.addEventListener('click', () => scrollTo({ top: sec.label === 'Contact' ? track.offsetHeight : zToScroll(sec.z - 1), behavior: reduce ? 'auto' : 'smooth' }));
+    progressEl.appendChild(b); return b;
+  });
+  let activeSection = -1;
+  function updateProgress(){
+    progressFill.style.height = (toFrac(camZ) * 100) + '%';
+    let a = 0;
+    SECTIONS.forEach((sec, i) => { if(camZ <= sec.z + 0.5) a = i; });
+    if(a !== activeSection){
+      activeSection = a;
+      sectionBtns.forEach((b, i) => { b.classList.toggle('on', i === a); b.toggleAttribute('aria-current', i === a); });
+    }
+  }
+
   let current = -3;
   function updateOverlays(){
     const look = camZ - 9; // what's just ahead of the camera
@@ -429,6 +473,7 @@
       }
     }
     updateOverlays();
+    updateProgress();
     updateHover();
     renderer.render(scene, camera);
     requestAnimationFrame(frame);
