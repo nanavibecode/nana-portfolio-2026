@@ -249,7 +249,7 @@
     { key:'auto',   title:'No-code chatbots & automations', url:'../case-studies/zaapi-automations/', count:13 },
     { key:'fintech',title:'Fintech UX, reimagined', url:'https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design', count:1, external:true },
   ];
-  const TEAM = { key:'team', title:null, url:null, count:4 };
+  const MORE = { key:'more', title:null, url:null };   // wider work, shown at the About stop
 
   // ---- WebGL check ----
   let gl = null;
@@ -277,16 +277,16 @@
   const TILT_FAR = 0.29, TILT_NEAR = 0.26, NEAR = 8, FAR = 46;
   // narrower windows pull side images inward so they stay on screen
   const SPREAD_X = small ? 1 : Math.min(1, Math.max(0.55, (innerWidth / innerHeight) / 1.6));
-  const IMG_HD = IMG + 'hd/';
-  const ASPECT = {"growth":[1.41,1.41,1.41,1.83,1.69,1.33],"ai":[1.41,1.11,1.5,0.74,1.18],"auto":[1.4,1.4,1.6,1.73,2.69],"fintech":[1.06],"team":[1.33,1.33,1.33]};
+  const IMG_HD = IMG + 'v2/';
+  const ASPECT = {"growth":[1.78,1.53],"ai":[1.26],"auto":[1.58],"fintech":[1.06],"more":[1.78,1.81,1.78,1.78,1.5,1.02,1.33]};
   // flight order: hero, the four projects, then the team (the About stop), then the moon
   const ZONES = [
     { proj:null,       lead:8, items:[] },
-    { proj:PROJECTS[0], lead:6, items:[1,2,3,4,5,6] },
-    { proj:PROJECTS[1], lead:6, items:[1,2,3,4,5] },
-    { proj:PROJECTS[2], lead:6, items:[1,2,3,4,5] },
-    { proj:PROJECTS[3], lead:6, items:[1], tail:22 },   // one image, so give it its own stretch
-    { proj:TEAM,       lead:6, items:[1,2,3] },
+    { proj:PROJECTS[0], lead:6, items:[1,2], tail:12 },
+    { proj:PROJECTS[1], lead:6, items:[1], tail:22 },    // single-image zones get their own stretch
+    { proj:PROJECTS[2], lead:6, items:[1], tail:22 },
+    { proj:PROJECTS[3], lead:6, items:[1], tail:22 },
+    { proj:MORE,       lead:6, items:[1,2,3,4,5,6,7] },
   ];
   // positions cycle around the path, favouring the sides and top so the text below stays clear
   const SLOTS = small ? [100, 260, 80, 280, 60, 120] : [20, 160, 95, 200, 340, 265, 55, 125];
