@@ -53,6 +53,7 @@
   .intro h1 .l1{ padding-right:1.6em; }
   .intro h1 .l2{ padding-left:1.1em; }
   .intro h1 .l3{ text-align:center; }
+  .intro:not(.on){ transition:opacity .2s ease, visibility 0s linear .2s; }
   .intro .sub{ position:absolute; left:50%; bottom:var(--pad); transform:translateX(-50%); text-align:center; }
 
   /* about Nana: the stop before the end of the flight */
@@ -255,7 +256,7 @@
     { proj:PROJECTS[0], lead:6, items:[1,2,3,4,5,6] },
     { proj:PROJECTS[1], lead:6, items:[1,2,3,4,5] },
     { proj:PROJECTS[2], lead:6, items:[1,2,3,4,5] },
-    { proj:PROJECTS[3], lead:6, items:[1] },
+    { proj:PROJECTS[3], lead:6, items:[1], tail:22 },   // one image, so give it its own stretch
     { proj:TEAM,       lead:6, items:[1,2,3] },
   ];
   // positions cycle around the path, favouring the sides and top so the text below stays clear
@@ -293,7 +294,8 @@
       tunnel.add(m); panels.push(m);
       z -= STEP;
     });
-    segBounds.push([zStart, z + STEP]);
+    z -= zone.tail || 0;
+    segBounds.push([zStart, z + 2]);
   });
   const TUNNEL_END = z;
   // seeded random for the starfield, so it's the same on every visit
@@ -343,11 +345,12 @@
     scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
   }));
 
-  let current = -2;
+  let current = -3;
   function updateOverlays(){
     const look = camZ - 9; // what's just ahead of the camera
-    let s = -1;
-    if(camZ > Z0 - 1.5) s = -1;                              // hero: only until you start scrolling
+    let s = -2;                                              // default: between zones, show nothing
+    if(scrollY < innerHeight * 0.04 && camZ > Z0 - 3) s = -1;  // hero: only at the very top of the page
+    else if(camZ > Z0 - 3) s = -2;                           // just left the hero: nothing on screen yet
     else if(camZ < TUNNEL_END - 8) s = 9;                    // outro
     else if(look <= segBounds[5][0] + 3) s = 5;              // about, among the team photos
     else for(let i = 1; i <= 4; i++) if(look <= segBounds[i][0] + 3 && look >= segBounds[i][1] - 3) s = i - 1;
