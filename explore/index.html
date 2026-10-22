@@ -97,7 +97,10 @@
   .outro .links a:hover, .outro .links button:hover{ color:var(--dim); border-color:var(--dim); }
 
   /* progress: one tick per section, placed at its real position along the flight */
-  .progress{ position:fixed; right:var(--pad); top:50%; transform:translateY(-50%); height:min(42vh, 340px); width:150px; z-index:4; }
+  .progress{ position:fixed; right:var(--pad); top:50%; transform:translateY(-50%); height:min(42vh, 340px); width:150px; z-index:4;
+    opacity:0; transition:opacity .6s ease; }
+  /* only visible while scrolling (or when hovered / tabbed into, so it can still be clicked) */
+  .progress.show, .progress:hover, .progress:focus-within{ opacity:1; transition:opacity .2s ease; }
   .progress .line, .progress .fill{ position:absolute; right:0; top:0; width:1px; height:100%; background:rgba(255,255,255,.22); }
   .progress .fill{ background:var(--white); height:0; }
   .progress button{ position:absolute; right:0; transform:translateY(-50%); display:flex; align-items:center; gap:10px;
@@ -378,6 +381,12 @@
     b.addEventListener('click', () => scrollTo({ top: sec.label === 'Contact' ? track.offsetHeight : zToScroll(sec.z - 1), behavior: reduce ? 'auto' : 'smooth' }));
     progressEl.appendChild(b); return b;
   });
+  let hideTimer;
+  addEventListener('scroll', () => {
+    progressEl.classList.add('show');
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => progressEl.classList.remove('show'), 1200);
+  }, { passive:true });
   let activeSection = -1;
   function updateProgress(){
     progressFill.style.height = (toFrac(camZ) * 100) + '%';
