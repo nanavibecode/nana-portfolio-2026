@@ -96,22 +96,18 @@
   .outro .links a, .outro .links button{ border-bottom:1px solid var(--white); padding-bottom:2px; }
   .outro .links a:hover, .outro .links button:hover{ color:var(--dim); border-color:var(--dim); }
 
-  /* progress: a short rail, one evenly spaced tick per section */
-  .progress{ position:fixed; right:var(--pad); top:50%; transform:translateY(-50%); height:110px; width:12px; z-index:4;
+  /* progress: a short horizontal line at the top center, one evenly spaced tick per section */
+  .progress{ position:fixed; top:calc(var(--pad) + 6px); left:50%; transform:translateX(-50%); width:min(168px, 32vw); height:1px; z-index:5;
     opacity:0; transition:opacity .6s ease; }
   /* only visible while scrolling (or when hovered / tabbed into, so it can still be clicked) */
   .progress.show, .progress:hover, .progress:focus-within{ opacity:1; transition:opacity .2s ease; }
-  .progress .line, .progress .fill{ position:absolute; right:0; top:0; width:1px; height:100%; background:rgba(255,255,255,.2); }
-  .progress .fill{ background:var(--white); height:0; }
-  .progress button{ position:absolute; right:0; transform:translateY(-50%); display:flex; align-items:center; justify-content:flex-end;
-    gap:8px; height:12px; padding:0 0 0 8px; color:rgba(255,255,255,.35); white-space:nowrap; font-size:9px; }
-  .progress button::after{ content:''; width:5px; height:1px; background:currentColor; margin-right:-2px; }
-  .progress button span{ opacity:0; transition:opacity .2s; }
-  .progress button.on{ color:var(--white); }
-  .progress button.on span, .progress:hover button span, .progress:focus-within button span{ opacity:1; }
-  .progress:hover button:not(.on) span{ color:rgba(255,255,255,.55); }
+  .progress .line, .progress .fill{ position:absolute; left:0; top:0; height:1px; width:100%; background:rgba(255,255,255,.22); }
+  .progress .fill{ background:var(--white); width:0; }
+  .progress button{ position:absolute; top:0; transform:translate(-50%, -50%); width:14px; height:16px; display:flex; justify-content:center; align-items:center; }
+  .progress button::after{ content:''; width:1px; height:5px; background:rgba(255,255,255,.4); }
+  .progress button.on::after{ height:9px; background:var(--white); }
+  .progress .label{ position:absolute; top:12px; left:0; right:0; text-align:center; font-size:9px; white-space:nowrap; }
   .no-webgl .progress{ display:none; }
-  @media (max-width:640px){ .progress{ display:none; } }   /* headlines run edge to edge on phones */
   .tip{ position:fixed; z-index:6; pointer-events:none; padding:6px 8px; background:var(--white); color:var(--bg);
     opacity:0; transform:translate(14px, 14px); transition:opacity .15s; white-space:nowrap; }
   .tip.on{ opacity:1; }
@@ -212,7 +208,7 @@
   </div>
 </section>
 
-<nav class="progress small" id="progress" aria-label="Sections"><div class="line"></div><div class="fill" id="progressFill"></div></nav>
+<nav class="progress small" id="progress" aria-label="Sections"><div class="line"></div><div class="fill" id="progressFill"></div><div class="label" id="progressLabel" aria-live="polite"></div></nav>
 <div class="tip small" id="tip" aria-hidden="true"></div>
 
 <main class="fallback">
@@ -374,11 +370,16 @@
   ];
   const progressEl = document.getElementById('progress');
   const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
   const sectionBtns = SECTIONS.map(sec => {
     const b = document.createElement('button'); b.type = 'button';
-    b.innerHTML = '<span>' + sec.label + '</span>';
     b.setAttribute('aria-label', 'Go to ' + sec.label);
-    b.style.top = (SECTIONS.indexOf(sec) / (SECTIONS.length - 1) * 100) + '%';   // evenly spaced
+    b.style.left = (SECTIONS.indexOf(sec) / (SECTIONS.length - 1) * 100) + '%';   // evenly spaced
+    // hovering a tick previews its name; leaving shows the current section again
+    b.addEventListener('pointerenter', () => progressLabel.textContent = sec.label);
+    b.addEventListener('focus', () => progressLabel.textContent = sec.label);
+    b.addEventListener('pointerleave', () => progressLabel.textContent = SECTIONS[activeSection].label);
+    b.addEventListener('blur', () => progressLabel.textContent = SECTIONS[activeSection].label);
     b.addEventListener('click', () => scrollTo({ top: sec.label === 'Contact' ? track.offsetHeight : zToScroll(sec.z - 1), behavior: reduce ? 'auto' : 'smooth' }));
     progressEl.appendChild(b); return b;
   });
@@ -396,12 +397,13 @@
       const a0 = SECTIONS[i].z, a1 = SECTIONS[i + 1].z;
       if(camZ <= a0) f = i + Math.max(0, Math.min(1, (a0 - camZ) / (a0 - a1)));
     }
-    progressFill.style.height = (f / (SECTIONS.length - 1) * 100) + '%';
+    progressFill.style.width = (f / (SECTIONS.length - 1) * 100) + '%';
     let a = 0;
     SECTIONS.forEach((sec, i) => { if(camZ <= sec.z + 0.5) a = i; });
     if(a !== activeSection){
       activeSection = a;
       sectionBtns.forEach((b, i) => { b.classList.toggle('on', i === a); b.toggleAttribute('aria-current', i === a); });
+      progressLabel.textContent = SECTIONS[a].label;
     }
   }
 
