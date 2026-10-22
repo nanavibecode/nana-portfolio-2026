@@ -32,27 +32,23 @@
 
   #scene{ position:fixed; inset:0; width:100%; height:100%; display:block; z-index:0; }
 
-  /* ---------- retro atmosphere: soft blurred light behind the tunnel, film grain on top ---------- */
+  /* ---------- retro atmosphere: a blurred rainbow arc behind the tunnel, still film grain on top ---------- */
   .glow{ position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; background:var(--bg); }
-  .glow i{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.9; will-change:transform;
-    transform:translate3d(calc(var(--dx, 0) * 1px), calc(var(--p, 0) * var(--py) * 1px), 0) rotate(var(--r)); }
-  .glow .g1{ --r:-18deg; --py:-260; width:95vw; height:34vh; left:-30vw; top:8vh;
-    background:radial-gradient(closest-side, rgba(235,232,226,.36), rgba(235,232,226,.1) 60%, transparent); animation:drift1 38s ease-in-out infinite alternate; }
-  .glow .g2{ --r:14deg; --py:-180; width:80vw; height:30vh; right:-28vw; top:52vh;
-    background:radial-gradient(closest-side, rgba(255,112,58,.34), rgba(150,52,120,.16) 55%, transparent); animation:drift2 46s ease-in-out infinite alternate; }
-  .glow .g3{ --r:-6deg; --py:-120; width:70vw; height:26vh; left:-10vw; top:92vh;
-    background:radial-gradient(closest-side, rgba(96,72,170,.24), transparent); animation:drift1 52s ease-in-out infinite alternate-reverse; }
-  @keyframes drift1{ to{ --dx:60; } }
-  @keyframes drift2{ to{ --dx:-70; } }
-  @property --dx{ syntax:'<number>'; inherits:false; initial-value:0; }
+  /* a huge ring of spectrum light, mostly off-screen, so only a sweeping arc shows; it turns as you fly */
+  .glow .arc{ position:absolute; width:180vmax; height:180vmax; left:-70vmax; top:22vh; border-radius:50%;
+    background:radial-gradient(closest-side,
+      transparent 70%, #6b2cff 72.5%, #3d6bff 75%, #4fe6f0 78%, #f4f1e6 80.5%, #ffd86a 83%, #ff8a2a 86%, #ff3b55 89%, transparent 93%);
+    filter:blur(26px) saturate(1.2) hue-rotate(calc(var(--p, 0) * 160deg)); opacity:.72;
+    transform:translate3d(calc(var(--p, 0) * 18vmax), calc(var(--p, 0) * -14vmax), 0); }
+  /* a soft pale haze, like light catching the lens */
+  .glow .haze{ position:absolute; width:70vw; height:40vh; right:-12vw; top:-6vh; border-radius:50%; filter:blur(80px);
+    background:radial-gradient(closest-side, rgba(240,236,228,.18), transparent); transform:rotate(-14deg); }
 
-  .grain{ position:fixed; inset:-100%; z-index:6; pointer-events:none; opacity:.2; mix-blend-mode:screen;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncR type='linear' slope='2.6' intercept='-.8'/><feFuncG type='linear' slope='2.6' intercept='-.8'/><feFuncB type='linear' slope='2.6' intercept='-.8'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    animation:grain .9s steps(6) infinite; }
-  @keyframes grain{
-    0%{ transform:translate(0,0); } 20%{ transform:translate(-3%,2%); } 40%{ transform:translate(2%,-4%); }
-    60%{ transform:translate(-4%,-1%); } 80%{ transform:translate(3%,3%); } 100%{ transform:translate(0,0); } }
-  @media (prefers-reduced-motion: reduce){ .grain, .glow i{ animation:none; } }
+  /* still film grain, printed onto the whole page */
+  .grain{ position:fixed; inset:0; z-index:6; pointer-events:none; opacity:.22; mix-blend-mode:screen;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncR type='linear' slope='2.6' intercept='-.8'/><feFuncG type='linear' slope='2.6' intercept='-.8'/><feFuncB type='linear' slope='2.6' intercept='-.8'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  .grain::after{ content:''; position:absolute; inset:0; background:inherit; mix-blend-mode:multiply; opacity:.6; background-position:120px 80px; }
+  @media (prefers-reduced-motion: reduce){ .glow .arc{ transition:none; } }
   .track{ height:900vh; }
 
   /* ---------- the four corners ---------- */
@@ -158,7 +154,7 @@
 </style>
 </head>
 <body>
-<div class="glow" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+<div class="glow" aria-hidden="true"><i class="arc"></i><i class="haze"></i></div>
 <canvas id="scene" aria-hidden="true"></canvas>
 <div class="grain" aria-hidden="true"></div>
 <div class="track" aria-hidden="true"></div>
