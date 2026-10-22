@@ -126,9 +126,6 @@
   .progress button.on::after{ height:9px; background:var(--white); }
   .progress .label{ position:absolute; top:12px; left:0; right:0; text-align:center; font-size:9px; white-space:nowrap; }
   .no-webgl .progress{ display:none; }
-  .tip{ position:fixed; z-index:6; pointer-events:none; padding:6px 8px; background:var(--white); color:var(--bg);
-    opacity:0; transform:translate(14px, 14px); transition:opacity .15s; white-space:nowrap; }
-  .tip.on{ opacity:1; }
 
   /* ---------- no-WebGL fallback: a plain list of the work ---------- */
   .fallback{ display:none; }
@@ -229,7 +226,6 @@
 </section>
 
 <nav class="progress small" id="progress" aria-label="Sections"><div class="line"></div><div class="fill" id="progressFill"></div><div class="label" id="progressLabel" aria-live="polite"></div></nav>
-<div class="tip small" id="tip" aria-hidden="true"></div>
 
 <main class="fallback">
   <ul>
@@ -323,7 +319,6 @@
       const face = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.sin(a) * 0.26, -Math.cos(a) * 0.42, 0));
       m.qFace = face; m.qWall = wall;
       m.quaternion.copy(face).slerp(wall, TILT_FAR);
-      m.userData = zone.proj.url ? { url:zone.proj.url, title:zone.proj.title, external:!!zone.proj.external } : {};
       tunnel.add(m); panels.push(m);
       z -= STEP;
     });
@@ -445,40 +440,11 @@
     fade.classList.toggle('on', s >= 0 && s <= 5);
   }
 
-  // ---- hover + click on the walls ----
-  const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2(9, 9);
-  const tip = document.getElementById('tip');
-  let hovered = null, px = 0, py = 0, pointerMoved = false;
+  // ---- the images are visual only; the pointer just sways the camera a little ----
+  const mouse = new THREE.Vector2(9, 9);
   addEventListener('pointermove', e => {
     mouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
-    px = e.clientX; py = e.clientY; pointerMoved = true;
   }, { passive:true });
-  canvas.addEventListener('click', e => {
-    mouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
-    ray.setFromCamera(mouse, camera);
-    const hit = ray.intersectObjects(panels)[0];
-    if(hit && hit.object.userData.url && hit.distance < 40){
-      const d = hit.object.userData;
-      if(d.external) window.open(d.url, '_blank', 'noopener'); else location.href = d.url;
-    }
-  });
-  // overlays sit above the canvas but let clicks fall through to it
-  document.querySelectorAll('.intro, .outro').forEach(el => el.style.pointerEvents = 'none');
-  function updateHover(){
-    if(!pointerMoved) return;
-    ray.setFromCamera(mouse, camera);
-    const hit = ray.intersectObjects(panels)[0];
-    const obj = hit && hit.distance < 40 && hit.object.userData.url ? hit.object : null;
-    if(obj !== hovered){
-      if(hovered){ hovered.scale.multiplyScalar(1/1.04); }
-      hovered = obj;
-      if(hovered){ hovered.scale.multiplyScalar(1.04); }
-      canvas.style.cursor = hovered ? 'pointer' : '';
-      tip.classList.toggle('on', !!hovered);
-      if(hovered) tip.textContent = (hovered.userData.external ? 'Open on Behance ↗ ' : 'Open → ') + hovered.userData.title;
-    }
-    tip.style.left = px + 'px'; tip.style.top = py + 'px';
-  }
 
   // ---- loop ----
   function resize(){
@@ -513,7 +479,6 @@
     }
     updateOverlays();
     updateProgress();
-    updateHover();
     renderer.render(scene, camera);
     requestAnimationFrame(frame);
   }
