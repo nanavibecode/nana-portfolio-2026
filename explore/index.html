@@ -343,10 +343,10 @@
       pos[i*3] = Math.cos(a) * r; pos[i*3+1] = Math.sin(a) * r; pos[i*3+2] = zMin + rnd() * (zMax - zMin);
     }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    return new THREE.Points(g, new THREE.PointsMaterial({ color:0xffffff, size, sizeAttenuation:true, fog:false, transparent:true, opacity:0.85 }));
+    return new THREE.Points(g, new THREE.PointsMaterial({ color:0xffffff, size, sizeAttenuation:true, fog:false, transparent:true, opacity:0.7 }));
   }
-  scene.add(stars(small ? 1400 : 2600, R + 2, 70, TUNNEL_END - 260, 30, 0.11));
-  scene.add(stars(900, 0, 140, TUNNEL_END - 420, TUNNEL_END - 300, 0.6));
+  scene.add(stars(small ? 800 : 1500, R + 2, 70, TUNNEL_END - 260, 30, 0.11));
+  scene.add(stars(520, 0, 140, TUNNEL_END - 420, TUNNEL_END - 300, 0.6));
 
   // ---- the moon at the end of the tunnel ----
   const MOON_Z = TUNNEL_END - 70;
