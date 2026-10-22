@@ -274,7 +274,7 @@
   const STEP = 10;                      // distance between images along the flight
   // 0 = facing the viewer, 1 = flat against the tunnel wall.
   // Far away, images lean toward the wall; as you approach they turn to face you.
-  const TILT_FAR = 0.29, TILT_NEAR = 0.26, NEAR = 8, FAR = 46;
+  const TILT_FAR = 0.72, TILT_NEAR = 0, NEAR = 9, FAR = 44;   // far = oblique, near = straight
   // narrower windows pull side images inward so they stay on screen
   const SPREAD_X = small ? 1 : Math.min(1, Math.max(0.55, (innerWidth / innerHeight) / 1.6));
   const IMG_HD = IMG + 'v2/';
@@ -316,7 +316,7 @@
       const deeper = new THREE.Vector3(0, 0, -1);
       const wall = new THREE.Quaternion().setFromRotationMatrix(
         new THREE.Matrix4().makeBasis(new THREE.Vector3().crossVectors(deeper, inward), deeper, inward));
-      const face = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.sin(a) * 0.26, -Math.cos(a) * 0.42, 0));
+      const face = new THREE.Quaternion();   // straight: square to the viewer
       m.qFace = face; m.qWall = wall;
       m.quaternion.copy(face).slerp(wall, TILT_FAR);
       tunnel.add(m); panels.push(m);
