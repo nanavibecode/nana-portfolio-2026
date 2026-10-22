@@ -96,20 +96,22 @@
   .outro .links a, .outro .links button{ border-bottom:1px solid var(--white); padding-bottom:2px; }
   .outro .links a:hover, .outro .links button:hover{ color:var(--dim); border-color:var(--dim); }
 
-  /* progress: one tick per section, placed at its real position along the flight */
-  .progress{ position:fixed; right:var(--pad); top:50%; transform:translateY(-50%); height:min(42vh, 340px); width:150px; z-index:4;
+  /* progress: a short rail, one evenly spaced tick per section */
+  .progress{ position:fixed; right:var(--pad); top:50%; transform:translateY(-50%); height:110px; width:12px; z-index:4;
     opacity:0; transition:opacity .6s ease; }
   /* only visible while scrolling (or when hovered / tabbed into, so it can still be clicked) */
   .progress.show, .progress:hover, .progress:focus-within{ opacity:1; transition:opacity .2s ease; }
-  .progress .line, .progress .fill{ position:absolute; right:0; top:0; width:1px; height:100%; background:rgba(255,255,255,.22); }
+  .progress .line, .progress .fill{ position:absolute; right:0; top:0; width:1px; height:100%; background:rgba(255,255,255,.2); }
   .progress .fill{ background:var(--white); height:0; }
-  .progress button{ position:absolute; right:0; transform:translateY(-50%); display:flex; align-items:center; gap:10px;
-    color:rgba(255,255,255,.4); white-space:nowrap; padding:4px 0; transition:color .3s; }
-  .progress button::after{ content:''; width:7px; height:1px; background:currentColor; margin-right:-3px; }
-  .progress button:hover{ color:rgba(255,255,255,.8); }
+  .progress button{ position:absolute; right:0; transform:translateY(-50%); display:flex; align-items:center; justify-content:flex-end;
+    gap:8px; height:12px; padding:0 0 0 8px; color:rgba(255,255,255,.35); white-space:nowrap; font-size:9px; }
+  .progress button::after{ content:''; width:5px; height:1px; background:currentColor; margin-right:-2px; }
+  .progress button span{ opacity:0; transition:opacity .2s; }
   .progress button.on{ color:var(--white); }
+  .progress button.on span, .progress:hover button span, .progress:focus-within button span{ opacity:1; }
+  .progress:hover button:not(.on) span{ color:rgba(255,255,255,.55); }
   .no-webgl .progress{ display:none; }
-  @media (max-width:900px){ .progress{ width:24px; } .progress button span{ display:none; } }
+  @media (max-width:640px){ .progress{ display:none; } }   /* headlines run edge to edge on phones */
   .tip{ position:fixed; z-index:6; pointer-events:none; padding:6px 8px; background:var(--white); color:var(--bg);
     opacity:0; transform:translate(14px, 14px); transition:opacity .15s; white-space:nowrap; }
   .tip.on{ opacity:1; }
@@ -372,12 +374,11 @@
   ];
   const progressEl = document.getElementById('progress');
   const progressFill = document.getElementById('progressFill');
-  const toFrac = zz => Math.max(0, Math.min(1, (Z0 - zz) / (Z0 - Z1)));
   const sectionBtns = SECTIONS.map(sec => {
     const b = document.createElement('button'); b.type = 'button';
     b.innerHTML = '<span>' + sec.label + '</span>';
     b.setAttribute('aria-label', 'Go to ' + sec.label);
-    b.style.top = (toFrac(sec.z) * 100) + '%';
+    b.style.top = (SECTIONS.indexOf(sec) / (SECTIONS.length - 1) * 100) + '%';   // evenly spaced
     b.addEventListener('click', () => scrollTo({ top: sec.label === 'Contact' ? track.offsetHeight : zToScroll(sec.z - 1), behavior: reduce ? 'auto' : 'smooth' }));
     progressEl.appendChild(b); return b;
   });
@@ -389,7 +390,13 @@
   }, { passive:true });
   let activeSection = -1;
   function updateProgress(){
-    progressFill.style.height = (toFrac(camZ) * 100) + '%';
+    // fill moves evenly between ticks, so it always lines up with the current section
+    let f = 0;
+    for(let i = 0; i < SECTIONS.length - 1; i++){
+      const a0 = SECTIONS[i].z, a1 = SECTIONS[i + 1].z;
+      if(camZ <= a0) f = i + Math.max(0, Math.min(1, (a0 - camZ) / (a0 - a1)));
+    }
+    progressFill.style.height = (f / (SECTIONS.length - 1) * 100) + '%';
     let a = 0;
     SECTIONS.forEach((sec, i) => { if(camZ <= sec.z + 0.5) a = i; });
     if(a !== activeSection){
