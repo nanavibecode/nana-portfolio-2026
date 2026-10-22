@@ -252,7 +252,7 @@
     { key:'auto',   title:'No-code chatbots & automations', url:'../case-studies/zaapi-automations/', count:13 },
     { key:'fintech',title:'Fintech UX, reimagined', url:'https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design', count:1, external:true },
   ];
-  const MORE = { key:'more', title:null, url:null };   // wider work, shown at the About stop
+  const MORE = { key:'more', title:null, url:null };   // wider work beyond the four case studies
 
   // ---- WebGL check ----
   let gl = null;
@@ -284,12 +284,12 @@
   const ASPECT = {"growth":[1.78,1.53],"ai":[1.26],"auto":[1.58],"fintech":[1.06],"more":[1.78,1.81,1.78,1.78,1.5,1.02,1.33]};
   // flight order: hero, the four projects, then the team (the About stop), then the moon
   const ZONES = [
-    { proj:null,       lead:8, items:[] },
+    { proj:MORE,       lead:8, items:[1,2,3,4,5,6,7], step:7 },   // opening reel: wider work, right after the hero
     { proj:PROJECTS[0], lead:6, items:[1,2], tail:12 },
     { proj:PROJECTS[1], lead:6, items:[1], tail:22 },    // single-image zones get their own stretch
     { proj:PROJECTS[2], lead:6, items:[1], tail:22 },
     { proj:PROJECTS[3], lead:6, items:[1], tail:22 },
-    { proj:MORE,       lead:6, items:[], tail:44 },   // About: no images, just the text
+    { proj:null,       lead:6, items:[], tail:44 },   // About: no images, just the text
   ];
   // positions cycle around the path, favouring the sides and top so the text below stays clear
   const SLOTS = small ? [100, 260, 80, 280, 60, 120] : [20, 160, 95, 200, 340, 265, 55, 125];
@@ -323,7 +323,7 @@
       m.qFace = face; m.qWall = wall;
       m.quaternion.copy(face).slerp(wall, TILT_FAR);
       tunnel.add(m); panels.push(m);
-      z -= STEP;
+      z -= zone.step || STEP;
     });
     z -= zone.tail || 0;
     segBounds.push([zStart, z + 2]);
