@@ -32,27 +32,9 @@
 
   #scene{ position:fixed; inset:0; width:100%; height:100%; display:block; z-index:0; }
 
-  /* ---------- atmosphere: three grainy light scenes, crossfading as you fly ---------- */
+  /* ---------- atmosphere: soft slate light on near-black navy, with still grain ---------- */
   .glow{ position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; background:#060c11; }
-  .scene{ position:absolute; inset:-12%; filter:blur(34px) saturate(1.25); opacity:0; will-change:opacity; }
-  /* A — "Branding is": peach and cream streak over teal, mauve below, on plum-navy */
-  .scene.a{ opacity:1; transform:rotate(-9deg);
-    background:
-      radial-gradient(ellipse 30% 15% at 30% 24%, #e2bd97 0%, rgba(226,189,151,.55) 45%, transparent 75%),
-      radial-gradient(ellipse 34% 20% at 14% 22%, #d08566 0%, rgba(200,122,96,.7) 45%, transparent 78%),
-      radial-gradient(ellipse 44% 13% at 58% 33%, #5f9bb8 0%, #1d4b63 50%, transparent 82%),
-      radial-gradient(ellipse 50% 12% at 22% 47%, rgba(143,106,118,.75) 0%, transparent 75%),
-      radial-gradient(ellipse 60% 24% at 82% 22%, rgba(29,75,99,.55) 0%, transparent 80%),
-      linear-gradient(180deg, #2b2a3c 0%, #262638 32%, #1f181b 56%, #120d10 78%, #0b0809 100%); }
-  /* B — peach and cream light edged in blue, on charcoal */
-  .scene.b{
-    background:
-      radial-gradient(ellipse 24% 32% at 0% 20%, #dcc8a5 0%, #d1955e 48%, transparent 74%),
-      radial-gradient(ellipse 17% 28% at 0% 64%, #d9a06a 0%, rgba(209,149,94,.75) 45%, transparent 76%),
-      radial-gradient(ellipse 26% 22% at 30% 6%, #d1955e 0%, transparent 70%),
-      radial-gradient(ellipse 40% 62% at 10% 42%, #243e6f 0%, rgba(47,79,154,.75) 35%, transparent 72%),
-      radial-gradient(ellipse 34% 20% at 48% 10%, rgba(47,79,154,.8) 0%, transparent 75%),
-      #1e1e1e; }
+  .scene{ position:absolute; inset:-12%; filter:blur(34px); }
   /* C — soft slate light on near-black navy */
   .scene.c{
     background:
@@ -170,7 +152,7 @@
 </style>
 </head>
 <body>
-<div class="glow" aria-hidden="true"><div class="scene a"></div><div class="scene b"></div><div class="scene c"></div></div>
+<div class="glow" aria-hidden="true"><div class="scene c"></div></div>
 <canvas id="scene" aria-hidden="true"></canvas>
 <div class="grain" aria-hidden="true"></div>
 <div class="track" aria-hidden="true"></div>
@@ -406,7 +388,6 @@
     { label:'Contact',        z:TUNNEL_END - 8 },
   ];
   const progressEl = document.getElementById('progress');
-  const sceneB = document.querySelector('.scene.b'), sceneC = document.querySelector('.scene.c');
   const progressFill = document.getElementById('progressFill');
   const progressLabel = document.getElementById('progressLabel');
   const sectionBtns = SECTIONS.map(sec => {
@@ -531,12 +512,6 @@
     }
     updateOverlays();
     updateProgress();
-    // crossfade the light: A (hero → Growth), B (AI agent → Automations), C (Fintech → end)
-    const fp = (Z0 - camZ) / (Z0 - Z1);
-    const ramp = (x, a, b) => Math.max(0, Math.min(1, (x - a) / (b - a)));
-    const wB = ramp(fp, 0.20, 0.30), wC = ramp(fp, 0.55, 0.66);
-    sceneB.style.opacity = wB.toFixed(3);
-    sceneC.style.opacity = wC.toFixed(3);
     updateHover();
     renderer.render(scene, camera);
     requestAnimationFrame(frame);
