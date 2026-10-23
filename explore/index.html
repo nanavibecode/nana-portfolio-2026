@@ -280,7 +280,7 @@
     const center = Math.max(...widths.map((w, i) => w / 2 + Math.abs(stagger[i]) * SIZE));
     const ascent = SIZE * 0.72;                       // cap height of Montserrat, roughly
     let minX = Infinity, maxX = -Infinity;
-    const guideXs = new Set();
+    const guideYs = [];
     const groupGuides = document.createElementNS(NS, 'g'), groupGlyphs = document.createElementNS(NS, 'g'), groupNodes = document.createElementNS(NS, 'g');
     groupGuides.setAttribute('class', 'guide'); groupGlyphs.setAttribute('class', 'glyph'); groupNodes.setAttribute('class', 'node');
     const line = (x1, y1, x2, y2) => { const l = document.createElementNS(NS, 'line'); l.setAttribute('x1', x1); l.setAttribute('y1', y1); l.setAttribute('x2', x2); l.setAttribute('y2', y2); groupGuides.appendChild(l); };
@@ -288,9 +288,7 @@
       const x0 = center - widths[i] / 2 + stagger[i] * SIZE;
       const base = ascent + i * LEAD;
       minX = Math.min(minX, x0); maxX = Math.max(maxX, x0 + widths[i]);
-      // guides: a vertical dashed line at each letter boundary (drawn full height below)
-      font.forEachGlyph(text, x0, base, SIZE, {}, (glyph, gx) => { if(glyph.unicode !== 32) guideXs.add(Math.round(gx)); });
-      guideXs.add(Math.round(x0 + widths[i]));
+      guideYs.push(base - ascent, base);   // horizontal guides: top and bottom of each row
       // glyph outline
       const d = font.getPath(text, x0, base, SIZE).toPathData(2);
       const path = document.createElementNS(NS, 'path'); path.setAttribute('d', d); groupGlyphs.appendChild(path);
@@ -299,8 +297,8 @@
     const H = ascent + (LINES.length - 1) * LEAD + 22;
     const pad = 30;
     svg.setAttribute('viewBox', `${minX - pad} -14 ${maxX - minX + pad * 2} ${H + 14}`);
-    // full-height vertical guides
-    guideXs.forEach(gx => line(gx, -14, gx, H));
+    // horizontal dashed guides across the full title width
+    guideYs.forEach(gy => line(minX - pad, gy, maxX + pad, gy));
     // dots at the font's real anchor points — corners on straight edges, several along each curve
     const R = SIZE * 0.016;
     LINES.forEach((text, i) => {
