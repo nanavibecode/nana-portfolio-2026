@@ -85,6 +85,13 @@
   .intro h1 .l1{ padding-right:1.6em; }
   .intro h1 .l2{ padding-left:1.1em; }
   .intro h1 .l3{ text-align:center; }
+  /* outlined "construction" title, drawn from the font's real outlines (falls back to the text above) */
+  .intro .outline{ display:none; width:min(86vw, 1180px); height:auto; overflow:visible; }
+  .intro.drawn h1{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .intro.drawn .outline{ display:block; }
+  .outline .guide{ stroke:rgba(255,255,255,.14); stroke-width:1; stroke-dasharray:3 5; fill:none; vector-effect:non-scaling-stroke; }
+  .outline .glyph{ stroke:rgba(255,255,255,.92); stroke-width:1.1; fill:none; vector-effect:non-scaling-stroke; }
+  .outline .node{ fill:#fff; }
   .intro:not(.on){ transition:opacity .2s ease, visibility 0s linear .2s; }
   .intro .sub{ position:absolute; left:50%; bottom:var(--pad); transform:translateX(-50%); text-align:center; }
 
@@ -182,6 +189,7 @@
 
 <section class="layer intro on" id="intro" aria-label="Introduction">
   <h1 class="display"><span class="l1">Your</span><span class="l2">moonshot,</span><span class="l3">made real</span></h1>
+  <svg class="outline" id="titleOutline" aria-hidden="true"></svg>
   <div class="sub small">Scroll to fly in</div>
 </section>
 
@@ -253,6 +261,66 @@
   </ul>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
+<script>
+/* Hero title in "construction" view: real glyph outlines from the font, dots sampled along each outline,
+   dashed guide lines behind. If the font can't load, the normal text title stays. */
+(function(){
+  if(!window.opentype) return;
+  const FONT = 'https://cdn.jsdelivr.net/npm/@fontsource/montserrat@5.0.8/files/montserrat-latin-400-normal.woff';
+  const LINES = ['YOUR', 'MOONSHOT,', 'MADE REAL'];
+  const NS = 'http://www.w3.org/2000/svg';
+  opentype.load(FONT, (err, font) => {
+    if(err || !font) return;
+    const svg = document.getElementById('titleOutline');
+    const intro = document.getElementById('intro');
+    const SIZE = 100, LEAD = 104;                     // font size and line spacing, in SVG units
+    const stagger = innerWidth > 640 ? [-0.9, 0.55, 0] : [0, 0, 0];   // the staggered three-line layout
+    const widths = LINES.map(t => font.getAdvanceWidth(t, SIZE));
+    const center = Math.max(...widths.map((w, i) => w / 2 + Math.abs(stagger[i]) * SIZE));
+    const ascent = SIZE * 0.72;                       // cap height of Montserrat, roughly
+    let minX = Infinity, maxX = -Infinity;
+    const groupGuides = document.createElementNS(NS, 'g'), groupGlyphs = document.createElementNS(NS, 'g'), groupNodes = document.createElementNS(NS, 'g');
+    groupGuides.setAttribute('class', 'guide'); groupGlyphs.setAttribute('class', 'glyph'); groupNodes.setAttribute('class', 'node');
+    const line = (x1, y1, x2, y2) => { const l = document.createElementNS(NS, 'line'); l.setAttribute('x1', x1); l.setAttribute('y1', y1); l.setAttribute('x2', x2); l.setAttribute('y2', y2); groupGuides.appendChild(l); };
+    LINES.forEach((text, i) => {
+      const x0 = center - widths[i] / 2 + stagger[i] * SIZE;
+      const base = ascent + i * LEAD;
+      minX = Math.min(minX, x0); maxX = Math.max(maxX, x0 + widths[i]);
+      // guides: cap line and baseline for each row, and a vertical at each letter boundary
+      line(-40, base - ascent, 99999, base - ascent); line(-40, base, 99999, base);
+      let x = x0;
+      font.forEachGlyph(text, x0, base, SIZE, {}, (glyph, gx) => { line(gx, base - ascent - 10, gx, base + 10); x = gx; });
+      // glyph outline
+      const d = font.getPath(text, x0, base, SIZE).toPathData(2);
+      const path = document.createElementNS(NS, 'path'); path.setAttribute('d', d); groupGlyphs.appendChild(path);
+    });
+    svg.append(groupGuides, groupGlyphs, groupNodes);
+    const H = ascent + (LINES.length - 1) * LEAD + 22;
+    const pad = 30;
+    svg.setAttribute('viewBox', `${minX - pad} -14 ${maxX - minX + pad * 2} ${H + 14}`);
+    // dots evenly along every outline, like anchor points in a type editor
+    const STEP = SIZE * 0.115, R = SIZE * 0.012;
+    groupGlyphs.querySelectorAll('path').forEach(p => {
+      // each sub-path separately, so dots don't bridge between letters
+      p.getAttribute('d').split(/(?=M)/).forEach(sub => {
+        const tmp = document.createElementNS(NS, 'path'); tmp.setAttribute('d', sub); groupNodes.appendChild(tmp);
+        const len = tmp.getTotalLength();
+        const n = Math.max(4, Math.round(len / STEP));
+        for(let k = 0; k < n; k++){
+          const pt = tmp.getPointAtLength((k / n) * len);
+          const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', pt.x.toFixed(1)); c.setAttribute('cy', pt.y.toFixed(1)); c.setAttribute('r', R);
+          groupNodes.appendChild(c);
+        }
+        tmp.remove();
+      });
+    });
+    // trim guide lines to the title's width
+    groupGuides.querySelectorAll('line').forEach(l => { if(l.getAttribute('x2') === '99999'){ l.setAttribute('x1', minX - pad); l.setAttribute('x2', maxX + pad); } });
+    intro.classList.add('drawn');
+  });
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
