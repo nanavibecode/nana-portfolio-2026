@@ -97,6 +97,16 @@
   .outline .glyph{ stroke:rgba(255,255,255,.92); stroke-width:1.1; fill:none; vector-effect:non-scaling-stroke; }
   .outline .node{ fill:#fff; }
   .intro:not(.on){ transition:opacity .2s ease, visibility 0s linear .2s; }
+  /* hero only: a faint grid revealed in a soft circle around the cursor */
+  .intro .cursor-grid{ position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .4s ease;
+    background-image:
+      linear-gradient(rgba(255,255,255,.26) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.26) 1px, transparent 1px);
+    background-size:56px 56px; background-position:center center;
+    -webkit-mask-image:radial-gradient(circle 260px at var(--mx, -999px) var(--my, -999px), #000 0%, rgba(0,0,0,.55) 45%, transparent 100%);
+            mask-image:radial-gradient(circle 260px at var(--mx, -999px) var(--my, -999px), #000 0%, rgba(0,0,0,.55) 45%, transparent 100%); }
+  .intro.hovering .cursor-grid{ opacity:1; }
+  @media (hover:none), (pointer:coarse){ .intro .cursor-grid{ display:none; } }
   .intro .sub{ position:absolute; left:50%; bottom:var(--pad); transform:translateX(-50%); text-align:center; }
 
   /* about Nana: the stop before the end of the flight */
@@ -192,6 +202,7 @@
 <div class="corner br small">©2026</div>
 
 <section class="layer intro on" id="intro" aria-label="Introduction">
+  <div class="cursor-grid" aria-hidden="true"></div>
   <h1 class="display"><span class="l1">Crafting</span><span class="l2">the</span><span class="l3">dots</span></h1>
   <svg class="outline" id="titleOutline" aria-hidden="true"></svg>
   <div class="sub small">Scroll to fly in</div>
@@ -265,6 +276,28 @@
   </ul>
 </main>
 
+<script>
+/* hero grid that follows the cursor (eased slightly so it trails smoothly) */
+(function(){
+  const intro = document.getElementById('intro');
+  const grid = intro.querySelector('.cursor-grid');
+  if(!grid || matchMedia('(hover:none), (pointer:coarse)').matches) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let tx = -999, ty = -999, x = -999, y = -999, running = false;
+  function tick(){
+    x += (tx - x) * (reduce ? 1 : 0.18); y += (ty - y) * (reduce ? 1 : 0.18);
+    grid.style.setProperty('--mx', x.toFixed(1) + 'px'); grid.style.setProperty('--my', y.toFixed(1) + 'px');
+    if(Math.abs(tx - x) > 0.3 || Math.abs(ty - y) > 0.3) requestAnimationFrame(tick); else running = false;
+  }
+  addEventListener('mousemove', e => {
+    tx = e.clientX; ty = e.clientY;
+    if(x < -900){ x = tx; y = ty; }                 // first move: start at the cursor, no sweep in
+    intro.classList.add('hovering');
+    if(!running){ running = true; requestAnimationFrame(tick); }
+  }, { passive:true });
+  document.addEventListener('mouseleave', () => intro.classList.remove('hovering'));
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
 <script>
 /* Hero title in "construction" view: real glyph outlines from the font, dots sampled along each outline,
