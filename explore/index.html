@@ -332,8 +332,6 @@
     const H = ascent + (LINES.length - 1) * LEAD + 22;
     const pad = 30;
     svg.setAttribute('viewBox', `${minX - pad} -14 ${maxX - minX + pad * 2} ${H + 14}`);
-    // horizontal dashed guides across the full title width
-    guideYs.forEach(gy => line(minX - pad, gy, maxX + pad, gy));
     // dots at the font's real anchor points — corners on straight edges, several along each curve
     const R = SIZE * 0.016;
     LINES.forEach((text, i) => {
