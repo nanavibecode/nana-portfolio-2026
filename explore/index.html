@@ -25,6 +25,23 @@
   a, button{ color:inherit; font:inherit; text-transform:inherit; letter-spacing:inherit; text-decoration:none; background:none; border:0; padding:0; cursor:pointer; }
   :focus-visible{ outline:1px solid var(--white); outline-offset:4px; }
 
+  /* ---------- reticle cursor, from the main homepage: viewfinder crosshair that grows on links ---------- */
+  body, a, button{ cursor:none; }
+  #reticleH, #reticleV{ position:fixed; z-index:9998; pointer-events:none; background:rgba(255,90,46,0.3); opacity:0; transition:opacity .2s; }
+  #reticleH{ left:0; width:100vw; height:1px; }
+  #reticleV{ top:0; height:100vh; width:1px; }
+  body.link-hover #reticleH, body.link-hover #reticleV{ opacity:1; }
+  #reticle{ position:fixed; top:-100px; left:-100px; width:34px; height:34px; z-index:9999; pointer-events:none; transform:translate(-50%,-50%);
+    border:.5px solid rgba(243,242,238,0.55); border-radius:50%; transition:width .2s,height .2s,border-color .2s,border-width .2s; }
+  #reticle::before,#reticle::after{ content:''; position:absolute; background:rgba(243,242,238,0.75); }
+  #reticle::before{ left:50%; top:50%; width:9px; height:.5px; transform:translate(-50%,-50%); }
+  #reticle::after{ left:50%; top:50%; width:.5px; height:9px; transform:translate(-50%,-50%); }
+  body.link-hover #reticle{ width:52px; height:52px; border-width:1px; border-color:#FF2E3F; }
+  body.link-hover #reticle::before{ background:#FF2E3F; width:9px; height:1px; }
+  body.link-hover #reticle::after{ background:#FF2E3F; width:1px; height:9px; }
+  body.cursor-away #reticle{ opacity:0; }
+  @media (hover:none), (pointer:coarse){ body, a, button{ cursor:auto; } #reticle,#reticleH,#reticleV{ display:none; } }
+
   /* display type: big, tight, uppercase */
   .display{ font-weight:400; text-transform:uppercase; letter-spacing:-.055em; line-height:.84; }
   /* small print: tiny uppercase, used in the corners and for meta */
@@ -174,6 +191,9 @@
 </head>
 <body>
 <div class="glow" aria-hidden="true"><div class="scene c"></div><div class="leak"></div></div>
+<div id="reticleH" aria-hidden="true"></div>
+<div id="reticleV" aria-hidden="true"></div>
+<div id="reticle" aria-hidden="true"></div>
 <canvas id="scene" aria-hidden="true"></canvas>
 <div class="grain" aria-hidden="true"></div>
 <div class="track" aria-hidden="true"></div>
@@ -261,6 +281,21 @@
   </ul>
 </main>
 
+<script>
+/* reticle cursor (same as the main homepage); hover state on any link or button, including ones added later */
+(function(){
+  const r = document.getElementById('reticle'), h = document.getElementById('reticleH'), v = document.getElementById('reticleV');
+  addEventListener('mousemove', e => {
+    r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px';
+    h.style.top = e.clientY + 'px'; v.style.left = e.clientX + 'px';
+    document.body.classList.remove('cursor-away');
+  }, { passive:true });
+  document.addEventListener('mouseleave', () => document.body.classList.add('cursor-away'));
+  const target = el => el && el.closest && el.closest('a, button, [data-hover]');
+  document.addEventListener('mouseover', e => { if(target(e.target)) document.body.classList.add('link-hover'); });
+  document.addEventListener('mouseout', e => { if(target(e.target) && !target(e.relatedTarget)) document.body.classList.remove('link-hover'); });
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
 <script>
 /* Hero title in "construction" view: real glyph outlines from the font, dots sampled along each outline,
