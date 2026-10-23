@@ -192,7 +192,7 @@
 <div class="corner br small">©2026</div>
 
 <section class="layer intro on" id="intro" aria-label="Introduction">
-  <h1 class="display"><span class="l1">Your</span><span class="l2">moonshot,</span><span class="l3">made real</span></h1>
+  <h1 class="display"><span class="l1">Crafting</span><span class="l2">the</span><span class="l3">dots</span></h1>
   <svg class="outline" id="titleOutline" aria-hidden="true"></svg>
   <div class="sub small">Scroll to fly in</div>
 </section>
@@ -272,14 +272,14 @@
 (function(){
   if(!window.opentype) return;
   const FONT = 'https://cdn.jsdelivr.net/npm/@fontsource/montserrat@5.0.8/files/montserrat-latin-700-normal.woff';
-  const LINES = ['YOUR', 'MOONSHOT,', 'MADE REAL'];
+  const LINES = ['CRAFTING', 'THE', 'DOTS'];
   const NS = 'http://www.w3.org/2000/svg';
   opentype.load(FONT, (err, font) => {
     if(err || !font) return;
     const svg = document.getElementById('titleOutline');
     const intro = document.getElementById('intro');
     const SIZE = 100, LEAD = 104;                     // font size and line spacing, in SVG units
-    const stagger = innerWidth > 640 ? [-0.9, 0.55, 0] : [0, 0, 0];   // the staggered three-line layout
+    const stagger = innerWidth > 640 ? [-0.6, 1.1, 0.2] : [0, 0, 0];   // the staggered three-line layout
     const widths = LINES.map(t => font.getAdvanceWidth(t, SIZE));
     const center = Math.max(...widths.map((w, i) => w / 2 + Math.abs(stagger[i]) * SIZE));
     const ascent = SIZE * 0.72;                       // cap height of Montserrat, roughly
