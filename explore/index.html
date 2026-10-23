@@ -86,9 +86,7 @@
     background:radial-gradient(ellipse 46% 36% at 50% 50%, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 80%); }
   .intro h1{ font-size:clamp(3.2rem, 11.5vw, 11rem); }
   .intro h1 span{ display:block; }
-  .intro h1 .l1{ padding-right:1.6em; }
-  .intro h1 .l2{ padding-left:1.1em; }
-  .intro h1 .l3{ text-align:center; }
+  .intro h1{ text-align:center; }
   /* outlined "construction" title, drawn from the font's real outlines (falls back to the text above) */
   .intro .outline{ display:none; width:min(86vw, 1180px); height:auto; overflow:visible; }
   .intro.drawn h1{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
@@ -312,7 +310,7 @@
     const svg = document.getElementById('titleOutline');
     const intro = document.getElementById('intro');
     const SIZE = 100, LEAD = 104;                     // font size and line spacing, in SVG units
-    const stagger = innerWidth > 640 ? [-0.6, 1.1, 0.2] : [0, 0, 0];   // the staggered three-line layout
+    const stagger = [0, 0, 0];   // all three lines centred   // the staggered three-line layout
     const widths = LINES.map(t => font.getAdvanceWidth(t, SIZE));
     const center = Math.max(...widths.map((w, i) => w / 2 + Math.abs(stagger[i]) * SIZE));
     const ascent = SIZE * 0.72;                       // cap height of Montserrat, roughly
