@@ -45,3 +45,6 @@ header .menu:hover, .cs-nav a:hover{ background:var(--white); color:var(--bg); b
 
 /* placeholders for missing facts stay red so they're easy to spot */
 .tbd{ color:#e0283a !important; }
+
+/* full-colour client logo — no inversion */
+.logo-badge.color{ filter:none; }
