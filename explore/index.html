@@ -427,10 +427,14 @@
       const tex = loader.load(IMG_HD + key + '-' + n + '.jpg');
       tex.anisotropy = Math.min(8, maxAniso);
       const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map:tex, side:THREE.DoubleSide, transparent:true, fog:false }));
-      const w = aspect < 1 ? PANEL_W * 0.8 * aspect * 1.25 : PANEL_W;
+      // case-study images are shown bigger, closer to the centre and straighter, so the work reads clearly
+      const cs = zone.proj !== MORE;
+      const big = cs ? 1.45 : 1, near = cs ? 0.62 : 1;
+      const w = (aspect < 1 ? PANEL_W * 0.8 * aspect * 1.25 : PANEL_W) * big;
       m.scale.set(w, w / aspect, 1);
       const a = SLOTS[slot++ % SLOTS.length] * Math.PI / 180;
-      m.position.set(Math.cos(a) * R * SPREAD_X, Math.sin(a) * R * (small ? 1.6 : 0.9), z);
+      m.position.set(Math.cos(a) * R * SPREAD_X * near, Math.sin(a) * R * (small ? 1.6 : 0.9) * near, z);
+      m.cs = cs;
       // halfway between lining the tunnel wall and facing the viewer:
       // enough angle to read as a tunnel, enough face-on to see the work clearly
       const inward = new THREE.Vector3(-Math.cos(a), -Math.sin(a), 0);
@@ -550,7 +554,7 @@
 
   let current = -3;
   function updateOverlays(){
-    const look = camZ - 9; // what's just ahead of the camera
+    const look = camZ - 17; // what's ahead of the camera — labels switch as each zone's first image comes clearly into view
     let s = -2;                                              // default: between zones, show nothing
     if(scrollY < innerHeight * 0.04 && camZ > Z0 - 3) s = -1;  // hero: only at the very top of the page
     else if(camZ > Z0 - 3) s = -2;                           // just left the hero: nothing on screen yet
@@ -595,10 +599,13 @@
     for(const p of panels){
       const d = camZ - p.position.z;
       // fade in from the distance, fade out just before passing
-      p.material.opacity = Math.max(0, Math.min(1, (d - 2.5) / 5, (50 - d) / 30));
+      p.material.opacity = p.cs
+        ? Math.max(0, Math.min(1, (d - 3) / 4, (58 - d) / 18))     // case study: fully clear for longer
+        : Math.max(0, Math.min(1, (d - 2.5) / 5, (50 - d) / 30));
       p.visible = p.material.opacity > 0.01;
       if(p.visible){
-        const k = Math.max(0, Math.min(1, (d - NEAR) / (FAR - NEAR)));
+        // case-study images straighten up earlier, so they're face-on for most of the approach
+        const k = p.cs ? Math.max(0, Math.min(1, (d - 22) / (52 - 22))) : Math.max(0, Math.min(1, (d - NEAR) / (FAR - NEAR)));
         const ease = k * k * (3 - 2 * k);
         p.quaternion.copy(p.qFace).slerp(p.qWall, TILT_NEAR + (TILT_FAR - TILT_NEAR) * ease);
       }
