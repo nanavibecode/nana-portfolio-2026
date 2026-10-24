@@ -1,0 +1,47 @@
+/* Case-study pages, in the homepage's type system: Inter Tight, tight uppercase display type,
+   small uppercase labels, black and white — on a white page. Loaded after each page's own styles. */
+:root{
+  --bg:#ffffff;
+  --white:#0a0a0a;            /* the pages' "ink" token (named for the old dark theme) */
+  --gray:#4a4a4a;
+  --gray-dim:#8c8c8c;
+  --line:rgba(0,0,0,.14);
+  --accent:#0a0a0a;
+  --serif:'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --sans:'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono:'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+body{ font-weight:400; -webkit-font-smoothing:antialiased; }
+::selection{ background:#0a0a0a; color:#fff; }
+
+/* display type: big, tight, uppercase */
+.cs-hero h1, .cs-block h2, .cs-block h3, .cs-learning h3,
+.cs-stats .stat, .cs-outcome-stats .stat, .phase-table td.yr{
+  font-weight:400; text-transform:uppercase; letter-spacing:-.05em; line-height:.9;
+}
+.cs-hero h1{ font-size:clamp(2rem, 9vw, 7.5rem); max-width:none; overflow-wrap:break-word; }
+.cs-block h2{ font-size:clamp(2rem, 5vw, 4.2rem); max-width:18ch; }
+.cs-block h3, .cs-learning h3{ font-size:clamp(1.3rem, 2.6vw, 2rem); }
+.cs-stats .stat, .cs-outcome-stats .stat{ font-size:clamp(2.6rem, 5.4vw, 4.4rem); }
+.cs-stats > *, .cs-outcome-stats > *{ min-width:0; }
+@media (max-width:380px){ .cs-stats .stat, .cs-outcome-stats .stat{ font-size:2.1rem; } }
+
+/* small print: tiny uppercase labels, like the homepage corners */
+.kicker, .lbl, .kpi-lbl, figcaption, header .menu, .cs-nav a,
+.phase-table th, .phase-table td.yr span, .cs-toc .label{
+  font-family:var(--mono); font-size:10px !important; font-weight:500; letter-spacing:.01em !important; text-transform:uppercase;
+}
+.kicker{ color:var(--white) !important; }
+
+/* body copy */
+.body-text, .body-list li, .lead, .val, .stat-desc, .card li, .decision p, .decision .alt, .cs-learning p, .phase-table td{ font-weight:400; }
+strong{ font-weight:500 !important; }
+.decision-list .decision h4, .role-grid .card h4{ font-weight:500; text-transform:uppercase; letter-spacing:-.01em; }
+.cs-block .body-list li::before{ background:var(--white); }
+
+/* buttons: square hairline outlines instead of pills */
+header .menu, .cs-nav a{ border-radius:0; }
+header .menu:hover, .cs-nav a:hover{ background:var(--white); color:var(--bg); border-color:var(--white); }
+
+/* placeholders for missing facts stay red so they're easy to spot */
+.tbd{ color:#e0283a !important; }
