@@ -182,8 +182,12 @@
   .flow{ margin:48px 0 0; }
   .flow-head{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-dim); margin-bottom:14px; }
   .flow-head .flow-key{ color:var(--accent); }
-  .flow-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); counter-reset:step; }
-  .flow-step{ background:var(--bg); padding:24px 22px 22px; display:flex; flex-direction:column; position:relative; }
+  /* horizontal timeline: one line through all six steps, a dot per step */
+  .flow-grid{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:0 28px; }
+  .flow-step{ background:none; padding:34px 0 0; display:flex; flex-direction:column; position:relative; scroll-snap-align:start; }
+  .flow-step::before{ content:''; position:absolute; top:4px; left:0; right:-28px; height:1px; background:var(--line); }
+  .flow-step:last-child::before{ right:0; }
+  .flow-step::after{ content:''; position:absolute; top:0; left:0; width:9px; height:9px; border-radius:50%; background:var(--accent); }
   .flow-no{ font-family:var(--serif); font-size:1.9rem; line-height:1; color:var(--accent); margin-bottom:12px; }
   .flow-step h4{ font-family:var(--serif); font-weight:400; font-size:1.25rem; line-height:1.2; color:var(--white); margin-bottom:8px; }
   .flow-step p{ font-size:13px; line-height:1.65; color:var(--gray); font-weight:300; }
@@ -193,8 +197,8 @@
   .flow-ex .bubble.out{ background:var(--white); color:var(--bg); align-self:flex-end; border-bottom-right-radius:4px; }
   .flow-ex .tag{ font-family:var(--mono); font-size:10.5px; letter-spacing:.02em; line-height:1.5; color:var(--gray-dim); border-left:1px solid var(--accent); padding-left:10px; }
   .flow figcaption{ margin-top:12px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--gray-dim); }
-  @media (max-width:960px){ .flow-grid{ grid-template-columns:1fr 1fr; } }
-  @media (max-width:560px){ .flow-grid{ grid-template-columns:1fr; } }
+  @media (max-width:1100px){ .flow-grid{ grid-template-columns:repeat(6,240px); overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:18px; -webkit-overflow-scrolling:touch; } }
+  @media (max-width:560px){ .flow-grid{ grid-template-columns:repeat(6,200px); gap:0 22px; } .flow-step::before{ right:-22px; } }
   .ladder{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
   .ladder .rung{ background:var(--bg); padding:24px 22px; display:flex; flex-direction:column; }
   .ladder .rung-no{ font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
@@ -303,7 +307,7 @@
   <a class="step" href="#summary" data-hover><span class="label">Summary</span><span class="dot"></span></a>
   <a class="step" href="#context" data-hover><span class="label">Context</span><span class="dot"></span></a>
   <a class="step" href="#problem" data-hover><span class="label">Problem</span><span class="dot"></span></a>
-  <a class="step" href="#how-it-works" data-hover><span class="label">How It Works</span><span class="dot"></span></a>
+  <a class="step" href="#how-it-works" data-hover><span class="label">How AI Works</span><span class="dot"></span></a>
   <a class="step" href="#my-role" data-hover><span class="label">My Role</span><span class="dot"></span></a>
   <a class="step" href="#process" data-hover><span class="label">Design Process</span><span class="dot"></span></a>
   <a class="step" href="#key-decisions" data-hover><span class="label">Key Decisions</span><span class="dot"></span></a>
@@ -387,7 +391,7 @@
   </div>
 </section>
 <section class="cs-block" id="how-it-works">
-  <div class="kicker reveal">How It Works</div>
+  <div class="kicker reveal">How AI Works</div>
   <h2 class="reveal">One message, start to finish</h2>
   <p class="body-text reveal">Follow the most common request — "where's my order?" — through six steps.</p>
   <figure class="flow reveal">
