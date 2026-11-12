@@ -453,12 +453,12 @@
     return new THREE.Points(g, new THREE.PointsMaterial({ color:0xffffff, size, sizeAttenuation:true, fog:false, transparent:true, opacity:0.7 }));
   }
   const starLayers = [
-    stars(small ? 800 : 1500, R + 2, 70, TUNNEL_END - 260, 30, 0.11),
-    stars(520, 0, 140, TUNNEL_END - 420, TUNNEL_END - 300, 0.6),
+    stars(small ? 220 : 380, R + 2, 70, TUNNEL_END - 260, 30, 0.11),
+    stars(120, 0, 140, TUNNEL_END - 420, TUNNEL_END - 300, 0.6),
   ];
   starLayers.forEach(l => scene.add(l));
   // stars stay very faint at the hero, then fade up to full as the flight begins
-  const STARS_HERO = 0.26, STARS_FULL = 0.7;
+  const STARS_HERO = 0.2, STARS_FULL = 0.5;
 
   // ---- the moon at the end of the tunnel ----
   const MOON_Z = TUNNEL_END - 70;
