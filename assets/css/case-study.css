@@ -49,11 +49,11 @@ header .menu:hover, .cs-nav a:hover{ background:var(--white); color:var(--bg); b
 /* full-colour client logo — no inversion */
 .logo-badge.color{ filter:none; }
 
-/* pull quote between sections — full-bleed dark band, light sentence-case type (unlike the uppercase titles) */
-.cs-quote{ background:#0a0a0a; color:#fff; padding:clamp(80px,12vw,160px) var(--edge-pad); text-align:center; border:0; }
+/* pull quote between sections — full-width light band, light sentence-case type (unlike the uppercase titles) */
+.cs-quote{ background:#f3f3f1; color:var(--white); padding:clamp(80px,12vw,160px) var(--edge-pad); text-align:center;
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 .cs-quote blockquote{ margin:0 auto; max-width:none; font-family:var(--serif); font-weight:300; font-style:normal; text-transform:none;
-  letter-spacing:-.035em; line-height:1.08; font-size:clamp(2rem, 5.6vw, 5.2rem); color:#fff; }
-.cs-quote blockquote::before, .cs-quote blockquote::after{ color:rgba(255,255,255,.35); }
+  letter-spacing:-.035em; line-height:1.08; font-size:clamp(2rem, 5.6vw, 5.2rem); color:var(--white); }
+.cs-quote blockquote::before, .cs-quote blockquote::after{ color:var(--gray-dim); }
 .cs-quote blockquote::before{ content:'\201C'; }
 .cs-quote blockquote::after{ content:'\201D'; }
-.cs-quote::selection, .cs-quote *::selection{ background:#fff; color:#0a0a0a; }
