@@ -139,7 +139,8 @@
   .work-row .go{ transition:transform .3s ease; }
   .fade{ position:fixed; left:0; right:0; bottom:0; height:55vh; z-index:2; pointer-events:none;
     background:linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.9) 75%); opacity:0; transition:opacity .5s, height .5s; }
-  .fade.list{ height:80vh; background:linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.88) 38%, rgba(0,0,0,.94)); }
+  /* behind the work list only: a short soft edge just above it, so the images above stay fully clear */
+  .fade.list{ height:var(--list-h, 55vh); background:linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.9) 70px, rgba(0,0,0,.95)); }
   .fade.on{ opacity:1; }
 
   .outro{ inset:0; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; text-align:center;
@@ -572,6 +573,9 @@
     renderer.setSize(innerWidth, innerHeight, false);
     camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
   }
+  // the list fade reaches just above the list, whatever the screen size
+  function sizeListFade(){ fade.style.setProperty('--list-h', (innerHeight - workEl.offsetTop + 70) + 'px'); }
+  addEventListener('resize', sizeListFade); sizeListFade();
   addEventListener('resize', resize); resize();
 
   const clock = new THREE.Clock();
