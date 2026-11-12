@@ -51,7 +51,7 @@ header .menu:hover, .cs-nav a:hover{ background:var(--white); color:var(--bg); b
 
 /* pull quote between sections — full-width, white, light sentence-case type (unlike the uppercase titles) */
 .cs-quote{ background:var(--bg); color:var(--white); padding:clamp(64px,8vw,110px) var(--edge-pad); text-align:center;
-  border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  border-bottom:1px solid var(--line); }
 .cs-quote blockquote{ margin:0 auto; max-width:none; font-family:var(--serif); font-weight:300; font-style:normal; text-transform:none;
   letter-spacing:-.035em; line-height:1.08; font-size:clamp(1.5rem, 3.2vw, 2.6rem); color:var(--white); }
 .cs-quote blockquote::before, .cs-quote blockquote::after{ color:var(--gray-dim); }
