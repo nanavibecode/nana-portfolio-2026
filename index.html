@@ -124,19 +124,22 @@
   .timeline li:not(:first-child){ color:var(--dim); }
   .tbd{ color:#ff5a66; font-style:italic; text-transform:none; }
 
-  /* each project: a hairline, a big index number, a big name — and small meta above */
-  .station{ left:var(--pad); right:var(--pad); bottom:calc(var(--pad) + 46px); transform:translateY(14px); }
-  .station.on{ transform:none; }
-  .station .meta{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:14px; }
-  .station .meta p{ max-width:34ch; }
-  .station .meta .right{ text-align:right; }
-  .station .meta .right a{ display:inline-block; margin-top:10px; border-bottom:1px solid var(--white); padding-bottom:2px; }
-  .station .meta .right a:hover{ color:var(--dim); border-color:var(--dim); }
-  .station .row{ display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid var(--line); padding-top:12px; }
-  .station .row .display{ font-size:clamp(3rem, 9vw, 8.5rem); }
-  .station .row .name{ text-align:right; }
+  /* all the work at once: one list, the row for the project in view is highlighted */
+  .worklist{ left:var(--pad); right:var(--pad); bottom:calc(var(--pad) + 46px); transform:translateY(14px); }
+  .worklist.on{ transform:none; }
+  .worklist .head{ display:flex; justify-content:space-between; gap:24px; margin-bottom:14px; }
+  .work-rows{ list-style:none; border-top:1px solid var(--line); }
+  .work-row{ display:grid; grid-template-columns:4ch minmax(0,1.2fr) minmax(0,1.5fr) minmax(0,1fr) 2ch; gap:24px; align-items:center;
+    padding:12px 0; border-bottom:1px solid rgba(255,255,255,.14); color:var(--dim); transition:color .3s ease; }
+  .work-row .nm{ font-size:clamp(2rem, 4.2vw, 3.8rem); line-height:.9; }
+  .work-row .ds{ max-width:42ch; }
+  .work-row .mt, .work-row .go{ text-align:right; }
+  .work-row.cur, .work-row:hover, .work-row:focus-visible{ color:var(--white); }
+  .work-row:hover .go{ transform:translateX(4px); }
+  .work-row .go{ transition:transform .3s ease; }
   .fade{ position:fixed; left:0; right:0; bottom:0; height:55vh; z-index:2; pointer-events:none;
-    background:linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.9) 75%); opacity:0; transition:opacity .5s; }
+    background:linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.9) 75%); opacity:0; transition:opacity .5s, height .5s; }
+  .fade.list{ height:80vh; background:linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.88) 38%, rgba(0,0,0,.94)); }
   .fade.on{ opacity:1; }
 
   .outro{ inset:0; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; text-align:center;
@@ -169,10 +172,9 @@
   .fallback a{ font-size:clamp(2rem, 6vw, 4rem); }
 
   @media (max-width:640px){
-    .station .meta{ flex-direction:column; align-items:flex-start; }
-    .station .meta .right{ text-align:left; }
-    .station .row{ flex-direction:column; align-items:flex-start; gap:6px; }
-    .station .row .name{ text-align:left; }
+    .work-row{ grid-template-columns:4ch minmax(0,1fr) 2ch; gap:12px; padding:10px 0; }
+    .work-row .ds, .work-row .mt{ display:none; }
+    .worklist .head p:last-child{ display:none; }
     .intro h1 .l1, .intro h1 .l2, .aboutsec h2 .l1, .aboutsec h2 .l2{ padding:0; }
     .intro h1{ text-align:center; }
     .aboutsec{ padding-top:64px; }
@@ -207,33 +209,14 @@
 
 <div class="fade" id="bottomFade"></div>
 
-<section class="layer station" data-station="0" aria-label="Project 1">
-  <div class="meta small">
-    <p>Scaling a SaaS from scratch — from a Thai-only product to an international market.</p>
-    <div class="right">+220% ARR · +650% messages sent · +40% new subs<br><a href="case-studies/zaapi-growth/">Open case study →</a></div>
-  </div>
-  <div class="row"><span class="display">01</span><span class="display name">Growth</span></div>
-</section>
-<section class="layer station" data-station="1" aria-label="Project 2">
-  <div class="meta small">
-    <p>AI agent for customer service — a no-code agent teams trust enough to switch on.</p>
-    <div class="right">61% resolved with no human · 1.67M AI replies a quarter<br><a href="case-studies/zaapi-ai-agent/">Open case study →</a></div>
-  </div>
-  <div class="row"><span class="display">02</span><span class="display name">AI agent</span></div>
-</section>
-<section class="layer station" data-station="2" aria-label="Project 3">
-  <div class="meta small">
-    <p>No-code chatbots &amp; automations — from simple templates to a drag-and-drop flow builder.</p>
-    <div class="right">95% fewer unresponded chats · 87% faster replies<br><a href="case-studies/zaapi-automations/">Open case study →</a></div>
-  </div>
-  <div class="row"><span class="display">03</span><span class="display name">Automations</span></div>
-</section>
-<section class="layer station" data-station="3" aria-label="Project 4">
-  <div class="meta small">
-    <p>Fintech UX, reimagined — digitizing loan registration for a market used to paper trails.</p>
-    <div class="right">+117% online applications<br><a href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener">Open on Behance ↗</a></div>
-  </div>
-  <div class="row"><span class="display">04</span><span class="display name">Fintech</span></div>
+<section class="layer worklist" id="work" aria-label="Selected work">
+  <div class="head small"><p>Selected work</p><p>4 projects · click to open</p></div>
+  <ol class="work-rows">
+    <li><a class="work-row" href="case-studies/zaapi-growth/"><span class="no small">01</span><span class="nm display">Growth</span><span class="ds small">Scaling a SaaS from scratch — from a Thai-only product to an international market.</span><span class="mt small">+220% ARR · +650% messages sent</span><span class="go small">→</span></a></li>
+    <li><a class="work-row" href="case-studies/zaapi-ai-agent/"><span class="no small">02</span><span class="nm display">AI agent</span><span class="ds small">AI agent for customer service — a no-code agent teams trust enough to switch on.</span><span class="mt small">61% resolved with no human · 1.67M AI replies a quarter</span><span class="go small">→</span></a></li>
+    <li><a class="work-row" href="case-studies/zaapi-automations/"><span class="no small">03</span><span class="nm display">Automations</span><span class="ds small">No-code chatbots &amp; automations — from simple templates to a drag-and-drop flow builder.</span><span class="mt small">95% fewer unresponded chats · 87% faster replies</span><span class="go small">→</span></a></li>
+    <li><a class="work-row" href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener"><span class="no small">04</span><span class="nm display">Fintech</span><span class="ds small">Fintech UX, reimagined — digitizing loan registration for a market used to paper trails.</span><span class="mt small">+117% online applications</span><span class="go small">↗</span></a></li>
+  </ol>
 </section>
 
 <section class="layer aboutsec" id="about" aria-label="About Nana">
@@ -495,7 +478,8 @@
   const outro = document.getElementById('outro');
   const aboutEl = document.getElementById('about');
   const fade = document.getElementById('bottomFade');
-  const stationEls = [...document.querySelectorAll('.station')];
+  const workEl = document.getElementById('work');
+  const workRows = [...workEl.querySelectorAll('.work-row')];
   // arriving from a case study's "Back to all work": start at 01 Growth
   try{
     if(sessionStorage.getItem('scrollTarget') === 'work'){
@@ -512,10 +496,7 @@
   // ---- progress: which section you're in ----
   const SECTIONS = [
     { label:'Start',          z:Z0 },
-    { label:'01 Growth',      z:segBounds[1][0] + 9 },
-    { label:'02 AI agent',    z:segBounds[2][0] + 9 },
-    { label:'03 Automations', z:segBounds[3][0] + 9 },
-    { label:'04 Fintech',     z:segBounds[4][0] + 9 },
+    { label:'Work',           z:segBounds[1][0] + 9 },
     { label:'About',          z:segBounds[5][0] + 9 },
     { label:'Contact',        z:TUNNEL_END - 8 },
   ];
@@ -566,14 +547,18 @@
     else if(camZ > Z0 - 3) s = -2;                           // just left the hero: nothing on screen yet
     else if(camZ < TUNNEL_END - 8) s = 9;                    // outro
     else if(look <= segBounds[5][0] + 3) s = 5;              // about, among the team photos
-    else for(let i = 1; i <= 4; i++) if(look <= segBounds[i][0] + 3 && look >= segBounds[i][1] - 3) s = i - 1;
+    else if(look <= segBounds[1][0] + 3 && look >= segBounds[4][1] - 3){   // the whole work stretch: list stays up
+      s = 0; for(let i = 1; i <= 4; i++) if(look <= segBounds[i][0] + 3) s = i - 1;
+    }
     if(s === current) return;
     current = s;
     intro.classList.toggle('on', s === -1);
     outro.classList.toggle('on', s === 9);
     aboutEl.classList.toggle('on', s === 5);
-    stationEls.forEach((el, i) => el.classList.toggle('on', s === i));
+    workEl.classList.toggle('on', s >= 0 && s <= 3);
+    workRows.forEach((el, i) => el.classList.toggle('cur', s === i));
     fade.classList.toggle('on', s >= 0 && s <= 5);
+    fade.classList.toggle('list', s >= 0 && s <= 3);
   }
 
   // ---- the images are visual only; the pointer just sways the camera a little ----
