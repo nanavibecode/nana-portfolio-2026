@@ -29,6 +29,8 @@
   .display{ font-weight:400; text-transform:uppercase; letter-spacing:-.055em; line-height:.84; }
   /* small print: tiny uppercase, used in the corners and for meta */
   .small{ font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.01em; line-height:1.35; }
+  /* running body text: normal case, a touch larger than the caps captions */
+  .body{ text-transform:none; letter-spacing:0; font-weight:400; line-height:1.45; }
 
   #scene{ position:fixed; inset:0; width:100%; height:100%; display:block; z-index:0; }
 
@@ -115,7 +117,7 @@
   /* about + job timeline: same small-print system as the project zones */
   .about{ position:absolute; left:var(--pad); right:var(--pad); bottom:calc(var(--pad) + 46px); }
   .about .meta{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:14px; }
-  .about .meta p:first-child{ max-width:46ch; }
+  .about .meta p:first-child{ max-width:52ch; font-size:clamp(12px, 1.1vw, 14px); }
   .about .meta .right{ text-align:right; }
   .timeline{ list-style:none; border-top:1px solid var(--line); }
   .timeline li{ display:grid; grid-template-columns:minmax(90px, 1fr) 2fr 1.4fr; gap:16px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.14); }
@@ -132,7 +134,7 @@
   .work-row{ display:grid; grid-template-columns:4ch minmax(0,1.2fr) minmax(0,1.5fr) minmax(0,1fr) 2.2rem; gap:24px; align-items:center;
     padding:12px 0; border-bottom:1px solid rgba(255,255,255,.14); color:var(--dim); transition:color .3s ease; }
   .work-row .nm{ font-size:clamp(2rem, 4.2vw, 3.8rem); line-height:.9; }
-  .work-row .ds, .work-row .mt{ font-size:clamp(11px, 1vw, 13px); line-height:1.4; }
+  .work-row .ds, .work-row .mt{ font-size:clamp(12px, 1.1vw, 14px); }
   .work-row .ds{ max-width:44ch; }
   .work-row .go{ font-size:clamp(1.4rem, 2.2vw, 2rem); line-height:1; font-weight:300; }
   .work-row .mt, .work-row .go{ text-align:right; }
@@ -215,10 +217,10 @@
 <section class="layer worklist" id="work" aria-label="Selected work">
   <div class="head small"><p>Selected work</p><p>4 projects · click to open</p></div>
   <ol class="work-rows">
-    <li><a class="work-row" href="case-studies/zaapi-growth/"><span class="no small">01</span><span class="nm display">Growth</span><span class="ds small">Scaling a SaaS from scratch — from a Thai-only product to an international market.</span><span class="mt small">+220% ARR · +650% messages sent</span><span class="go small">→</span></a></li>
-    <li><a class="work-row" href="case-studies/zaapi-ai-agent/"><span class="no small">02</span><span class="nm display">AI agent</span><span class="ds small">AI agent for customer service — a no-code agent teams trust enough to switch on.</span><span class="mt small">61% resolved with no human · 1.67M AI replies a quarter</span><span class="go small">→</span></a></li>
-    <li><a class="work-row" href="case-studies/zaapi-automations/"><span class="no small">03</span><span class="nm display">Automations</span><span class="ds small">No-code chatbots &amp; automations — from simple templates to a drag-and-drop flow builder.</span><span class="mt small">95% fewer unresponded chats · 87% faster replies</span><span class="go small">→</span></a></li>
-    <li><a class="work-row" href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener"><span class="no small">04</span><span class="nm display">Fintech</span><span class="ds small">Fintech UX, reimagined — digitizing loan registration for a market used to paper trails.</span><span class="mt small">+117% online applications</span><span class="go small">↗</span></a></li>
+    <li><a class="work-row" href="case-studies/zaapi-growth/"><span class="no small">01</span><span class="nm display">Growth</span><span class="ds small body">Scaling a SaaS from scratch — from a Thai-only product to an international market.</span><span class="mt small body">+220% ARR · +650% messages sent</span><span class="go small">→</span></a></li>
+    <li><a class="work-row" href="case-studies/zaapi-ai-agent/"><span class="no small">02</span><span class="nm display">AI agent</span><span class="ds small body">AI agent for customer service — a no-code agent teams trust enough to switch on.</span><span class="mt small body">61% resolved with no human · 1.67M AI replies a quarter</span><span class="go small">→</span></a></li>
+    <li><a class="work-row" href="case-studies/zaapi-automations/"><span class="no small">03</span><span class="nm display">Automations</span><span class="ds small body">No-code chatbots &amp; automations — from simple templates to a drag-and-drop flow builder.</span><span class="mt small body">95% fewer unresponded chats · 87% faster replies</span><span class="go small">→</span></a></li>
+    <li><a class="work-row" href="https://www.behance.net/gallery/145328089/ttb-Banking-App-Retail-Lending-UXUI-Design" target="_blank" rel="noopener"><span class="no small">04</span><span class="nm display">Fintech</span><span class="ds small body">Fintech UX, reimagined — digitizing loan registration for a market used to paper trails.</span><span class="mt small body">+117% online applications</span><span class="go small">↗</span></a></li>
   </ol>
 </section>
 
@@ -226,7 +228,7 @@
   <h2 class="display"><span class="l1">Hello,</span><span class="l2">I'm Nana</span></h2>
   <div class="about">
     <div class="meta small">
-      <p>Product Design Lead with 7+ years across UX, AI, and SaaS — turning ideas into intuitive products that drive business growth. Clients and teams include AIS, ttb bank, SCB, CardX, and SCG.</p>
+      <p class="body">Product Design Lead with 7+ years across UX, AI, and SaaS — turning ideas into intuitive products that drive business growth. Clients and teams include AIS, ttb bank, SCB, CardX, and SCG.</p>
       <p class="right">Where I've worked</p>
     </div>
     <ol class="timeline small">
