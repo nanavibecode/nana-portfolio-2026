@@ -3,10 +3,7 @@
   "configurations": [
     {
       "name": "static-site",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "--directory", "/Users/nana/Desktop/Code - Personal/Claude Code - Personal Use/Nana portfolio 2026", "8090"],
-      "port": 8090,
-      "autoPort": true
+      "url": "http://localhost:8090"
     }
   ]
 }
